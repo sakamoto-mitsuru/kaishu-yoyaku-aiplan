@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>四十九日法要 ご希望予約フォーム｜やわらぎ斎場</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F5F0; --card:#FDFCFA; --ink:#2B2A28; --ink-soft:#726D66;
+    --ai:#3E5266; --ai-deep:#2F4152; --ai-tint:#ECEFF2;
+    --line:#E5E0D7; --sand:#EFE9DE; --full:#A9796C;
+    --shadow:0 1px 2px rgba(43,42,40,.04), 0 8px 28px rgba(43,42,40,.06); --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:"Noto Sans JP",sans-serif;background:var(--paper);color:var(--ink);
+    line-height:1.75;letter-spacing:.01em;-webkit-font-smoothing:antialiased;padding:0 16px 64px}
+  .wrap{max-width:560px;margin:0 auto}
+  header{padding:34px 0 10px;text-align:center}
+  .brand-rule{width:40px;height:2px;background:var(--ai);margin:0 auto 18px;opacity:.85}
+  .hall{font-family:"Noto Serif JP",serif;font-size:1.42rem;font-weight:600;letter-spacing:.06em}
+  .form-name{font-family:"Noto Serif JP",serif;font-size:.98rem;font-weight:500;color:var(--ink-soft);margin-top:6px;letter-spacing:.04em}
+  .steps{display:flex;align-items:center;justify-content:center;gap:6px;margin:24px 0 8px;flex-wrap:wrap}
+  .dot{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);
+    color:var(--ink-soft);font-size:.78rem;font-weight:500;display:flex;align-items:center;justify-content:center;transition:.35s}
+  .step-dot.done .dot{background:var(--ai);border-color:var(--ai);color:#fff}
+  .step-dot.active .dot{border-color:var(--ai);color:var(--ai);box-shadow:0 0 0 4px var(--ai-tint)}
+  .bar{width:22px;height:1.5px;background:var(--line);transition:.35s}
+  .step-dot.done + .bar{background:var(--ai)}
+  @media(max-width:420px){.bar{width:12px}}
+  .screen{display:none;animation:rise .45s cubic-bezier(.22,.61,.36,1)}
+  .screen.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 26px;margin-top:18px}
+  .eyebrow{font-size:.74rem;letter-spacing:.14em;color:var(--ai);font-weight:700;margin-bottom:8px}
+  .title{font-family:"Noto Serif JP",serif;font-size:1.28rem;font-weight:600;letter-spacing:.03em}
+  .lead{font-size:.9rem;color:var(--ink-soft);margin-top:10px}
+  .field{margin-top:22px}
+  label.lbl{display:block;font-size:.86rem;font-weight:500;margin-bottom:8px}
+  .req{color:var(--ai);font-size:.72rem;font-weight:700;margin-left:6px;vertical-align:1px}
+  .opt{color:var(--ink-soft);font-size:.72rem;margin-left:6px}
+  input[type=text],input[type=email],input[type=tel]{width:100%;font-family:inherit;font-size:1rem;color:var(--ink);
+    background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:13px 14px;transition:.2s}
+  input:focus{outline:none;border-color:var(--ai);box-shadow:0 0 0 4px var(--ai-tint);background:#fff}
+  input::placeholder{color:#B7B1A8}
+  .hint{font-size:.78rem;color:var(--ink-soft);margin-top:7px;display:flex;align-items:flex-start;gap:6px}
+  .hint svg{flex:none;margin-top:3px;opacity:.7}
+  .fixed-panel{background:var(--sand);border:1.5px solid var(--line);border-radius:10px;padding:6px 16px 12px}
+  .fixed-panel .cap{display:flex;justify-content:flex-end;padding-top:8px}
+  .fixed-panel .cap span{font-size:.68rem;color:var(--ink-soft);background:#fff;border:1px solid var(--line);border-radius:20px;padding:3px 10px}
+  .fixed-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.05)}
+  .fixed-row:last-of-type{border-bottom:none}
+  .fixed-row .fk{font-size:.78rem;color:var(--ink-soft);flex:none}
+  .fixed-row .fv{font-family:"Noto Serif JP",serif;font-size:1.04rem;font-weight:500;text-align:right}
+  .fixed-row .fv .suf{font-size:.82rem;font-weight:400;margin-left:2px}
+  .err{color:var(--full);font-size:.78rem;margin-top:6px;display:none}
+  input.invalid{border-color:var(--full)}
+  .q{margin-top:26px}
+  .q:first-child{margin-top:6px}
+  .q-text{font-size:.98rem;font-weight:500;margin-bottom:12px}
+  .q-num{font-family:"Noto Serif JP",serif;color:var(--ai);font-weight:600;margin-right:8px}
+  .yn{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .yn button{font-family:inherit;font-size:1rem;font-weight:500;cursor:pointer;background:var(--card);
+    border:1.5px solid var(--line);border-radius:12px;padding:15px;color:var(--ink);transition:.18s}
+  .yn button:hover{border-color:var(--ai);background:#fff}
+  .yn button.sel{border-color:var(--ai);background:var(--ai-tint);color:var(--ai-deep);font-weight:700;box-shadow:0 0 0 3px var(--ai-tint)}
+  .yn button.sel-no{border-color:var(--ink-soft);background:#F1EEE9;color:var(--ink)}
+  .area-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-top:22px}
+  .area-card{width:100%;text-align:left;border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:15px 16px;cursor:pointer;font-family:inherit;transition:.12s;display:flex;align-items:center;justify-content:space-between}
+  .area-card:hover{border-color:var(--ai);background:#fff}
+  .area-card.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 2px var(--ai-tint)}
+  .area-card .an{font-size:1rem;font-weight:700;color:var(--ink)}
+  .area-card.sel .an{color:var(--ai-deep)}
+  .an-caret{color:var(--ink-soft);transition:.15s}
+  .area-card.open .an-caret{transform:rotate(180deg);color:var(--ai)}
+  .area-expand{display:flex;flex-direction:column;gap:9px}
+  .area-subwrap{display:flex;flex-direction:column;gap:8px;padding-left:14px;border-left:2px solid var(--ai-tint);margin-left:4px}
+  .area-sub{width:100%;text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:12px 14px;cursor:pointer;font-family:inherit;transition:.12s}
+  .area-sub:hover{border-color:var(--ai)}
+  .area-sub.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 2px var(--ai-tint)}
+  .area-sub .an{font-size:.95rem;font-weight:700;color:var(--ink);display:block}
+  .area-sub .sub-note{font-size:.76rem;color:var(--ink-soft);margin-top:2px;display:block}
+  .a-fixed{background:var(--ai-tint);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+  .a-fixed .af-label{font-size:.72rem;color:var(--ink-soft);font-weight:600}
+  .a-fixed .af-val{font-size:1.05rem;font-weight:700;color:var(--ai-deep);margin-top:2px}
+  .a-fixed .af-note{font-size:.76rem;color:var(--ai);margin-top:3px;font-weight:600}
+  .managed-badge{display:inline-flex;align-items:center;gap:8px;background:#e7f4ee;border:1px solid #bfe3d1;color:#1f7a56;font-weight:700;font-size:.95rem;border-radius:999px;padding:9px 18px;margin-bottom:14px}
+  .mg-actions{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+  .mg-link{margin-top:16px;font-size:.9rem}
+  .btn-danger{background:#fff;border:1.5px solid #d98a84;color:#B23B3B}
+  .btn-danger:hover{background:#fbe9e7;border-color:#B23B3B}
+  .s1-managed-link{display:block;width:100%;text-align:center;margin-top:16px;background:none;border:none;color:var(--ai);font-family:inherit;font-size:.88rem;font-weight:600;cursor:pointer;text-decoration:underline}
+  .area-grid button{font-family:inherit;cursor:pointer;text-align:left;background:var(--card);
+    border:1.5px solid var(--line);border-radius:12px;padding:15px 16px;color:var(--ink);transition:.18s;
+    display:flex;align-items:flex-start;gap:11px}
+  .area-grid button:hover{border-color:var(--ai);background:#fff}
+  .area-grid button.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 3px var(--ai-tint)}
+  .area-grid button .mk{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line);flex:none;margin-top:8px}
+  .area-grid button.sel .mk{background:var(--ai);border-color:var(--ai)}
+  .area-grid .atext{display:flex;flex-direction:column}
+  .area-grid .an{font-size:.98rem;font-weight:700}
+  .area-grid button.sel .an{color:var(--ai-deep)}
+  .area-grid .anote{font-size:.82rem;font-weight:700;color:var(--ink-soft);margin-top:3px;line-height:1.55}
+  input.ro{background:var(--sand)!important;color:var(--ink-soft);cursor:not-allowed}
+  .afield{margin-top:18px}
+  .abadge{display:inline-block;font-size:.72rem;font-weight:700;color:#fff;border-radius:6px;padding:3px 13px;margin-bottom:9px;letter-spacing:.06em}
+  .abadge.req{background:#dd6a52}
+  .abadge.opt{background:#8a8a8a}
+  .afield .lbl{display:block;font-size:.82rem;color:var(--ink-soft);margin-bottom:7px;font-weight:500}
+  .a-selwrap{position:relative}
+  .a-selwrap select{width:100%;font-family:inherit;font-size:1rem;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:13px 42px 13px 14px;appearance:none;-webkit-appearance:none;cursor:pointer}
+  .a-selwrap select:focus{outline:none;border-color:var(--ai);box-shadow:0 0 0 4px var(--ai-tint);background:#fff}
+  .a-selwrap select:disabled{background:var(--sand);color:var(--ink-soft);cursor:not-allowed}
+  .a-selwrap::after{content:"";position:absolute;right:18px;top:calc(50% - 6px);width:9px;height:9px;border-right:2.4px solid var(--ai);border-bottom:2.4px solid var(--ai);transform:rotate(45deg);pointer-events:none}
+  .a-zipbtn{margin-top:11px;border:1.6px solid var(--ink);background:#fff;border-radius:26px;padding:9px 24px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .a-zipbtn:hover{background:var(--sand)}
+  .a-zipmsg{font-size:.8rem;margin-top:9px;min-height:1em}
+  .a-or{text-align:center;margin:24px 0 4px;position:relative}
+  .a-or span{background:var(--card);position:relative;padding:0 16px;font-size:.86rem;color:var(--ink-soft);font-weight:700}
+  .a-or:before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--line)}
+  .a-heading{font-size:1.08rem;font-weight:700;margin:26px 0 2px;display:flex;align-items:center}
+  .a-note{text-align:center;font-size:.8rem;color:var(--ink-soft);margin:20px 0 4px;line-height:1.6}
+  .a-privacy{margin:14px 0 4px;padding:15px 16px;background:var(--sand);border-radius:12px}
+  .a-privacy p{margin:0;font-size:.8rem;color:var(--ink-soft);line-height:1.7}
+  .a-pplinks{display:flex;flex-direction:column;gap:9px;margin:11px 0 4px}
+  .a-pplinks a{font-size:.86rem;font-weight:600;color:var(--ai);text-decoration:none;display:inline-flex;align-items:center;gap:6px;line-height:1.5}
+  .a-pplinks a:hover{text-decoration:underline}
+  .a-pplinks .ext{flex:none;opacity:.8}
+  .a-consent{margin-top:10px!important;font-size:.76rem!important;color:var(--ink-soft)}
+  .area-sched{display:inline-flex;align-items:center;gap:8px;background:var(--ai-tint);color:var(--ai-deep);
+    font-size:.84rem;font-weight:600;border-radius:20px;padding:7px 15px;margin:14px 0 2px}
+  .area-sched svg{opacity:.85}
+  .cal-label{font-size:.86rem;font-weight:500;margin:22px 0 12px}
+  .dates{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+  .dates::-webkit-scrollbar{height:5px}
+  .dates::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+  .date-chip{scroll-snap-align:start;flex:none;width:64px;cursor:pointer;text-align:center;background:var(--card);
+    border:1.5px solid var(--line);border-radius:12px;padding:11px 4px;transition:.18s}
+  .date-chip:hover{border-color:var(--ai)}
+  .date-chip.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 3px var(--ai-tint)}
+  .date-chip .dow{font-size:.72rem;color:var(--ink-soft)}
+  .date-chip.sun .dow{color:#B26A6A}
+  .date-chip.sat .dow{color:#6A82B2}
+  .date-chip .dnum{font-family:"Noto Serif JP",serif;font-size:1.24rem;font-weight:600;line-height:1.3}
+  .date-chip .mon{font-size:.68rem;color:var(--ink-soft)}
+  .date-chip.sel .dnum{color:var(--ai-deep)}
+  .slots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+  .slot{cursor:pointer;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:12px 12px;
+    transition:.18s;display:flex;justify-content:space-between;align-items:center}
+  .slot:hover:not(.full){border-color:var(--ai)}
+  .slot .time{font-size:.96rem;font-weight:500}
+  .slot .avail{font-size:.72rem;color:var(--ink-soft)}
+  .slot.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 3px var(--ai-tint)}
+  .slot.sel .time{color:var(--ai-deep);font-weight:700}
+  .slot.full{cursor:not-allowed;opacity:.5;background:#F2EFEA}
+  .slot.full .avail{color:var(--full)}
+  .review{margin-top:8px}
+  .rrow{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .rrow:last-child{border-bottom:none}
+  .rrow .rk{font-size:.82rem;color:var(--ink-soft);flex:none;padding-top:2px}
+  .rrow .rv{font-size:.96rem;font-weight:500;text-align:right}
+  .rlist{font-size:.9rem;font-weight:500;text-align:right;line-height:1.7}
+  .nav{display:flex;gap:12px;margin-top:28px}
+  .btn{flex:1;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;border-radius:12px;padding:15px;transition:.2s;letter-spacing:.03em}
+  .btn-primary{background:var(--ai);color:#fff;border:1.5px solid var(--ai)}
+  .btn-primary:hover{background:var(--ai-deep);border-color:var(--ai-deep)}
+  .btn-primary:disabled{background:#C9C4BB;border-color:#C9C4BB;cursor:not-allowed}
+  .btn-ghost{flex:0 0 auto;padding:15px 22px;background:transparent;color:var(--ink-soft);border:1.5px solid var(--line)}
+  .btn-ghost:hover{border-color:var(--ink-soft);color:var(--ink)}
+  .done-card{text-align:center;padding:44px 26px}
+  .seal{width:66px;height:66px;margin:0 auto 22px;border-radius:50%;border:2px solid var(--ai);
+    display:flex;align-items:center;justify-content:center;background:var(--ai-tint)}
+  .done-title{font-family:"Noto Serif JP",serif;font-size:1.4rem;font-weight:600;letter-spacing:.05em}
+  .done-lead{font-size:.92rem;color:var(--ink-soft);margin-top:14px}
+  .mail-box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:24px;text-align:left;display:flex;gap:12px;align-items:flex-start}
+  .mail-box .mt{font-size:.86rem}
+  .mail-box .me{font-weight:600}
+  .footer-note{text-align:center;font-size:.74rem;color:var(--ink-soft);margin-top:30px;line-height:1.9;opacity:.9}
+
+  .hachi-ref{background:var(--ai-tint);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:2px 0 20px;display:flex;gap:12px;align-items:flex-start}
+  .hachi-ref .hr-ic{flex:none;margin-top:2px}
+  .hachi-ref .hr-label{font-size:.72rem;color:var(--ink-soft);font-weight:600}
+  .hachi-ref .hr-val{font-size:1.14rem;font-weight:700;color:var(--ai-deep);margin-top:2px;font-family:"Noto Serif JP",serif}
+  .hachi-ref .hr-note{font-size:.76rem;color:var(--ink-soft);margin-top:4px;line-height:1.6}
+  .ampm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .ampm-btn{border:1.5px solid var(--line);background:var(--paper);border-radius:12px;padding:20px 12px;cursor:pointer;font-family:inherit;text-align:center;transition:.12s}
+  .ampm-btn:hover{border-color:var(--ai)}
+  .ampm-btn.sel{border-color:var(--ai);background:var(--ai-tint);box-shadow:0 0 0 2px var(--ai-tint)}
+  .ampm-btn .at{font-size:1.1rem;font-weight:700;color:var(--ink)}
+  .ampm-btn.sel .at{color:var(--ai-deep)}
+  .ampm-btn .as{font-size:.76rem;color:var(--ink-soft);margin-top:4px}
+  .callback-note{background:#eef7f1;border:1px solid #bfe3d1;border-radius:12px;padding:14px 16px;margin-top:18px;font-size:.86rem;color:#1f6f52;display:flex;gap:10px;align-items:flex-start;line-height:1.7}
+  .callback-note svg{flex:none;margin-top:2px}
+  .date-chip.disabled{opacity:.38;pointer-events:none;filter:grayscale(.4)}
+  .vd-box{background:var(--ai-tint);border:1px solid var(--line);border-radius:12px;padding:16px;margin-top:14px}
+  .vd-lead{font-size:.85rem;color:var(--ink-soft);margin:0 0 12px}
+  .vd-field{margin-bottom:12px}
+  .vd-field:last-of-type{margin-bottom:0}
+  .vd-field input.ro{background:var(--sand);color:var(--ink-soft)}
+  .temple-pick{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .temple-sel{font-size:.9rem;font-weight:700;color:var(--ai-deep)}
+  .tp-backdrop{position:fixed;inset:0;background:rgba(30,32,40,.5);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
+  .tp-backdrop.open{display:flex}
+  .tp-modal{background:var(--paper);border-radius:16px;width:100%;max-width:640px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .tp-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .tp-title{font-size:1.15rem;font-weight:700;font-family:"Noto Serif JP",serif;color:var(--ink)}
+  .tp-close{background:none;border:none;font-size:1.5rem;color:var(--ink-soft);cursor:pointer;line-height:1}
+  .tp-body{padding:18px 22px;overflow-y:auto}
+  .tp-search{width:100%;font-family:inherit;font-size:1rem;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff;color:var(--ink)}
+  .tp-count{font-size:.78rem;color:var(--ink-soft);margin:8px 2px}
+  .tp-filters{margin-bottom:12px}
+  .tp-filters select{font-family:inherit;font-size:.85rem;border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:#fff}
+  .tp-list{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tp-item{display:flex;align-items:baseline;gap:10px;padding:13px 15px;border-bottom:1px solid var(--line);cursor:pointer;font-size:.92rem}
+  .tp-item:last-child{border-bottom:none}
+  .tp-item:hover{background:var(--ai-tint)}
+  .tp-item.sel{background:var(--ai-tint);box-shadow:inset 3px 0 0 var(--ai)}
+  .tp-shuha{color:var(--ink-soft);font-size:.72rem;flex:none}
+  .tp-name{font-weight:700;flex:none}
+  .tp-addr{color:var(--ink-soft);font-size:.8rem}
+  .tp-empty{padding:24px;text-align:center;color:var(--ink-soft)}
+  .tp-foot{display:flex;justify-content:flex-end;gap:10px;padding:16px 22px;border-top:1px solid var(--line)}
+  .btn-sm{padding:8px 14px;font-size:.85rem}
+  .date-chip.hachi{border-color:var(--ai);box-shadow:0 0 0 2px var(--ai-tint)}
+  .date-chip .hachi-tag{background:var(--ai-deep);color:#fff;font-size:.56rem;font-weight:700;border-radius:6px;padding:1px 0;margin:-3px -2px 3px;text-align:center;letter-spacing:.02em;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand-rule"></div>
+    <div class="hall" id="hall"></div>
+    <div class="form-name" id="formName"></div>
+  </header>
+
+  <div class="steps" id="steps"></div>
+
+  <!-- STEP1 ご予約者 -->
+  <section class="screen active" id="s1">
+    <div class="card">
+      <div class="eyebrow">STEP 1 / ご予約者さま</div>
+      <div class="title">ご予約者さまの情報</div>
+      <p class="lead">法要のご希望を承ります。下記の内容をご確認のうえ、ご入力ください。</p>
+      <div class="field"><label class="lbl">法要の種類</label><div class="a-selwrap"><select id="memType" onchange="setMemType(this.value)"></select></div></div>
+      <div class="field"><div class="fixed-panel" id="fixedPanel"></div></div>
+      <div id="fields"></div>
+      <div class="nav"><button class="btn btn-primary" onclick="next1()">次へ進む</button></div>
+      <button class="s1-managed-link" onclick="goManaged()">すでにお申込みの方（ご希望の変更・キャンセル）</button>
+    </div>
+  </section>
+
+  <!-- STEP2 会場 -->
+  <section class="screen" id="s2">
+    <div class="card">
+      <div class="eyebrow">STEP 2 / ご希望の会場</div>
+      <div class="title">法要を行う会場</div>
+      <p class="lead">ご希望の会場をお選びください。</p>
+      <div class="area-grid" id="venues"></div>
+      <div id="venueDetail"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="go(1)">戻る</button>
+        <button class="btn btn-primary" id="btn2" disabled onclick="nextVenue()">次へ進む</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP3 希望日 -->
+  <section class="screen" id="s3">
+    <div class="card">
+      <div class="eyebrow">STEP 3 / ご希望日</div>
+      <div class="title">法要のご希望日</div>
+      <p class="lead">四十九日の前後で、ご希望の日と時間帯をお選びください。</p>
+      <div class="hachi-ref" id="hachiRef"></div>
+      <div class="cal-label">ご希望日を選ぶ</div>
+      <div class="dates" id="dates"></div>
+      <div class="cal-label" id="ampmLabel" style="display:none">時間帯を選ぶ</div>
+      <div class="ampm-grid" id="ampm" style="display:none">
+        <div class="ampm-btn" onclick="pickAmpm('午前',this)"><div class="at">午前</div><div class="as">開始 〜 12:00</div></div>
+        <div class="ampm-btn" onclick="pickAmpm('午後',this)"><div class="at">午後</div><div class="as">12:00 〜 開始</div></div>
+      </div>
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="go(2)">戻る</button>
+        <button class="btn btn-primary" id="btn3" disabled onclick="go(4)">予約内容を確認する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP4 確認 -->
+  <section class="screen" id="s4">
+    <div class="card">
+      <div class="eyebrow">STEP 4 / ご確認</div>
+      <div class="title">ご希望内容の確認</div>
+      <p class="lead">下記の内容で仮予約を承ります。</p>
+      <div class="review" id="review"></div>
+      <div class="callback-note">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1f6f52" stroke-width="1.9" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <div>こちらは<b>仮予約</b>です。この後、営業担当より折り返しご連絡し、日時を正式に確定いたします。</div>
+      </div>
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="go(3)">戻る</button>
+        <button class="btn btn-primary" onclick="go(5)">この内容で申し込む</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP5 完了 -->
+  <section class="screen" id="s5">
+    <div class="card done-card">
+      <div class="seal"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3E5266" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="done-title">仮予約を承りました</div>
+      <p class="done-lead">この度はお申込みいただきありがとうございます。<br>営業担当より折り返しご連絡し、日時を正式に確定いたします。</p>
+      <div class="mail-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3E5266" stroke-width="1.8" style="flex:none;margin-top:2px"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+        <div class="mt">受付確認メールを <span class="me" id="doneMail">—</span> へお送りしました。<br>担当者からのご連絡をお待ちください。</div>
+      </div>
+      <button class="btn btn-ghost mg-link" onclick="goManaged()">ご希望の変更・キャンセルはこちら ›</button>
+    </div>
+  </section>
+
+  <!-- 申込済み（変更・キャンセル入口） -->
+  <section class="screen" id="s-managed">
+    <div class="card">
+      <div class="managed-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2a8f6b" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>仮予約を受付済みです</div>
+      <p class="lead">現在のご希望内容です。担当者からの確定連絡前は、下記から変更・キャンセルができます。</p>
+      <div class="review" id="mg-review"></div>
+      <div class="a-heading" style="margin-top:22px">ご希望の変更・キャンセル</div>
+      <div class="mg-actions">
+        <button class="btn btn-primary" onclick="startChange()">希望内容を変更する</button>
+        <button class="btn btn-danger" onclick="prepCancel()">申込みをキャンセルする</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 変更 -->
+  <section class="screen" id="s-change">
+    <div class="card">
+      <div class="eyebrow">ご希望の変更</div>
+      <div class="title">変更する項目を修正</div>
+      <p class="lead">変更したい箇所だけ修正し、再申込してください。登録時の内容が入っています。</p>
+      <div class="hachi-ref" id="c-hachi"></div>
+      <div class="cal-label">会場</div>
+      <div class="area-grid" id="c-venues"></div>
+      <div id="c-venueDetail"></div>
+      <div class="cal-label" style="margin-top:16px">ご希望日</div>
+      <div class="dates" id="c-dates"></div>
+      <div class="cal-label" id="c-ampmLabel" style="display:none">時間帯</div>
+      <div class="ampm-grid" id="c-ampm" style="display:none">
+        <div class="ampm-btn" onclick="cPickAmpm('午前',this)"><div class="at">午前</div><div class="as">開始 〜 12:00</div></div>
+        <div class="ampm-btn" onclick="cPickAmpm('午後',this)"><div class="at">午後</div><div class="as">12:00 〜 開始</div></div>
+      </div>
+      <div class="err" id="c-err">会場・希望日・時間帯をお選びください。</div>
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goScreen('s-managed')">戻る</button>
+        <button class="btn btn-primary" onclick="confirmChange()">変更を確定する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 変更完了 -->
+  <section class="screen" id="s-changed">
+    <div class="card done-card">
+      <div class="seal"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3E5266" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></div>
+      <div class="done-title">ご希望を変更しました</div>
+      <p class="done-lead">変更後の内容で承りました。<br>担当者より折り返しご連絡いたします。</p>
+      <div class="review" id="cd-review" style="text-align:left"></div>
+      <div class="nav" style="justify-content:center;margin-top:18px"><button class="btn btn-ghost" onclick="renderManaged();goScreen('s-managed')">申込内容に戻る</button></div>
+    </div>
+  </section>
+
+  <!-- キャンセル確認 -->
+  <section class="screen" id="s-cancel">
+    <div class="card">
+      <div class="eyebrow" style="color:#B23B3B">申込みのキャンセル</div>
+      <div class="title">お申込みをキャンセルします</div>
+      <p class="lead">以下のお申込みをキャンセルします。よろしいですか？</p>
+      <div class="review" id="cx-review"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" onclick="goScreen('s-managed')">戻る</button>
+        <button class="btn btn-danger" onclick="confirmCancel()">キャンセルを確定する</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- キャンセル完了 -->
+  <section class="screen" id="s-cancelled">
+    <div class="card done-card">
+      <div class="seal" style="border-color:#e6bdb8;background:#fbe9e7"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B23B3B" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
+      <div class="done-title">お申込みをキャンセルしました</div>
+      <p class="done-lead">またのご利用をお待ちしております。</p>
+    </div>
+  </section>
+
+  <div class="footer-note">やわらぎ斎場｜あいプラングループ　　法要のご希望受付フォーム<br>ご不明な点はお電話でも承ります。</div>
+</div>
+
+<div class="tp-backdrop" id="templeBackdrop">
+  <div class="tp-modal">
+    <div class="tp-head"><div class="tp-title">寺院を選択</div><button class="tp-close" onclick="closeTemplePicker()">×</button></div>
+    <div class="tp-body">
+      <input type="text" id="tp-search" class="tp-search" placeholder="寺院名 / フリガナ / 住所 / TEL" oninput="renderTemples()">
+      <div class="tp-count" id="tp-count"></div>
+      <div class="tp-filters"><select id="tp-shuha" onchange="renderTemples()"><option value="">宗派名</option></select></div>
+      <div class="tp-list" id="tp-list"></div>
+    </div>
+    <div class="tp-foot"><button class="btn btn-ghost" onclick="closeTemplePicker()">閉じる</button><button class="btn btn-primary" id="tp-confirm" onclick="confirmTemple()" disabled>この寺院を確定</button></div>
+  </div>
+</div>
+
+<script>
+const CONFIG={
+  hall:'やわらぎ斎場',
+  formName:'四十九日法要 ご希望予約フォーム',
+  fields:[
+    {id:'reserver',label:'お申込者さま氏名',required:true,placeholder:'例）糸和 太郎'},
+    {id:'tel',label:'お電話番号',required:true,placeholder:'例）090-1234-5678'},
+    {id:'email',label:'メールアドレス',required:false,placeholder:'例）example@itowa71.com'}
+  ],
+  venues:[
+    {label:'やわらぎ斎場',note:'式場で法要を行います'},
+    {label:'ご自宅',note:'ご自宅へお伺いします'},
+    {label:'お寺',note:'菩提寺・ご希望のお寺で行います'}
+  ]
+};
+const DOW=['日','月','火','水','木','金','土'];
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function jLabel(d){return (d.getMonth()+1)+'月'+d.getDate()+'日（'+DOW[d.getDay()]+'）';}
+
+/* 基準日（デモ：直近の逝去を想定し、四十九日が数日後になるよう算出） */
+const TODAY=new Date(); TODAY.setHours(0,0,0,0);
+function isoAdd(isoStr,n){const d=new Date(isoStr+'T00:00');d.setDate(d.getDate()+n);return iso(d);}
+function addYearsISO(isoStr,y){const d=new Date(isoStr+'T00:00');d.setFullYear(d.getFullYear()+y);return iso(d);}
+const MEM_TYPES=[
+ {key:'shijuku',label:'四十九日',calc:d=>isoAdd(d,48),years:null},
+ {key:'isshuki',label:'一周忌',calc:d=>addYearsISO(d,1),years:1},
+ {key:'sankaiki',label:'三回忌',calc:d=>addYearsISO(d,2),years:2},
+ {key:'nanakaiki',label:'七回忌',calc:d=>addYearsISO(d,6),years:6},
+];
+let memType='shijuku';
+function memTypeObjF(){return MEM_TYPES.find(t=>t.key===memType)||MEM_TYPES[0];}
+function memLabelF(){return memTypeObjF().label;}
+let DEATH,FUNERAL,HACHI;
+function applyMemType(){
+  const t=memTypeObjF(), target=new Date(TODAY); target.setDate(target.getDate()+3);
+  if(t.key==='shijuku'){DEATH=new Date(target);DEATH.setDate(DEATH.getDate()-48);}
+  else {DEATH=new Date(target);DEATH.setFullYear(DEATH.getFullYear()-t.years);}
+  FUNERAL=new Date(DEATH);FUNERAL.setDate(FUNERAL.getDate()+2);
+  HACHI=new Date(t.calc(iso(DEATH))+'T00:00');
+  CONFIG.formName=t.label+'法要 ご希望予約フォーム';
+  CONFIG.fixedInfo=[
+    {label:'故人さま',value:'後藤 一郎'},
+    {label:'ご葬家',value:'後藤家'},
+    {label:'ご逝去日',value:jLabel(DEATH)},
+    {label:'ご葬儀日',value:jLabel(FUNERAL)}
+  ];
+}
+applyMemType();
+function setMemType(k){memType=k;applyMemType();state.date=null;state.ampm=null;initStatic();if($('hachiRef'))buildCal();}
+
+const state={fields:{},venue:null,venueDetail:null,date:null,ampm:null};
+const HOKKAIDO_H={
+ '札幌市':['中央区','北区','東区','白石区','豊平区','南区','西区','厚別区','手稲区','清田区'],
+ '小樽市':['花園','稲穂','築港','桜','銭函'],
+ '石狩市':['花川南','花川北','花川東','樽川','本町'],
+ '江別市':['野幌町','大麻','文京台','高砂町','萩ケ岡'],
+ '北広島市':['中央','美沢','大曲','西の里','輪厚'],
+ '恵庭市':['和光町','黄金中央','恵み野','島松'],
+ '千歳市':['本町','千代田町','北栄','桜木','錦町'],
+ '空知郡':['南幌町','奈井江町','上砂川町'],
+ '夕張郡':['由仁町','長沼町','栗山町'],
+ '石狩郡':['当別町','新篠津村'],
+};
+const TEMPLES=[
+ {shuha:'真宗大谷派',name:'本光寺',kana:'ホンコウジ',addr:'札幌市北区屯田8条3丁目3-15',tel:'011-771-2015'},
+ {shuha:'真宗大谷派',name:'蓮光寺',kana:'レンコウジ',addr:'札幌市北区太平9条4丁目8-1',tel:'011-772-8810'},
+ {shuha:'真宗大谷派',name:'法国寺',kana:'ホウコクジ',addr:'札幌市東区本町1条1丁目5-25',tel:'011-781-5250'},
+ {shuha:'真宗大谷派',name:'北栄寺',kana:'ホクエイジ',addr:'札幌市東区北45条東1丁目3-12',tel:'011-751-3120'},
+ {shuha:'真宗大谷派',name:'慧林寺',kana:'エリンジ',addr:'札幌市豊平区豊平4条8丁目1-2',tel:'011-811-0102'},
+ {shuha:'真宗大谷派',name:'照源寺',kana:'ショウゲンジ',addr:'札幌市南区石山3条8丁目16-11',tel:'011-591-1611'},
+ {shuha:'真宗大谷派',name:'浄恩寺',kana:'ジョウオンジ',addr:'札幌市西区琴似3条6丁目1-28',tel:'011-621-0128'},
+ {shuha:'浄土真宗本願寺派',name:'西徳寺',kana:'サイトクジ',addr:'札幌市中央区南7条西8丁目5-1',tel:'011-511-0851'},
+ {shuha:'曹洞宗',name:'中央寺',kana:'チュウオウジ',addr:'札幌市中央区南6条西2丁目1-1',tel:'011-511-0101'},
+ {shuha:'曹洞宗',name:'瑞龍寺',kana:'ズイリュウジ',addr:'札幌市豊平区中の島1条6丁目3-20',tel:'011-831-0320'},
+ {shuha:'浄土宗',name:'新善光寺',kana:'シンゼンコウジ',addr:'札幌市中央区南6条西1丁目2-5',tel:'011-511-0125'},
+ {shuha:'日蓮宗',name:'妙覚寺',kana:'ミョウカクジ',addr:'札幌市中央区南9条西5丁目1-10',tel:'011-521-0110'},
+ {shuha:'真言宗智山派',name:'成田山札幌別院',kana:'ナリタサン',addr:'札幌市中央区南7条西3丁目2-8',tel:'011-511-0208'},
+ {shuha:'臨済宗妙心寺派',name:'龍雲寺',kana:'リュウウンジ',addr:'札幌市豊平区平岸3条9丁目2-1',tel:'011-811-0921'},
+ {shuha:'天台宗',name:'圓山寺',kana:'エンザンジ',addr:'札幌市中央区宮の森1条9丁目1-3',tel:'011-611-0913'},
+ {shuha:'浄土真宗本願寺派',name:'覚王寺',kana:'カクオウジ',addr:'小樽市若松1丁目5-8',tel:'0134-22-0508'},
+];
+let currentScreen='s1';
+const STEP_MAP={s1:1,s2:2,s3:3,s4:4};
+
+/* ステップドット */
+function buildSteps(){const c=$('steps');c.innerHTML='';for(let n=1;n<=4;n++){const d=document.createElement('div');d.className='step-dot';d.id='dot'+n;d.innerHTML='<div class="dot">'+n+'</div>';c.appendChild(d);if(n<4){const b=document.createElement('div');b.className='bar';c.appendChild(b);}}}
+function paintSteps(active){for(let n=1;n<=4;n++){const d=$('dot'+n);d.classList.remove('active','done');if(n<active)d.classList.add('done');else if(n===active)d.classList.add('active');}}
+function show(id){$(currentScreen).classList.remove('active');$(id).classList.add('active');currentScreen=id;if(STEP_MAP[id])paintSteps(STEP_MAP[id]);window.scrollTo({top:0,behavior:'smooth'});}
+function go(step){const map={1:'s1',2:'s2',3:'s3',4:'s4',5:'s5'};$('steps').style.display='';if(step===3)buildCal();if(step===4)buildReview();if(step===5){$('doneMail').textContent=state.fields.email||'—';reg=snapshotReg();}show(map[step]);}
+
+/* 静的テキスト・入力欄 */
+function initStatic(){$('hall').textContent=CONFIG.hall;$('formName').textContent=CONFIG.formName;
+  const mt=$('memType');if(mt)mt.innerHTML=MEM_TYPES.map(t=>'<option value="'+t.key+'"'+(t.key===memType?' selected':'')+'>'+t.label+'</option>').join('');
+  let h='';CONFIG.fixedInfo.forEach(x=>{h+='<div class="fixed-row"><span class="fk">'+esc(x.label)+'</span><span class="fv">'+esc(x.value)+'</span></div>';});$('fixedPanel').innerHTML=h;}
+function renderFields(){let h='';CONFIG.fields.forEach(f=>{h+='<div class="field"><label class="lbl" for="'+f.id+'">'+esc(f.label)+(f.required?'<span class="abadge req" style="margin-left:8px">必須</span>':'')+'</label><input type="text" id="'+f.id+'" placeholder="'+esc(f.placeholder||'')+'"><div class="err" id="e-'+f.id+'">ご入力ください。</div></div>';});$('fields').innerHTML=h;}
+function next1(){let ok=true;CONFIG.fields.forEach(f=>{if(f.required){const v=$(f.id).value.trim();const e=$('e-'+f.id);if(v===''){e.style.display='block';$(f.id).classList.add('invalid');ok=false;}else{e.style.display='none';$(f.id).classList.remove('invalid');}}});if(!ok)return;CONFIG.fields.forEach(f=>state.fields[f.id]=$(f.id).value.trim());go(2);}
+
+/* 会場 */
+function renderVenues(){const c=$('venues');c.innerHTML='';CONFIG.venues.forEach(v=>{const b=document.createElement('button');b.className='area-card';b.style.justifyContent='flex-start';b.innerHTML='<span class="atext" style="display:flex;flex-direction:column"><span class="an">'+esc(v.label)+'</span><span class="anote" style="font-weight:600">'+esc(v.note)+'</span></span>';b.onclick=()=>{if(state.venue!==v.label)state.venueDetail=null;state.venue=v.label;[...c.children].forEach(x=>x.classList.remove('sel'));b.classList.add('sel');$('btn2').disabled=false;renderVenueDetail('venueDetail',state.venue,state.venueDetail);};c.appendChild(b);});}
+function cityOptions(sel){return '<option value="">選択してください</option>'+Object.keys(HOKKAIDO_H).map(c=>'<option'+(c===sel?' selected':'')+'>'+c+'</option>').join('');}
+function townOptions(city,sel){return '<option value="">選択してください</option>'+((HOKKAIDO_H[city]||[]).map(t=>'<option'+(t===sel?' selected':'')+'>'+t+'</option>').join(''));}
+function renderVenueDetail(boxId,venue,vd){
+  const box=$(boxId); if(!box)return;
+  if(venue==='お寺'){
+    box.innerHTML='<div class="vd-box"><div class="vd-field"><span class="abadge req">必須</span><label class="lbl">お寺</label><div class="temple-pick"><button type="button" class="btn btn-ghost btn-sm" onclick="openTemplePicker(\''+boxId+'\')">寺院を検索して選択</button><span class="temple-sel" id="'+boxId+'-tsel">未選択</span></div></div><div class="err vd-err">寺院を選択してください。</div></div>';
+    if(vd&&vd.temple){const s=$(boxId+'-tsel');s.textContent=vd.temple.name+'（'+vd.temple.addr+'）';s.dataset.temple=JSON.stringify(vd.temple);}
+  } else if(venue==='ご自宅'){
+    const a=(vd&&vd.addr)||{};
+    box.innerHTML='<div class="vd-box"><p class="vd-lead">ご自宅の住所をご入力ください。</p>'+
+      '<div class="vd-field"><label class="lbl">都道府県</label><input type="text" class="vd-pref ro" value="北海道" readonly></div>'+
+      '<div class="vd-field"><span class="abadge req">必須</span><label class="lbl">市区郡</label><div class="a-selwrap"><select class="vd-city">'+cityOptions(a.city)+'</select></div></div>'+
+      '<div class="vd-field"><label class="lbl">町村</label><div class="a-selwrap"><select class="vd-town">'+townOptions(a.city,a.town)+'</select></div></div>'+
+      '<div class="vd-field"><span class="abadge req">必須</span><label class="lbl">以下住所（番地・建物名）</label><input type="text" class="vd-rest" placeholder="例）1丁目2-3 〇〇マンション101"></div>'+
+      '<div class="err vd-err">市区郡・以下住所をご入力ください。</div></div>';
+    if(a.rest)box.querySelector('.vd-rest').value=a.rest;
+    box.querySelector('.vd-city').onchange=function(){box.querySelector('.vd-town').innerHTML=townOptions(this.value,'');};
+  } else { box.innerHTML=''; }
+}
+function readVenueDetail(boxId,venue){
+  const box=$(boxId);
+  if(venue==='お寺'){const s=$(boxId+'-tsel'),ds=s?s.dataset.temple:'';if(!ds){box.querySelector('.vd-err').style.display='block';return null;}return {temple:JSON.parse(ds)};}
+  if(venue==='ご自宅'){const city=box.querySelector('.vd-city').value,town=box.querySelector('.vd-town').value,rest=box.querySelector('.vd-rest').value.trim();if(!city||!rest){box.querySelector('.vd-err').style.display='block';return null;}return {addr:{pref:'北海道',city,town,rest}};}
+  return {__ok:true};
+}
+function venueFull(venue,vd){
+  if(venue==='お寺'&&vd&&vd.temple)return 'お寺（'+vd.temple.name+' / '+vd.temple.addr+'）';
+  if(venue==='ご自宅'&&vd&&vd.addr){const a=vd.addr;return 'ご自宅（'+a.pref+a.city+(a.town||'')+a.rest+'）';}
+  return venue||'';
+}
+let TEMPLE_SEL=null, templeTarget=null;
+function openTemplePicker(target){templeTarget=target;TEMPLE_SEL=null;
+  $('tp-shuha').innerHTML='<option value="">宗派名</option>'+[...new Set(TEMPLES.map(t=>t.shuha))].map(s=>'<option>'+s+'</option>').join('');
+  $('tp-search').value='';$('tp-confirm').disabled=true;renderTemples();$('templeBackdrop').classList.add('open');}
+function renderTemples(){const q=$('tp-search').value.trim(),sh=$('tp-shuha').value;
+  const list=TEMPLES.filter(t=>(!sh||t.shuha===sh)&&(!q||(t.name+t.kana+t.addr+t.tel).indexOf(q)>=0));
+  $('tp-count').textContent='候補 '+list.length+' 件';
+  $('tp-list').innerHTML=list.map(t=>'<div class="tp-item" onclick="selectTemple('+TEMPLES.indexOf(t)+',this)"><span class="tp-shuha">'+t.shuha+'</span><span class="tp-name">'+t.name+'</span><span class="tp-addr">'+t.addr+'</span></div>').join('')||'<div class="tp-empty">該当がありません</div>';}
+function selectTemple(idx,el){TEMPLE_SEL=TEMPLES[idx];[...document.querySelectorAll('#tp-list .tp-item')].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');$('tp-confirm').disabled=false;}
+function confirmTemple(){if(!TEMPLE_SEL)return;const t=TEMPLE_SEL,s=$(templeTarget+'-tsel');if(s){s.textContent=t.name+'（'+t.addr+'）';s.dataset.temple=JSON.stringify(t);}closeTemplePicker();}
+function closeTemplePicker(){$('templeBackdrop').classList.remove('open');}
+function nextVenue(){
+  if(!state.venue){return;}
+  const r=readVenueDetail('venueDetail',state.venue);
+  if(r===null)return;
+  state.venueDetail=(r&&r.__ok)?null:r;
+  go(3);
+}
+
+/* 希望日（四十九日基準・前の週間） */
+function hachiRefHTML(){return '<div class="hr-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F4152" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>'+
+  '<div><div class="hr-label">ご逝去日を基準とした'+memLabelF()+'</div><div class="hr-val">'+jLabel(HACHI)+'</div><div class="hr-note">参考情報です。'+memLabelF()+'を基準に、<b>1週間前〜2週間後</b>の範囲でご都合の良い日をお選びいただけます。</div></div>';}
+function calDates(){const out=[];for(let i=-7;i<=14;i++){const d=new Date(HACHI);d.setDate(d.getDate()+i);out.push(d);}return out;} // 四十九日の1週間前〜2週間後
+function buildCal(){
+  $('hachiRef').innerHTML=hachiRefHTML();
+  const c=$('dates');c.innerHTML='';
+  calDates().forEach(d=>{
+    const past=d< new Date(TODAY.getTime()+86400000); // 明日より前は不可
+    const isH=iso(d)===iso(HACHI);
+    const chip=document.createElement('div');
+    chip.className='date-chip'+(d.getDay()===0?' sun':'')+(d.getDay()===6?' sat':'')+(past?' disabled':'')+(isH?' hachi':'');
+    chip.innerHTML=(isH?'<div class="hachi-tag">四十九日</div>':'')+'<div class="dow">'+DOW[d.getDay()]+'</div><div class="dnum">'+d.getDate()+'</div><div class="mon">'+(d.getMonth()+1)+'月</div>';
+    if(!past) chip.onclick=()=>selectDate(d,chip);
+    if(state.date&&state.date.key===iso(d)){chip.classList.add('sel');}
+    c.appendChild(chip);
+  });
+  centerHachi(c);
+  $('ampmLabel').style.display= state.date?'block':'none';
+  $('ampm').style.display= state.date?'grid':'none';
+}
+function centerHachi(c){const hc=c.querySelector('.date-chip.hachi');if(hc)c.scrollLeft=hc.offsetLeft-c.clientWidth/2+hc.clientWidth/2;}
+function selectDate(d,chip){[...$('dates').children].forEach(x=>x.classList.remove('sel'));chip.classList.add('sel');
+  state.date={key:iso(d),label:jLabel(d)};state.ampm=null;
+  [...$('ampm').children].forEach(x=>x.classList.remove('sel'));
+  $('ampmLabel').style.display='block';$('ampm').style.display='grid';$('btn3').disabled=true;}
+function pickAmpm(v,el){[...$('ampm').children].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');state.ampm=v;$('btn3').disabled=false;}
+
+/* 確認 */
+function reviewRows(fixed,venue,date,ampm,vd){
+  const rows=fixed.map(x=>[x.label,x.value]);
+  rows.push([memLabelF()+'（参考）',jLabel(HACHI)]);
+  rows.push(['ご希望会場',venueFull(venue,vd)]);
+  rows.push(['ご希望日',date?date.label:'']);
+  rows.push(['時間帯',ampm||'']);
+  return rows.map(r=>'<div class="rrow"><div class="rk">'+esc(r[0])+'</div><div class="rv">'+esc(r[1])+'</div></div>').join('');
+}
+function buildReview(){$('review').innerHTML=reviewRows(CONFIG.fixedInfo,state.venue,state.date,state.ampm,state.venueDetail);}
+
+/* ===== 変更・キャンセル ===== */
+let reg=null;
+function snapshotReg(){return {fixed:CONFIG.fixedInfo.slice(),venue:state.venue,venueDetail:state.venueDetail,date:state.date,ampm:state.ampm,fields:{...state.fields}};}
+function sampleReg(){const d=new Date(HACHI);d.setDate(d.getDate()-1);return {fixed:CONFIG.fixedInfo.slice(),venue:'やわらぎ斎場',venueDetail:null,date:{key:iso(d),label:jLabel(d)},ampm:'午前',fields:{reserver:'（お申込者）',tel:'',email:''}};}
+function regRows(r){return reviewRows(r.fixed,r.venue,r.date,r.ampm,r.venueDetail);}
+function goScreen(id){$('steps').style.display='none';show(id);}
+function goManaged(){if(!reg)reg=sampleReg();renderManaged();goScreen('s-managed');}
+function renderManaged(){$('mg-review').innerHTML=regRows(reg);}
+/* 変更 */
+let cSel={venue:null,venueDetail:null,date:null,ampm:null};
+function startChange(){
+  cSel={venue:reg.venue,venueDetail:reg.venueDetail,date:reg.date,ampm:reg.ampm};
+  $('c-hachi').innerHTML=hachiRefHTML();
+  const vc=$('c-venues');vc.innerHTML='';
+  CONFIG.venues.forEach(v=>{const b=document.createElement('button');b.className='area-card'+(v.label===reg.venue?' sel':'');b.style.justifyContent='flex-start';b.innerHTML='<span class="an">'+esc(v.label)+'</span>';b.onclick=()=>{if(cSel.venue!==v.label)cSel.venueDetail=null;cSel.venue=v.label;[...vc.children].forEach(x=>x.classList.remove('sel'));b.classList.add('sel');renderVenueDetail('c-venueDetail',cSel.venue,cSel.venueDetail);};vc.appendChild(b);});
+  renderVenueDetail('c-venueDetail',cSel.venue,cSel.venueDetail);
+  const dc=$('c-dates');dc.innerHTML='';
+  calDates().forEach(d=>{const past=d<new Date(TODAY.getTime()+86400000);const isH=iso(d)===iso(HACHI);const chip=document.createElement('div');chip.className='date-chip'+(d.getDay()===0?' sun':'')+(d.getDay()===6?' sat':'')+(past?' disabled':'')+(isH?' hachi':'');chip.innerHTML=(isH?'<div class="hachi-tag">四十九日</div>':'')+'<div class="dow">'+DOW[d.getDay()]+'</div><div class="dnum">'+d.getDate()+'</div><div class="mon">'+(d.getMonth()+1)+'月</div>';if(!past)chip.onclick=()=>{[...dc.children].forEach(x=>x.classList.remove('sel'));chip.classList.add('sel');cSel.date={key:iso(d),label:jLabel(d)};};if(cSel.date&&cSel.date.key===iso(d))chip.classList.add('sel');dc.appendChild(chip);});
+  centerHachi(dc);
+  $('c-ampmLabel').style.display='block';$('c-ampm').style.display='grid';
+  [...$('c-ampm').children].forEach(x=>{x.classList.remove('sel');if(x.querySelector('.at').textContent===reg.ampm)x.classList.add('sel');});
+  $('c-err').style.display='none';
+  goScreen('s-change');
+}
+function cPickAmpm(v,el){[...$('c-ampm').children].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');cSel.ampm=v;}
+function confirmChange(){
+  if(!cSel.venue||!cSel.date||!cSel.ampm){$('c-err').style.display='block';window.scrollTo({top:0,behavior:'smooth'});return;}
+  const r=readVenueDetail('c-venueDetail',cSel.venue);
+  if(r===null){window.scrollTo({top:0,behavior:'smooth'});return;}
+  cSel.venueDetail=(r&&r.__ok)?null:r;
+  reg.venue=cSel.venue;reg.venueDetail=cSel.venueDetail;reg.date=cSel.date;reg.ampm=cSel.ampm;
+  $('cd-review').innerHTML=regRows(reg);goScreen('s-changed');
+}
+function prepCancel(){$('cx-review').innerHTML=regRows(reg);goScreen('s-cancel');}
+function confirmCancel(){goScreen('s-cancelled');}
+
+/* 初期化 */
+buildSteps();paintSteps(1);initStatic();renderFields();renderVenues();
+</script>
+</body>
+</html>

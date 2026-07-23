@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>itowa 管理画面 ｜ あいプラン（回収・法事・遺族フォロー）</title>
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" rel="stylesheet">
+<style>
+  :root{
+    --nav-bg:#1b2230;--nav-bg2:#161c28;--nav-text:#c3c9d4;--nav-muted:#7d8698;--nav-active:#1f6fe6;--nav-hover:#232c3c;--nav-border:#2a3242;
+    --green:#46a45f;--green-dark:#3c8f52;--topbar:#fff;
+    --bg:#f4f4f1;--surface:#fff;--surface-alt:#faf9f6;--surface-alt2:#f5f4ef;--border:#e5e3dc;--border-strong:#cfcdc4;
+    --text:#1a1a17;--text-secondary:#6b6a63;--text-muted:#9a988f;--accent:#185fa5;--accent-bg:#e6f1fb;
+    --done:#2a8f6b;--done-bg:#e4f4ee;--pending:#c17d12;--pending-bg:#fbf1df;--alert:#d8342c;--alert-bg:#fdeceb;
+    --sms:#2f7bd6;--sms-bg:#e7f0fb;--line:#06c755;--line-bg:#e3f8ec;--auto2:#7b5bd0;--auto2-bg:#efeafb;
+    --web:#2f7bd6;--web-bg:#e7f0fb;--phone:#c07a1a;--phone-bg:#fbf1e0;--autob:#2a8f6b;--autob-bg:#e4f4ee;--manual:#6b6a63;--manual-bg:#efeee9;
+    --kakuno:#97C459;--zenjitsu:#ED93B1;--toujitsu:#85B7EB;--edit:#d8342c;--edit-bg:#fdeceb;
+    --slot-empty:#fbfbf9;--slot-full:#e4f4ee;--sat:#D4537E;--sun:#378ADD;--radius:8px;--shadow:0 1px 2px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+  .layout{display:flex;min-height:100vh}
+  .sidebar{width:246px;flex:none;background:var(--nav-bg);position:fixed;inset:0 auto 0 0;display:flex;flex-direction:column;z-index:40;transition:transform .25s}
+  .content{flex:1;min-width:0;margin-left:246px}
+  .brand{display:flex;align-items:center;gap:9px;padding:20px;background:var(--nav-bg2);border-bottom:1px solid var(--nav-border)}
+  .brand .mark{width:34px;height:34px;flex:none}.brand .wm{color:#fff;font-size:23px;font-weight:700}
+  .nav{padding:10px 0;overflow-y:auto;flex:1}
+  .nav a{display:flex;align-items:center;gap:11px;padding:11px 20px;color:var(--nav-text);text-decoration:none;font-size:14px;cursor:pointer;border-left:3px solid transparent}
+  .nav a i{font-size:19px;width:20px;text-align:center;color:var(--nav-muted)}
+  .nav a .chev{margin-left:auto;font-size:15px;color:var(--nav-muted)}
+  .nav a:hover{background:var(--nav-hover)}
+  .nav a.active{background:var(--nav-active);color:#fff;border-left-color:#9cc2ff}.nav a.active i{color:#fff}
+  .nav a.new .tagnew{margin-left:auto;font-size:9px;font-weight:700;background:#46a45f;color:#fff;border-radius:10px;padding:1px 7px}
+  .topbar{height:62px;background:var(--topbar);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:30}
+  .topbar .tt{font-size:16px;font-weight:600}.topbar .tr{display:flex;align-items:center;gap:14px}
+  .btn-order{background:var(--green);color:#fff;border:none;border-radius:7px;padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+  .support{display:flex;align-items:center;gap:6px;color:var(--text-secondary);font-size:14px;cursor:pointer}.support i:first-child{font-size:20px}
+  .menu-toggle{background:none;border:none;cursor:pointer;font-size:22px;color:var(--text-secondary);display:none}
+
+  .page{padding:22px 26px 60px;max-width:1260px}
+  .page-title{font-size:22px;font-weight:700;display:flex;align-items:center;gap:9px}.page-title i{font-size:24px;color:var(--accent)}
+  .page-date{font-size:13px;color:var(--text-secondary);margin:2px 0 0 33px}
+  .btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 13px;font-size:13px;cursor:pointer;color:var(--text);font-family:inherit;display:inline-flex;align-items:center;gap:6px;transition:.12s}
+  .btn:hover{background:var(--surface-alt);border-color:var(--border-strong)}
+  .btn-primary{background:var(--green);color:#fff;border-color:var(--green);font-weight:600}.btn-primary:hover{background:var(--green-dark)}
+  .btn-danger{color:var(--edit);border-color:#eac6c3}.btn-danger:hover{background:var(--edit-bg);border-color:var(--edit)}
+  .btn-sm{padding:5px 10px;font-size:12px}
+  .icon-btn{width:32px;height:32px;border:1px solid var(--border);background:var(--surface);border-radius:6px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+  .icon-btn:hover{border-color:var(--border-strong);background:var(--surface-alt)}
+
+  .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+  .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+  .kpi-card .lbl{font-size:12px;color:var(--text-secondary)}
+  .kpi-card .num{font-size:28px;font-weight:700;margin-top:4px;line-height:1.1}.kpi-card .num small{font-size:14px;font-weight:600;color:var(--text-muted);margin-left:4px}
+  .kpi-card.done .num{color:var(--done)}.kpi-card.alert{border-color:#f0cfcb;background:#fff8f7}.kpi-card.alert .num{color:var(--alert)}
+  .kpi-card.info .num{color:var(--auto2)}.kpi-card .sub{font-size:11px;color:var(--text-muted);margin-top:2px}
+  .bar-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-top:12px}
+  .bar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .bar-top .t{font-size:13px;font-weight:600}.bar-top .r b{color:var(--done);font-size:16px}
+  .bar{height:14px;border-radius:8px;overflow:hidden;display:flex;background:var(--surface-alt2)}.bar span{display:block;height:100%}
+  .bar .s-done{background:var(--done)}.bar .s-notified{background:var(--pending)}.bar .s-alert{background:var(--alert)}
+  .bar-legend{display:flex;gap:16px;margin-top:8px;font-size:11px;color:var(--text-secondary);flex-wrap:wrap}
+  .bar-legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-top:16px;overflow:hidden}
+  .toolbar{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:space-between}
+  .seg{display:inline-flex;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:3px}
+  .seg button{background:transparent;border:none;padding:6px 14px;border-radius:6px;font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+  .seg button.on{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .week-nav{display:flex;align-items:center;gap:8px}
+  .week-label{font-size:15px;font-weight:600;margin:0 4px;white-space:nowrap}
+  .week-sub{font-size:11px;color:var(--text-muted);white-space:nowrap}
+  .filters{display:flex;gap:6px;flex-wrap:wrap}
+  .fbtn{background:transparent;border:1px solid var(--border);padding:6px 12px;border-radius:20px;font-size:12px;color:var(--text-secondary);cursor:pointer;font-family:inherit}
+  .fbtn.on{background:var(--text);color:#fff;border-color:var(--text);font-weight:500}
+  .list-cap{padding:9px 16px;font-size:12px;color:var(--text-secondary);background:var(--surface-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+  .list-cap i{color:var(--pending)}
+
+  .tbl-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:940px}
+  thead th{background:var(--surface-alt);text-align:left;padding:10px 14px;font-size:11px;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);white-space:nowrap}
+  .daygroup td{background:var(--surface-alt2);padding:8px 14px;font-weight:600;font-size:12px;color:var(--text-secondary);border-bottom:1px solid var(--border)}
+  .daygroup .cnt{font-weight:400;color:var(--text-muted);margin-left:8px}
+  .daygroup .mini{float:right;font-weight:400;color:var(--text-muted)}.daygroup .mini b{color:var(--done)}
+  tbody td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+  tbody tr.row:hover{background:var(--surface-alt)}
+  tr.pending-row td:first-child{box-shadow:inset 3px 0 0 var(--pending)}
+  tr.overdue td:first-child{box-shadow:inset 3px 0 0 var(--alert)}
+  .fam{font-weight:600}.venue{color:var(--text-secondary)}
+  .venue .vshort{font-weight:600;color:var(--text)}
+  .venue .vcode{display:inline-block;font-size:10px;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:1px;letter-spacing:.03em}
+  .venue .vfull{font-size:11px;color:var(--text-muted);margin-top:2px}
+  .c-day .d{font-weight:600}.c-day .sub{font-size:11px;color:var(--text-muted)}
+  .c-day .od{color:var(--alert);font-weight:600}
+  .badge{font-size:11px;font-weight:600;border-radius:12px;padding:2px 10px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+  .b-done{color:var(--done);background:var(--done-bg)}.b-pending{color:var(--pending);background:var(--pending-bg)}
+  .b-noneed{color:var(--text-secondary);background:var(--surface-alt2);border:1px solid var(--border-strong)}
+  .b-cancel{color:#b23b3b;background:#fbe9e7;border:1px solid #eec4bf}
+  .b-change{color:#8a5a12;background:#fbf1df;border:1px solid #ecd6a8}
+  .bar .s-cancel{background:#c98a86}
+  tr.cancel-row td:first-child{box-shadow:inset 3px 0 0 #c98a86}
+  .slot-actions{display:flex;gap:5px;min-height:40px;width:100%;align-items:stretch}
+  .slot-foot2{display:flex;gap:5px;width:100%;align-items:stretch}
+  .create-col{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+  .create-col .slot-btn{flex-direction:row;gap:4px;min-height:26px;padding:4px 6px;justify-content:center}
+  .slot-close-btn{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;border:1px solid var(--border);background:var(--surface);border-radius:6px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:600;color:var(--text-secondary);padding:4px 2px}
+  .slot-close-btn i{font-size:13px}
+  .slot-close-btn:hover{background:var(--surface-alt2);border-color:var(--border-strong);color:var(--text)}
+  .slot-close-btn.tall{flex:0 0 30px;width:30px;flex-direction:column;gap:3px;padding:6px 2px}
+  .slot-close-btn.tall span{writing-mode:vertical-rl;text-orientation:upright;letter-spacing:1px}
+  .slot-closed{display:flex;align-items:center;gap:5px;background:var(--surface-alt2);border:1px dashed var(--border-strong);border-radius:6px;padding:5px 7px;font-size:11px;font-weight:600;color:var(--text-secondary);cursor:pointer}
+  .slot-closed i{font-size:13px}
+  .slot-closed .undo{margin-left:auto;font-size:10px;color:var(--blue);text-decoration:underline}
+  .slot-btn{flex:1;border:1px solid var(--border);background:var(--surface);border-radius:6px;cursor:pointer;font-family:inherit;font-size:10px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 2px;color:var(--text-secondary)}
+  .slot-btn i{font-size:14px}
+  .slot-btn.create{color:var(--green)}.slot-btn.create:hover{background:var(--done-bg);border-color:var(--green)}
+  .slot-btn.close:hover{background:var(--surface-alt2);border-color:var(--border-strong);color:var(--text)}
+  .bk-tag{font-size:9px;font-weight:700;border-radius:4px;padding:1px 4px;margin-top:2px;display:flex;align-items:center;gap:2px;line-height:1.3}
+  .bk-tag.t-cancel{color:#b23b3b;background:#fbe9e7}
+  .bk-tag.t-change{color:#8a5a12;background:#fbf1df}
+  .bk-tag i{font-size:10px}
+  .bk.bk-cancelled{opacity:.72;background:#f6efee}
+  .bk.bk-cancelled .bk-name{text-decoration:line-through;color:var(--text-muted)}
+  .op-none{color:var(--text-secondary)}.op-none:hover{background:var(--surface-alt2);border-color:var(--border-strong);color:var(--text)}
+  .bar .s-noneed{background:var(--border-strong)}
+  .b-web{color:var(--web);background:var(--web-bg)}.b-phone{color:var(--phone);background:var(--phone-bg)}
+  .b-edit{color:var(--edit);background:var(--edit-bg);border:1px solid #f1c3bf}
+  .notif{display:inline-flex;gap:5px;flex-wrap:wrap}
+  .n-chip{font-size:10px;border-radius:10px;padding:1px 7px;display:inline-flex;align-items:center;gap:3px}
+  .n-sms{color:var(--sms);background:var(--sms-bg)}.n-line{color:#046b30;background:var(--line-bg)}
+  .n-auto-sent{color:var(--auto2);background:var(--auto2-bg)}.n-auto-plan{color:var(--text-muted);background:var(--surface-alt2);border:1px dashed var(--border-strong)}
+  .rdate{font-weight:500}.rsub{font-size:11px;color:var(--text-muted)}
+  .ops{display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap}
+  .op{border:1px solid var(--border);background:var(--surface);border-radius:6px;padding:5px 9px;font-size:11px;cursor:pointer;font-family:inherit;color:var(--text-secondary);display:inline-flex;align-items:center;gap:4px}
+  .op:hover{border-color:var(--border-strong);background:var(--surface-alt)}
+  .op-sms{color:var(--sms)}.op-sms:hover{background:var(--sms-bg);border-color:var(--sms)}
+  .op-line{color:#046b30}.op-line:hover{background:var(--line-bg);border-color:var(--line)}
+  .op-reg{color:#fff;background:var(--green);border-color:var(--green);font-weight:600}.op-reg:hover{background:var(--green-dark)}
+  .empty{padding:40px;text-align:center;color:var(--text-muted)}
+
+  /* ===== エリア別 予約枠シート ===== */
+  .area-wrap{padding:16px}
+  .area-regions{display:flex;gap:8px;margin-bottom:10px}
+  .status-regions{margin-bottom:12px}
+  .rtab{background:var(--surface-alt);border:1px solid var(--border);padding:8px 20px;border-radius:8px;font-size:14px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit}
+  .rtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .area-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .atab{background:transparent;border:1px solid var(--border);padding:7px 14px;border-radius:8px;font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit}
+  .atab.on{background:var(--accent-bg);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .area-info{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:12px}
+  .area-info .sched{font-size:13px}.area-info .sched b{color:var(--accent)}
+  .area-info .fill{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary)}
+  .fillbar{width:120px;height:9px;border-radius:6px;background:var(--surface-alt2);overflow:hidden}
+  .fillbar span{display:block;height:100%;background:var(--done)}
+  .sheet{overflow-x:auto}
+  .sheet-grid{display:grid;gap:5px;min-width:520px}
+  .sh-corner{background:var(--surface-alt);border-radius:6px}
+  .sh-head{text-align:center;padding:8px 4px;background:var(--surface-alt);border-radius:6px}
+  .sh-head .dow{font-size:11px;color:var(--text-secondary)}.sh-head .day{font-size:15px;font-weight:600}
+  .sh-head.sat .dow,.sh-head.sat .day{color:var(--sat)}.sh-head.sun .dow,.sh-head.sun .day{color:var(--sun)}
+  .sh-head.today{background:var(--accent-bg)}.sh-head.today .day{color:var(--accent)}
+  .sh-time{font-size:12px;color:var(--text-secondary);text-align:right;padding:10px 8px 0 0;font-weight:500}
+  .bslot{border:1px solid var(--border);border-radius:7px;min-height:56px;padding:5px;display:flex;flex-direction:row;gap:6px;align-items:stretch;background:var(--surface)}
+  .bslot-main{flex:1 1 auto;display:flex;flex-direction:column;gap:4px;min-width:0;overflow:hidden}
+  .bslot-side{flex:0 0 30px;display:flex;align-items:stretch}
+  .bslot-side .slot-close-btn.tall{height:auto;flex:1;width:100%}
+  .bslot.empty{background:var(--slot-empty);border-style:dashed;align-items:stretch;color:var(--text-muted);font-size:12px;cursor:default}
+  .bslot.full{background:var(--slot-full);border-color:#bfe0d0}
+  .bslot.noslot{background:transparent;border:none;box-shadow:none}
+  .bslot.noslot.has{background:var(--surface);border:1px solid var(--border);border-radius:7px}
+  .sh-head.off{opacity:.42}
+  .slot-hint{margin-top:6px;font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:5px}
+  .slot-hint i{font-size:13px}
+  .slot-hint.bad{color:#b23b3b}
+  .slot-hint.bad b{color:#b23b3b}
+  .slot-hint.free{color:#0c447c}
+  .free-toggle{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:12px;color:var(--text-secondary);cursor:pointer;user-select:none}
+  .free-toggle input{width:15px;height:15px;cursor:pointer;accent-color:var(--blue)}
+  .name-tel-row{background:var(--surface-alt);border:1px solid var(--border);border-radius:9px;padding:12px 12px 0;margin-bottom:14px}
+  .name-tel-row .fg{margin-bottom:12px}
+  .contact-box{background:var(--surface-alt);border:1px solid var(--border);border-radius:9px;padding:12px;margin-bottom:14px}
+  .contact-box>.frow{margin-bottom:10px}
+  .contact-row{display:grid;grid-template-columns:1fr 1fr 34px 34px;gap:8px;align-items:center;margin-bottom:8px}
+  .contact-row input{font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:8px 10px}
+  .contact-row input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-bg)}
+  .c-call{border:1px solid #bfe3d1;background:#eef7f1;border-radius:7px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:#1f7a56;text-decoration:none}
+  .c-call:hover{background:#dff0e6;border-color:#8fd0ac}
+  .c-call.off{opacity:.4;pointer-events:none}
+  .c-call i{font-size:15px}
+  .recip-list{border:1px solid var(--border);border-radius:8px;max-height:160px;overflow-y:auto;background:var(--surface)}
+  .recip-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--surface-alt2);font-size:13px;cursor:pointer;margin:0}
+  .recip-row:last-child{border-bottom:none}
+  .recip-row input{width:15px;height:15px;accent-color:var(--blue);flex:none}
+  .rc-name{font-weight:600}
+  .rc-tel{color:var(--text-secondary);font-size:12px}
+  .rc-obit{margin-left:auto;font-size:10px;color:var(--text-muted);background:var(--surface-alt2);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  .recip-row.over{opacity:.45}
+  .recip-note{font-size:11px;color:var(--text-secondary);margin-top:6px}
+  .hist-list{display:flex;flex-direction:column;gap:6px;max-height:130px;overflow-y:auto}
+  .hist-item{display:flex;align-items:center;gap:8px;font-size:12px;background:var(--surface-alt);border-radius:7px;padding:7px 10px}
+  .hi-kind{font-size:10px;font-weight:700;border-radius:4px;padding:1px 6px;color:#fff;flex:none}
+  .k-sms{background:#3b7dd8}.k-line{background:#22b573}
+  .hi-date{color:var(--text-secondary);font-weight:600;flex:none}
+  .hi-rec{color:var(--text-secondary);flex:1;min-width:0}
+  .temple-pick{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .h-tabs{display:flex;gap:6px;margin:14px 0 4px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+  .htab{font-family:inherit;font-size:14px;font-weight:600;color:var(--text-secondary);background:none;border:none;border-bottom:2.5px solid transparent;padding:9px 16px;cursor:pointer;margin-bottom:-1px}
+  .htab:hover{color:var(--text)}
+  .htab.on{color:var(--accent);border-bottom-color:var(--accent)}
+  .temple-sel{font-size:13px;color:var(--text);font-weight:600}
+  .tp-search{width:100%;font-family:inherit;font-size:14px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--surface);color:var(--text)}
+  .tp-search:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+  .tp-count{font-size:12px;color:var(--text-secondary);margin:8px 2px}
+  .tp-filters{margin-bottom:10px}
+  .tp-filters select{font-family:inherit;font-size:13px;border:1px solid var(--border);border-radius:8px;padding:8px 10px;background:var(--surface)}
+  .tp-list{border:1px solid var(--border);border-radius:8px;max-height:300px;overflow-y:auto;background:var(--surface)}
+  .tp-item{display:flex;align-items:baseline;gap:8px;padding:11px 13px;border-bottom:1px solid var(--surface-alt2);cursor:pointer;font-size:13px}
+  .tp-item:last-child{border-bottom:none}
+  .tp-item:hover{background:var(--surface-alt)}
+  .tp-item.sel{background:var(--accent-bg)}
+  .tp-shuha{color:var(--text-muted);font-size:11px;flex:none}
+  .tp-name{font-weight:700;flex:none}
+  .tp-addr{color:var(--text-secondary);font-size:12px}
+  .tp-empty{padding:20px;text-align:center;color:var(--text-muted);font-size:13px}
+  .c-del{border:1px solid var(--border);background:var(--surface);border-radius:7px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary)}
+  .c-del:hover{border-color:#d98a84;color:#b23b3b}
+  .add-contact-btn{display:inline-flex;align-items:center;gap:5px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:7px;padding:8px 12px;font-family:inherit;font-size:12px;font-weight:600;color:var(--blue);cursor:pointer}
+  .add-contact-btn:hover{background:var(--accent-bg)}
+  .bslot .bk{font-size:11px;font-weight:600;background:var(--surface-alt2);border:1px solid var(--border);border-radius:5px;padding:3px 6px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:4px}
+  .bslot .bk:hover{border-color:var(--accent);background:#fff}
+  .bslot .bk .ic{font-size:11px;color:var(--text-muted)}
+  .bslot .bk.ed{border-color:var(--edit);color:var(--edit);background:var(--edit-bg)}
+  .bslot .cap{font-size:9px;color:var(--text-muted);text-align:right;margin-top:auto}
+  .bslot .cap.full{color:var(--done);font-weight:700}
+  .bslot .cap.free{color:var(--accent)}
+  .sheet-legend{display:flex;gap:16px;margin-top:12px;font-size:11px;color:var(--text-secondary);flex-wrap:wrap}
+  .sheet-legend .sw{width:14px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px;border:1px solid var(--border)}
+
+  /* modal */
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .backdrop.open{display:flex}
+  .modal{background:var(--surface);border-radius:12px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+  .modal-sm{max-width:420px}
+  .modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+  .modal-header h3{margin:0;font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .modal-close{background:none;border:none;cursor:pointer;font-size:22px;color:var(--text-secondary);border-radius:6px;padding:4px;line-height:1}
+  .modal-body{padding:18px 20px}
+  .call-banner{background:linear-gradient(180deg,#eef7f1,#e4f4ee);border:1px solid #bfe3d1;border-radius:10px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .call-banner .who{font-size:12px;color:var(--text-secondary)}.call-banner .tel{font-size:20px;font-weight:700}
+  .call-banner a.call{background:var(--green);color:#fff;text-decoration:none;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .call-note{font-size:11px;color:var(--text-muted);margin:8px 0 14px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.fg{margin-bottom:14px}
+  .fg label{display:block;font-size:12px;color:var(--text-secondary);margin-bottom:5px;font-weight:500}
+  .fg input,.fg select,.fg textarea{width:100%;font-family:inherit;font-size:14px;color:var(--text);background:var(--surface-alt);border:1px solid var(--border);border-radius:7px;padding:9px 11px}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-bg)}
+  .fg textarea{resize:vertical;min-height:56px}
+  .seg-full{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .toggle{border:1px solid var(--border);background:var(--surface-alt);border-radius:7px;padding:9px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--text-secondary);display:flex;align-items:center;justify-content:center;gap:6px}
+  .toggle.on-web{border-color:var(--web);background:var(--web-bg);color:var(--web);font-weight:600}
+  .toggle.on-phone{border-color:var(--phone);background:var(--phone-bg);color:var(--phone);font-weight:600}
+  .toggle.on-auto{border-color:var(--autob);background:var(--autob-bg);color:var(--autob);font-weight:600}
+  .toggle.on-manual{border-color:var(--manual);background:#e7e6e1;color:var(--text);font-weight:600}
+  .checks{display:flex;flex-wrap:wrap;gap:8px}
+  .check{border:1px solid var(--border);background:var(--surface-alt);border-radius:7px;padding:8px 12px;font-size:13px;cursor:pointer;user-select:none}
+  .check.on{border-color:var(--accent);background:var(--accent-bg);color:var(--accent);font-weight:600}
+  .modal-actions{display:flex;gap:8px;margin-top:8px;padding-top:16px;border-top:1px solid var(--border)}.modal-actions .spacer{flex:1}
+  .msg-preview{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:13px;white-space:pre-wrap;min-height:96px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;z-index:200;opacity:0;transition:opacity .2s;pointer-events:none}.toast.show{opacity:1}
+  @media(max-width:960px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:none}.content{margin-left:0}.menu-toggle{display:inline-flex}.kpi{grid-template-columns:1fr 1fr}}
+
+  .submenu a{padding-left:34px;font-size:13.5px;background:var(--nav-bg2)}
+  .submenu a.sub-active{background:#2a3342;color:#fff;border-left-color:#9cc2ff}
+  .submenu a.sub-active i{color:#fff}
+  .vs-washi{background:#efe9dd;background-image:repeating-linear-gradient(115deg,rgba(150,120,70,.06) 0 1px,transparent 1px 6px),repeating-linear-gradient(60deg,rgba(150,120,70,.05) 0 1px,transparent 1px 8px);padding:22px 30px 16px;border-bottom:1px solid #e0d8c8}
+  .vs-washi h1{margin:0;font-size:22px;font-weight:700;color:#2b2f36}
+  .vs-page{padding:22px 30px 60px;max-width:1040px}
+  .vs-card{background:#fff;border:1px solid #e2e2dd;border-radius:8px;margin-bottom:18px;overflow:hidden}
+  .vs-cardh{padding:13px 20px;border-bottom:1px solid #e2e2dd;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+  .vs-cardh i{color:#2f6fd0}
+  .vs-cardb{padding:18px 20px}
+  .vs-searchrow{display:flex;gap:10px;justify-content:space-between;margin-top:6px}
+  .vs-btn{font-family:inherit;font-size:14px;font-weight:600;border-radius:6px;padding:10px 20px;cursor:pointer;border:1px solid transparent}
+  .vs-green{background:#3aa257;color:#fff}.vs-green:hover{background:#318a4a}
+  .vs-blue{background:#2f6fd0;color:#fff}.vs-blue:hover{background:#285fb5}
+  .vs-back{background:#fff;color:#6b7079;border-color:#c9ccd1}.vs-back:hover{background:#f2f2f2}
+  .vs-table{width:100%;border-collapse:collapse;font-size:14px}
+  .vs-table thead th{text-align:left;padding:13px 20px;font-weight:700;color:#3a3f47;border-bottom:2px solid #e2e2dd;background:#fbfbfa}
+  .vs-table tbody td{padding:14px 20px;border-bottom:1px solid #e2e2dd}
+  .vs-table tbody tr:hover{background:#f7f8fa}
+  .vs-link{color:#2f6fd0;font-weight:500;cursor:pointer;text-decoration:none}.vs-link:hover{text-decoration:underline}
+  .vs-code{display:inline-block;font-size:12px;font-weight:700;color:#185fa5;background:#e6f1fb;border-radius:5px;padding:2px 9px}
+  .vs-short{color:#6b7079}.vs-muted{color:#9aa0a8}
+  .vs-fg{margin-bottom:18px}.vs-fg label{display:block;font-size:13px;font-weight:600;color:#3a3f47;margin-bottom:6px}
+  .vs-req{color:#c0392b;font-size:11px;margin-left:5px}
+  .vs-fg input{width:100%;font-family:inherit;font-size:14px;color:#2b2f36;background:#fff;border:1px solid #c9ccd1;border-radius:5px;padding:9px 12px}
+  .vs-fg input:focus{outline:none;border-color:#2f6fd0;box-shadow:0 0 0 3px #e8f0fb}
+  .vs-fg.vs-short2 input{max-width:220px}
+  .vs-hint{font-size:12px;color:#9aa0a8;margin-top:5px}
+  .vs-row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .vs-seclabel{font-size:12px;font-weight:700;color:#6b7079;margin:8px 0 12px;padding-bottom:7px;border-bottom:1px dashed #e2e2dd;display:flex;align-items:center;gap:7px}
+  .vs-seclabel i{color:#9aa0a8;font-size:15px}
+  .vs-added{background:#fdf6e3;border:1px solid #efdca8;border-radius:8px;padding:16px 16px 4px;margin-bottom:18px;position:relative}
+  .vs-added .vs-tag{position:absolute;top:-10px;left:14px;background:#c78a12;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:2px 9px}
+  .vs-switch{position:relative;display:inline-block;width:46px;height:26px;vertical-align:middle}
+  .vs-switch input{display:none}.vs-slider{position:absolute;inset:0;background:#c9ccd1;border-radius:26px;transition:.2s;cursor:pointer}
+  .vs-slider:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+  .vs-switch input:checked + .vs-slider{background:#3aa257}.vs-switch input:checked + .vs-slider:before{transform:translateX(20px)}
+  .vs-swlabel{margin-left:10px;font-size:13px;color:#6b7079;vertical-align:middle}
+  .vs-actions{display:flex;gap:10px;padding:16px 20px;background:#fafafa;border-top:1px solid #e2e2dd}
+  .vs-spacer{flex:1}
+  .vs-err{color:#c0392b;font-size:12px;margin-top:5px;display:none}.vs-invalid{border-color:#c0392b !important}
+  .bslot .bk{flex-direction:column;align-items:stretch;gap:0;text-align:left;min-height:60px;overflow:hidden;justify-content:flex-start;padding:5px 6px}
+  .bslot .bk .bk-name{line-height:1.25}.bslot .bk .bk-meta,.bslot .bk .bk-city{line-height:1.2}.bslot .bk .bk-tag{line-height:1.15;margin-top:1px}
+  .bslot.full{position:relative}
+  .bslot.full::after{content:"満";position:absolute;top:4px;right:5px;font-size:10px;font-weight:700;color:var(--done);background:var(--done-bg);border-radius:4px;padding:1px 6px;z-index:1}
+  .bk-name{font-size:11px;font-weight:600;display:flex;align-items:baseline;gap:4px;line-height:1.3}
+  .bk-d{font-size:9px;color:var(--text-muted);font-weight:400}
+  .bk-ch{margin-left:auto;color:var(--text-muted)}
+  .bk-meta{font-size:10px;color:var(--accent);font-weight:500}
+  .bk-city{font-size:10px;color:var(--text-secondary);display:flex;align-items:center;gap:2px}
+  .bk-city i{font-size:11px;opacity:.7}
+  .m-info{display:flex;gap:10px;align-items:flex-start;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px}
+  .m-info i{font-size:18px;flex:none;margin-top:1px}
+  .m-info b{font-size:13.5px}
+  .m-info .mi-sub{margin-top:5px;color:var(--text-secondary);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .m-info .mi-sub i{font-size:14px;margin-top:0}
+  .mi-change{background:#fbf1df;border:1px solid #ecd6a8;color:#8a5a12}
+  .mi-change .mi-old{text-decoration:line-through;color:#a08040}
+  .mi-change .mi-new{font-weight:700;color:#6b4a10}
+  .mi-cancel{background:#fbe9e7;border:1px solid #eec4bf;color:#b23b3b}
+  .addr-row{display:flex;gap:8px;align-items:stretch}
+  .addr-row input{flex:1;min-width:0}
+  .map-btn{flex:none;border:1px solid var(--border);background:var(--surface);border-radius:7px;padding:0 12px;cursor:pointer;color:var(--accent);display:inline-flex;align-items:center;gap:5px;font-family:inherit;font-size:13px;font-weight:600;white-space:nowrap}
+  .map-btn:hover{background:var(--accent-bg);border-color:var(--accent)}
+  .map-btn i{font-size:17px}
+  .bslot.empty{cursor:default;align-items:stretch;justify-content:flex-start}
+  .bslot{overflow:hidden}
+  .bk-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:4px}
+  .bslot .slot-actions,.bslot .cap.full{flex:0 0 auto}
+  .bslot.closed{background:repeating-linear-gradient(45deg,#efeee9,#efeee9 5px,#e4e2da 5px,#e4e2da 10px);border-color:var(--border-strong);color:var(--text-muted);cursor:pointer;align-items:center;justify-content:center;flex-direction:row;gap:3px;font-weight:600;font-size:11px}
+  .bslot.closed i{font-size:13px}
+  .b-tmp{color:#fff;background:#d83a3a;border:1px solid #c22f2f;font-weight:700}
+  .b-fixed{color:#1f7a56;background:#e7f4ee;border:1px solid #bfe3d1}
+  #hBackdrop input[readonly]{background:var(--surface-alt2);color:var(--text-secondary)}
+
+  /* ===== 遺族フォロー ===== */
+  .f-meta{display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px}
+  .f-meta .k{color:var(--text-secondary);margin-right:7px}
+  .f-meta .v{font-weight:600}
+  .f-counter{display:flex;align-items:center;gap:10px;margin-top:7px;font-size:12px;color:var(--text-secondary);flex-wrap:wrap}
+  .f-counter .seg-pill{background:var(--accent-bg);color:var(--accent);font-weight:700;border-radius:12px;padding:2px 11px;white-space:nowrap}
+  .f-counter .seg-pill.multi{background:var(--pending-bg);color:var(--pending)}
+  .f-hint{font-size:11px;color:var(--text-muted)}
+  .f-cost{margin-top:12px;background:var(--surface-alt);border:1px solid var(--border);border-radius:9px;padding:11px 14px;font-size:13px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+  .f-cost b{font-size:15px;color:var(--text)}
+  .f-recip-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 0 7px;font-size:12px;font-weight:700;color:var(--text-secondary)}
+  .f-recip-head .chan{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text)}
+  .f-recip-head .chan i{font-size:16px}
+  .f-lbl{width:120px;flex:none;font-family:inherit;font-size:12px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px}
+  .f-lbl:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+  .f-tel-in{flex:1;min-width:0;font-family:inherit;font-size:13px;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 8px}
+  .f-tel-in:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+  .recip-row input.f-lbl{width:120px;height:auto;flex:0 0 auto}
+  .recip-row input.f-tel-in{width:auto;height:auto;flex:1 1 auto;min-width:0}
+  .f-num{width:74px;font-family:inherit;font-size:14px;border:1px solid #c9ccd1;border-radius:5px;padding:8px 10px;text-align:center;color:var(--text);background:#fff}
+  .f-count-badge{font-size:10px;font-weight:700;border-radius:10px;padding:1px 8px;background:var(--accent-bg);color:var(--accent);flex:none}
+  .mono{font-variant-numeric:tabular-nums}
+  #page-follow .vs-card{max-width:1040px}
+  #page-follow .check{display:inline-flex;align-items:center;gap:6px}
+  #f-report-rows .rt-badge{font-size:10px;font-weight:700;border-radius:10px;padding:1px 8px;background:#fff;color:var(--accent);border:1px solid var(--accent);margin-left:6px}
+
+
+  /* 予約フォーム遷移バナー */
+  .form-banners{margin:26px 0 8px;padding-top:22px;border-top:1px solid var(--border)}
+  .fb-head{font-size:12px;font-weight:700;color:var(--text-secondary);letter-spacing:.04em;margin-bottom:12px}
+  .fb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:900px){.fb-grid{grid-template-columns:1fr}}
+  .fb-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;text-decoration:none;color:inherit;transition:box-shadow .15s,border-color .15s,transform .15s}
+  .fb-card:hover{border-color:var(--accent);box-shadow:0 6px 20px rgba(24,95,165,.10);transform:translateY(-1px)}
+  .fb-ic{flex:none;width:46px;height:46px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--accent-bg);color:var(--accent);font-size:23px}
+  .fb-houyou .fb-ic{background:#eef7f1;color:#1f7a56}
+  .fb-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+  .fb-title{font-size:16px;font-weight:700;color:var(--text)}
+  .fb-sub{font-size:12px;color:var(--text-secondary);line-height:1.6}
+  .fb-go{flex:none;display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--accent)}
+  .fb-houyou .fb-go{color:#1f7a56}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 48 48" fill="none"><path d="M14 30c-5 0-9-3.6-9-8.4 0-4.4 3.4-7.8 8-8.2C15 8.6 19.4 5.5 24.5 5.5c6.3 0 11.4 4.6 12.2 10.6 3.8.7 6.3 3.6 6.3 7.2 0 4.2-3.5 7.2-8 7.2H14z" fill="#fff"/><circle cx="19" cy="20" r="1.8" fill="#1b2230"/><circle cx="27" cy="20" r="1.8" fill="#1b2230"/><path d="M20 24c1.4 1.4 4.6 1.4 6 0" stroke="#1b2230" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <div class="wm">itowa</div>
+    </div>
+    <nav class="nav">
+      <a><i class="ti ti-dashboard"></i>ダッシュボード</a>
+      <a><i class="ti ti-users"></i>葬家管理</a>
+      <a id="nav-follow" class="new" onclick="showPage('follow')"><i class="ti ti-send"></i>配信<span class="tagnew">NEW</span></a>
+      <a id="nav-kaishu" class="active new" onclick="showPage('kaishu')"><i class="ti ti-truck-delivery"></i>回収管理<span class="tagnew">NEW</span></a>
+      <a id="nav-houyou" class="new" onclick="showPage('houyou')"><i class="ti ti-flower"></i>法事希望管理<span class="tagnew">NEW</span></a>
+      <a><i class="ti ti-building-store"></i>業者管理</a>
+      <a><i class="ti ti-box"></i>商品管理</a>
+      <a><i class="ti ti-gift"></i>返礼品管理<i class="ti ti-chevron-left chev"></i></a>
+      <a><i class="ti ti-calendar-event"></i>スケジュール管理<i class="ti ti-chevron-left chev"></i></a>
+      <a><i class="ti ti-history"></i>操作ログ</a>
+      <a><i class="ti ti-list-details"></i>担当者別葬儀履歴</a>
+      <a><i class="ti ti-report-money"></i>月別累計売上高</a>
+      <a onclick="toggleSettings()"><i class="ti ti-settings"></i>設定<i class="ti ti-chevron-down chev"></i></a>
+      <div class="submenu" id="settingsSub">
+        <a><i class="ti ti-user-cog"></i>ユーザー管理</a>
+        <a><i class="ti ti-building"></i>葬儀社設定</a>
+        <a id="nav-venue" onclick="showPage('venue')"><i class="ti ti-building-community"></i>葬儀会場設定</a>
+        <a><i class="ti ti-key"></i>APIキー管理</a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="content">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
+        <div class="tt">あいプラングループ様 管理画面</div>
+      </div>
+      <div class="tr"><button class="btn-order">注文フォーム</button>
+        <div class="support"><i class="ti ti-user-circle"></i>サポート<i class="ti ti-chevron-down"></i></div></div>
+    </div>
+
+    <div id="page-kaishu">
+    <div class="page">
+      <div class="page-title"><i class="ti ti-truck-delivery"></i>回収管理</div>
+      <div class="page-date">葬儀日から約40日後の対応週を初期表示。未予約は荷電で完了させ、没日+42日 正午に自動リマインドを送信します。</div>
+
+      <div class="kpi" id="kpi"></div>
+      <div class="bar-wrap">
+        <div class="bar-top"><div class="t">この対応週の予約完了率</div><div class="r"><b id="rateNum">0%</b></div></div>
+        <div class="bar" id="compBar"></div>
+        <div class="bar-legend">
+          <span><i style="background:var(--done)"></i>予約完了</span>
+          <span><i style="background:var(--border-strong)"></i>回収不要</span>
+          <span><i style="background:var(--pending)"></i>未完了・通知済</span>
+          <span><i style="background:var(--alert)"></i>未完了・未連絡</span>
+          <span><i style="background:#c98a86"></i>キャンセル</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="toolbar">
+          <div class="seg" id="viewSeg">
+            <button class="on" data-view="status" onclick="setView('status')"><i class="ti ti-checklist"></i>予約状況</button>
+            <button data-view="area" onclick="setView('area')"><i class="ti ti-layout-grid"></i>エリア別 予約枠</button>
+          </div>
+          <div class="week-nav">
+            <button class="icon-btn" onclick="shiftWeek(-1)"><i class="ti ti-chevron-left"></i></button>
+            <div><div class="week-label" id="weekLabel"></div><div class="week-sub" id="weekSub"></div></div>
+            <button class="icon-btn" onclick="shiftWeek(1)"><i class="ti ti-chevron-right"></i></button>
+            <button class="btn btn-sm" onclick="shiftWeek(0)" id="homeBtn">対応週へ</button>
+          </div>
+          <div class="area-regions status-regions" id="statusRegions">
+            <button class="rtab on" data-r="道央" onclick="setStatusRegion('道央')">道央</button>
+            <button class="rtab" data-r="道北" onclick="setStatusRegion('道北')">道北</button>
+          </div>
+          <div class="filters" id="statusFilters">
+            <button class="fbtn on" data-f="pending" onclick="setFilter('pending')">要対応（未予約）</button>
+            <button class="fbtn" data-f="all" onclick="setFilter('all')">すべて</button>
+            <button class="fbtn" data-f="done" onclick="setFilter('done')">完了のみ</button>
+            <button class="btn btn-sm" onclick="downloadCSV()" style="margin-left:8px"><i class="ti ti-download"></i>CSVダウンロード</button>
+          </div>
+        </div>
+
+        <div id="statusView">
+          <div class="list-cap" id="listCap"></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>葬儀日</th><th>故人名 / 葬家名</th><th>会場名</th><th>状態</th><th>予約日 / 通知</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody id="statusBody"></tbody>
+          </table></div>
+          <div class="empty" id="statusEmpty" style="display:none">この条件に該当する葬家はありません。</div>
+        </div>
+
+        <div id="areaView" style="display:none">
+          <div class="area-wrap">
+            <div class="area-regions" id="areaRegions"></div>
+            <div class="area-tabs" id="areaTabs"></div>
+            <div class="area-info">
+              <div class="sched" id="areaSched"></div>
+              <div class="fill"><span id="fillText"></span><span class="fillbar"><span id="fillBar" style="width:0"></span></span></div>
+              <button class="btn btn-sm" onclick="openCreateFree()" style="margin-left:auto"><i class="ti ti-calendar-plus"></i>予約枠外で登録</button>
+            </div>
+            <div class="sheet"><div class="sheet-grid" id="sheetGrid"></div></div>
+            <div class="sheet-legend">
+              <span><span class="sw" style="background:var(--slot-empty);border-style:dashed"></span>空き枠</span>
+              <span><span class="sw" style="background:var(--surface)"></span>一部予約あり</span>
+              <span><span class="sw" style="background:var(--slot-full);border-color:#bfe0d0"></span>満（受付終了）</span>
+              <span>※ 予約可能な時間枠のみを表示しています</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div><!-- /page-kaishu -->
+
+    <div id="page-venue" style="display:none">
+      <div class="vs-washi"><h1>葬儀会場設定</h1></div>
+      <div class="vs-page">
+        <div id="v-list">
+          <div class="vs-card"><div class="vs-cardh">検索条件</div><div class="vs-cardb">
+            <div class="vs-fg" style="margin-bottom:6px"><label>会場名</label><input type="text" id="v-search" placeholder="会場名"></div>
+            <div class="vs-searchrow"><button class="vs-btn vs-green" onclick="openVenue(0)">新規作成</button><button class="vs-btn vs-blue" onclick="renderVenueList()">検索</button></div>
+          </div></div>
+          <div class="vs-card"><table class="vs-table"><thead><tr><th>会場名</th><th>会場短縮名</th><th>会場コード</th><th>住所</th></tr></thead><tbody id="v-rows"></tbody></table></div>
+        </div>
+        <div id="v-detail" style="display:none">
+          <div class="vs-card">
+            <div class="vs-cardh"><i class="ti ti-building-community"></i>会場情報 — <span id="v-crumb2"></span></div>
+            <div class="vs-cardb">
+              <div class="vs-fg"><label>会場名<span class="vs-req">必須</span></label><input type="text" id="v-name"></div>
+              <div class="vs-fg"><label>住所</label><input type="text" id="v-addr"><div class="vs-hint">フリー入力（郵便番号検索なし）。回収管理の一覧では頭8〜9文字を表示します。</div></div>
+              <div class="vs-fg vs-short2"><label>電話番号</label><input type="tel" id="v-tel"></div>
+              <div class="vs-added"><span class="vs-tag">今回追加</span>
+                <div class="vs-row2">
+                  <div class="vs-fg vs-short2"><label>会場コード<span class="vs-req">必須</span></label><input type="text" id="v-code" maxlength="3" inputmode="numeric" placeholder="124"><div class="vs-hint">半角数字3桁（売上データ照合用）</div><div class="vs-err" id="v-codeErr">半角数字3桁でご入力ください。</div></div>
+                  <div class="vs-fg"><label>会場短縮名</label><input type="text" id="v-short" placeholder="例）センティア"><div class="vs-hint">一覧・帳票で使う短い呼称</div></div>
+                </div>
+              </div>
+              <div class="vs-seclabel"><i class="ti ti-cloud"></i>天気予報関連</div>
+              <div class="vs-fg"><label>天気予報の表示</label><label class="vs-switch"><input type="checkbox" id="v-wx" checked><span class="vs-slider"></span></label><span class="vs-swlabel">葬家・回収の詳細画面に当日の天気予報を表示する</span></div>
+              <div class="vs-row2"><div class="vs-fg vs-short2"><label>予報地点（緯度）</label><input type="text" id="v-lat" value="43.0621"></div><div class="vs-fg vs-short2"><label>予報地点（経度）</label><input type="text" id="v-lng" value="141.3544"></div></div>
+            </div>
+            <div class="vs-actions"><button class="vs-btn vs-back" onclick="renderVenueList()"><i class="ti ti-arrow-left"></i> 一覧へ戻る</button><div class="vs-spacer"></div><button class="vs-btn vs-green" onclick="saveVenue()">保存する</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 法事希望管理 ページ ===== -->
+    <div id="page-houyou" style="display:none">
+      <div class="page">
+        <div class="page-title"><i class="ti ti-flower"></i>法事希望管理</div>
+        <div class="page-date">各法要のご案内を自動送信（四十九日は葬儀日+5日、一周忌/三回忌/七回忌は各法要日の約1ヶ月前）。web申込は「仮予約」→お電話で確定します。</div>
+        <div class="h-tabs" id="h-tabs">
+          <button class="htab on" data-k="shijuku" onclick="hSetType('shijuku')">四十九日</button>
+          <button class="htab" data-k="isshuki" onclick="hSetType('isshuki')">一周忌</button>
+          <button class="htab" data-k="sankaiki" onclick="hSetType('sankaiki')">三回忌</button>
+          <button class="htab" data-k="nanakaiki" onclick="hSetType('nanakaiki')">七回忌</button>
+        </div>
+        <div class="kpi" id="h-kpi"></div>
+        <div class="panel">
+          <div class="toolbar">
+            <div class="seg" style="visibility:hidden"><button class="on">法要</button></div>
+            <div class="week-nav">
+              <button class="icon-btn" onclick="hShiftWeek(-1)"><i class="ti ti-chevron-left"></i></button>
+              <div><div class="week-label" id="h-weekLabel"></div><div class="week-sub" id="h-weekSub"></div></div>
+              <button class="icon-btn" onclick="hShiftWeek(1)"><i class="ti ti-chevron-right"></i></button>
+              <button class="btn btn-sm" onclick="hShiftWeek(0)">今週へ</button>
+            </div>
+            <div class="filters" id="h-filters">
+              <button class="fbtn on" data-f="tmp" onclick="hSetFilter('tmp')">仮予約（要確定）</button>
+              <button class="fbtn" data-f="none" onclick="hSetFilter('none')">未申込</button>
+              <button class="fbtn" data-f="all" onclick="hSetFilter('all')">すべて</button>
+              <button class="fbtn" data-f="fixed" onclick="hSetFilter('fixed')">確定済</button>
+              <button class="btn btn-sm btn-primary" onclick="openHouyouNew()" style="margin-left:8px"><i class="ti ti-plus"></i>新規作成</button>
+              <button class="btn btn-sm" onclick="hCSV()" style="margin-left:6px"><i class="ti ti-download"></i>CSV</button>
+            </div>
+          </div>
+          <div class="list-cap" id="h-cap"></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>四十九日</th><th>故人名 / 葬家名</th><th>会場</th><th>状態</th><th>ご希望 / ご案内</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody id="h-body"></tbody>
+          </table></div>
+          <div class="empty" id="h-empty" style="display:none">この週に四十九日を迎える対象はありません。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 遺族フォロー ページ ===== -->
+    <div id="page-follow" style="display:none">
+      <div class="page">
+        <div class="page-title"><i class="ti ti-send"></i>配信</div>
+        <div class="page-date">葬家・お問い合わせ先へ、SMS／LINEで案内やPDF（請求書・案内状など）を配信します。通知マスタで自動送信、葬家一覧・個別配信から手動送信できます。（回収・法事予約は本機能を土台にした拡張機能です）</div>
+        <div class="h-tabs" id="f-tabs">
+          <button class="htab on" data-k="list" onclick="fSetTab('list')"><i class="ti ti-users"></i>葬家一覧</button>
+          <button class="htab" data-k="indiv" onclick="fSetTab('indiv')"><i class="ti ti-user-plus"></i>個別配信</button>
+          <button class="htab" data-k="master" onclick="fSetTab('master')"><i class="ti ti-bell-cog"></i>通知マスタ</button>
+          <button class="htab" data-k="report" onclick="fSetTab('report')"><i class="ti ti-chart-bar"></i>送信実績</button>
+        </div>
+
+        <!-- ---- タブ：葬家一覧 ---- -->
+        <div id="f-tab-list">
+          <div id="f-list">
+            <div class="panel">
+              <div class="toolbar">
+                <input type="text" id="f-search" class="tp-search" style="max-width:320px" placeholder="故人名 / 会場 で検索" oninput="fRenderList()">
+                <div class="f-hint"><i class="ti ti-info-circle"></i> <span id="f-listcount"></span>（1画面は100件まで表示）</div>
+              </div>
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>故人名</th><th>会場</th><th>葬儀日</th><th>SMS送信数</th><th>LINE送信数</th></tr></thead>
+                <tbody id="f-rows"></tbody>
+              </table></div>
+            </div>
+          </div>
+
+          <!-- 個別ページ -->
+          <div id="f-detail" style="display:none">
+            <button class="vs-btn vs-back" style="margin:4px 0 14px" onclick="fBackList()"><i class="ti ti-arrow-left"></i> 葬家一覧へ戻る</button>
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-user"></i><span id="f-d-name"></span></div>
+              <div class="vs-cardb"><div class="f-meta" id="f-d-meta"></div></div>
+            </div>
+
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-bell-ringing"></i>自動通知一覧</div>
+              <div class="vs-cardb" style="padding:0">
+                <div class="tbl-wrap"><table class="vs-table"><thead><tr><th>通知名</th><th>チャネル</th><th>予定日時</th><th>状態</th></tr></thead>
+                <tbody id="f-d-auto"></tbody></table></div>
+              </div>
+            </div>
+
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-history"></i>手動通知一覧（送信履歴）</div>
+              <div class="vs-cardb"><div class="hist-list" id="f-d-hist" style="max-height:none"></div></div>
+            </div>
+
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-send"></i>手動送信</div>
+              <div class="vs-cardb">
+                <div class="f-recip-head"><span class="chan"><i class="ti ti-device-mobile" style="color:var(--sms)"></i>SMS宛先</span><button class="add-contact-btn" onclick="fAddSmsNum()"><i class="ti ti-plus"></i>宛先を追加</button></div>
+                <div class="recip-list" id="f-sms-list" style="max-height:none"></div>
+                <div class="f-recip-head"><span class="chan"><i class="ti ti-brand-line" style="color:var(--line)"></i>LINE宛先</span><span class="f-hint">連携済みのご家族のみ（追加不可）</span></div>
+                <div class="recip-list" id="f-line-list" style="max-height:none"></div>
+
+                <div class="fg" style="margin-top:16px">
+                  <label>PDF（請求書・案内状など）を添付</label>
+                  <div class="addr-row">
+                    <label class="map-btn"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="fAttachPdf(this)"></label>
+                    <span id="f-pdf-status" class="f-hint" style="align-self:center">未添付</span>
+                  </div>
+                  <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（PDF生成として送信実績に計上）。</div>
+                </div>
+
+                <div class="fg">
+                  <label>URLを載せる場合（短縮してから本文に挿入）</label>
+                  <div class="addr-row">
+                    <input type="text" id="f-url" placeholder="https://... 長いURLを貼り付け">
+                    <button class="map-btn" onclick="fShortenUrl()"><i class="ti ti-link"></i>短縮</button>
+                  </div>
+                  <div id="f-url-out" class="f-hint" style="margin-top:7px;display:none"></div>
+                </div>
+
+                <div class="fg">
+                  <label>送信内容</label>
+                  <textarea id="f-body" rows="4" placeholder="本文を入力…" oninput="fUpdateCounter()"></textarea>
+                  <div class="f-counter">
+                    <span id="f-charcount">0文字</span>
+                    <span class="seg-pill" id="f-segpill">0通</span>
+                    <span class="f-hint">1通目70文字／2通目以降67文字ごとに1通（メディアSMS準拠）。全角・半角混在は全角基準。</span>
+                  </div>
+                </div>
+
+                <div class="f-cost">
+                  <span>選択中の宛先 <b id="f-recipcount">0</b> 件 × <b id="f-segn">0</b>通</span>
+                  <span>合計送信通数 <b id="f-total">0</b>通<span class="f-hint" style="margin-left:6px">（宛先数×通数）</span></span>
+                </div>
+
+                <div style="display:flex;gap:8px;margin-top:14px"><div style="flex:1"></div>
+                  <button class="vs-btn vs-green" onclick="fSend()"><i class="ti ti-send"></i>送信する</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- タブ：個別配信（SMSのみ） ---- -->
+        <div id="f-tab-indiv" style="display:none">
+          <div class="m-info" style="background:var(--accent-bg);border:1px solid #bcd8f2;color:#1a4a7a">
+            <i class="ti ti-info-circle" style="color:var(--accent)"></i>
+            <div>お問い合わせ対応などで、電話番号を直接指定してSMSを送信します。請求書・案内状のPDF送付にも利用できます（郵送より手軽）。<b>チャネルはSMSのみ</b>です。</div>
+          </div>
+          <div class="vs-card">
+            <div class="vs-cardh"><i class="ti ti-send"></i>個別配信（SMS）</div>
+            <div class="vs-cardb">
+              <div class="f-recip-head"><span class="chan"><i class="ti ti-device-mobile" style="color:var(--sms)"></i>送信先（電話番号）</span><button class="add-contact-btn" onclick="gcAddNum()"><i class="ti ti-plus"></i>宛先を追加</button></div>
+              <div class="recip-list" id="gc-list" style="max-height:none"></div>
+
+              <div class="fg" style="margin-top:16px">
+                <label>PDF（請求書・案内状など）を添付</label>
+                <div class="addr-row">
+                  <label class="map-btn"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="gcAttachPdf(this)"></label>
+                  <span id="gc-pdf-status" class="f-hint" style="align-self:center">未添付</span>
+                </div>
+                <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（PDF生成として送信実績に計上）。</div>
+              </div>
+
+              <div class="fg">
+                <label>URLを載せる場合（短縮してから本文に挿入）</label>
+                <div class="addr-row">
+                  <input type="text" id="gc-url" placeholder="https://... 長いURLを貼り付け">
+                  <button class="map-btn" onclick="gcShortenUrl()"><i class="ti ti-link"></i>短縮</button>
+                </div>
+                <div id="gc-url-out" class="f-hint" style="margin-top:7px;display:none"></div>
+              </div>
+
+              <div class="fg">
+                <label>送信内容</label>
+                <textarea id="gc-body" rows="4" placeholder="本文を入力…" oninput="gcUpdateCounter()"></textarea>
+                <div class="f-counter">
+                  <span id="gc-charcount">0文字</span>
+                  <span class="seg-pill" id="gc-segpill">0通</span>
+                  <span class="f-hint">1通目70文字／2通目以降67文字ごとに1通（メディアSMS準拠）。</span>
+                </div>
+              </div>
+
+              <div class="f-cost">
+                <span>送信先 <b id="gc-recipcount">0</b> 件 × <b id="gc-segn">0</b>通</span>
+                <span>合計送信通数 <b id="gc-total">0</b>通<span class="f-hint" style="margin-left:6px">（宛先数×通数）</span></span>
+              </div>
+
+              <div style="display:flex;gap:8px;margin-top:14px"><div style="flex:1"></div>
+                <button class="vs-btn vs-green" onclick="gcSend()"><i class="ti ti-send"></i>送信する</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="vs-card">
+            <div class="vs-cardh"><i class="ti ti-history"></i>個別配信履歴
+              <select id="gc-hist-month" onchange="gcRenderHistory()" style="margin-left:auto;font-family:inherit;font-size:13px;border:1px solid #c9ccd1;border-radius:6px;padding:6px 10px;background:#fff"></select>
+            </div>
+            <div class="vs-cardb" style="padding:0">
+              <div class="tbl-wrap"><table class="vs-table">
+                <thead><tr><th>送信日時</th><th>送信先</th><th>内容</th><th>通数</th><th>PDF</th></tr></thead>
+                <tbody id="gc-hist-rows"></tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- タブ：通知マスタ ---- -->
+        <div id="f-tab-master" style="display:none">
+          <div id="m-list">
+            <div class="panel">
+              <div class="toolbar">
+                <div class="f-hint"><i class="ti ti-info-circle"></i> 通知イベントは何種類でも作成できます。設定した基準日・タイミングで自動送信されます。</div>
+                <button class="vs-btn vs-green" onclick="mOpen(null)"><i class="ti ti-plus"></i>新規作成</button>
+              </div>
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>通知名</th><th>チャネル</th><th>基準</th><th>タイミング</th><th>通数</th><th>状態</th></tr></thead>
+                <tbody id="m-rows"></tbody>
+              </table></div>
+            </div>
+          </div>
+
+          <div id="m-detail" style="display:none">
+            <button class="vs-btn vs-back" style="margin:4px 0 14px" onclick="mBackList()"><i class="ti ti-arrow-left"></i> 通知マスタ一覧へ戻る</button>
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-bell-cog"></i><span id="m-crumb">新規通知イベント</span></div>
+              <div class="vs-cardb">
+                <div class="vs-fg"><label>通知名<span class="vs-req">必須</span></label><input type="text" id="m-name" placeholder="例：四十九日 法要のご案内"></div>
+                <div class="vs-fg">
+                  <label>チャネル（両方選択可）</label>
+                  <div class="checks">
+                    <div class="check" id="m-chan-sms" onclick="mChan('sms')"><i class="ti ti-device-mobile"></i> SMS</div>
+                    <div class="check" id="m-chan-line" onclick="mChan('line')"><i class="ti ti-brand-line"></i> LINE</div>
+                  </div>
+                </div>
+                <div class="vs-row2">
+                  <div class="vs-fg">
+                    <label>基準日</label>
+                    <div class="seg-full">
+                      <div class="toggle" id="m-base-funeral" onclick="mBase('funeral')">葬儀日基準</div>
+                      <div class="toggle" id="m-base-death" onclick="mBase('death')">没日基準</div>
+                    </div>
+                  </div>
+                  <div class="vs-fg">
+                    <label>タイミング</label>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                      <span>基準日から</span>
+                      <input type="number" id="m-days" class="f-num" value="42" min="0">
+                      <span>日後</span>
+                      <input type="time" id="m-time" value="10:00" class="f-num" style="width:auto">
+                    </div>
+                  </div>
+                </div>
+                <div class="vs-fg">
+                  <label>URLを載せる場合（短縮してから本文に挿入）</label>
+                  <div class="addr-row">
+                    <input type="text" id="m-url" placeholder="https://... 長いURLを貼り付け">
+                    <button class="map-btn" onclick="mShortenUrl()"><i class="ti ti-link"></i>短縮</button>
+                  </div>
+                  <div id="m-url-out" class="vs-hint" style="display:none"></div>
+                </div>
+                <div class="vs-fg">
+                  <label>通知内容<span class="vs-req">必須</span></label>
+                  <textarea id="m-body" rows="4" placeholder="本文を入力…" style="width:100%;font-family:inherit;font-size:14px;color:#2b2f36;background:#fff;border:1px solid #c9ccd1;border-radius:5px;padding:9px 12px;resize:vertical" oninput="mUpdateCounter()"></textarea>
+                  <div class="f-counter">
+                    <span id="m-charcount">0文字</span>
+                    <span class="seg-pill" id="m-segpill">0通</span>
+                    <span class="vs-hint">70文字ごと（2通目以降67文字）で1通換算。</span>
+                  </div>
+                </div>
+                <div class="vs-fg">
+                  <label>有効／無効</label>
+                  <label class="vs-switch"><input type="checkbox" id="m-active" checked><span class="vs-slider"></span></label>
+                  <span class="vs-swlabel" id="m-active-lbl">有効（自動送信ON）</span>
+                </div>
+              </div>
+              <div class="vs-actions"><button class="vs-btn vs-back" onclick="mBackList()"><i class="ti ti-arrow-left"></i> 一覧へ戻る</button><div class="vs-spacer"></div><button class="vs-btn vs-green" onclick="mSave()">保存する</button></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- タブ：送信実績 ---- -->
+        <div id="f-tab-report" style="display:none">
+          <div class="m-info" style="background:var(--accent-bg);border:1px solid #bcd8f2;color:#1a4a7a">
+            <i class="ti ti-info-circle" style="color:var(--accent)"></i>
+            <div>月毎のSMS／LINE送信数（通数）とPDF生成件数を確認できます。<b>確認表示のみ</b>で、請求データへの自動連携は行いません。</div>
+          </div>
+          <div class="panel">
+            <div class="tbl-wrap"><table>
+              <thead><tr><th>対象月</th><th>SMS通数</th><th>LINE通数</th><th>PDF件数</th><th>合計</th></tr></thead>
+              <tbody id="f-report-rows"></tbody>
+            </table></div>
+          </div>
+          <div class="f-hint" style="margin-top:8px">※通数・件数のみを表示します（送信料は管理画面に表示しません）。PDFは生成1件を1カウント。LINEの通数換算（70文字＝1通の扱い）は請求方法とあわせて確定予定。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 予約フォームへの遷移バナー -->
+    <div class="form-banners">
+      <div class="fb-head">遺族向け 予約フォーム（別ページ）</div>
+      <div class="fb-grid">
+        <a class="fb-card fb-kaishu" href="yawaragi_reservation_form.html">
+          <span class="fb-ic"><i class="ti ti-truck"></i></span>
+          <span class="fb-body">
+            <span class="fb-title">回収予約</span>
+            <span class="fb-sub">後飾り祭壇・香典返礼品の回収日時をご予約いただくフォーム</span>
+          </span>
+          <span class="fb-go">開く<i class="ti ti-arrow-right"></i></span>
+        </a>
+        <a class="fb-card fb-houyou" href="houyou_reservation_form.html">
+          <span class="fb-ic"><i class="ti ti-flower"></i></span>
+          <span class="fb-body">
+            <span class="fb-title">法事予約</span>
+            <span class="fb-sub">四十九日・一周忌・三回忌・七回忌のご希望を承るフォーム</span>
+          </span>
+          <span class="fb-go">開く<i class="ti ti-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 登録/編集 モーダル -->
+<div class="backdrop" id="backdrop"><div class="modal">
+  <div class="modal-header"><h3 id="modalTitle"><i class="ti ti-plus"></i>回収予約の登録</h3><button class="modal-close" onclick="closeModal()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div class="call-banner" id="callBanner"><div><div class="who" id="callWho">葬家へ発信</div><div class="tel" id="callTel">—</div></div>
+      <a class="call" id="callBtn" href="#"><i class="ti ti-phone-call"></i>発信</a></div>
+    <div class="call-note" id="callNote">お電話でご希望を伺いながら、下記に入力して登録できます。</div>
+    <div id="modalInfo"></div>
+    <div class="contact-box">
+      <div class="frow"><div class="fg"><label>予約者名</label><input type="text" id="f-reserver" placeholder="例）糸和 太郎"></div>
+        <div class="fg"><label>電話番号</label><input type="tel" id="f-tel" placeholder="例）090-1234-5678" onchange="syncCallTel()"></div></div>
+      <div id="f-contacts"></div>
+      <button type="button" class="add-contact-btn" onclick="addContact('f')"><i class="ti ti-phone-plus"></i>電話番号を追加</button>
+    </div>
+    <div class="frow"><div class="fg"><label>葬家名</label><input type="text" id="f-family" placeholder="例）糸和家"></div>
+      <div class="fg"><label>会場名</label><input type="text" id="f-venue"></div></div>
+    <div class="fg" id="fdateWrap"><label>葬儀日</label><input type="date" id="f-fdate"></div>
+    <div class="frow"><div class="fg"><label>回収 訪問日</label><input type="date" id="f-date"></div>
+      <div class="fg"><label>時間</label><select id="f-time"></select></div></div>
+    <div class="fg"><label>訪問エリア</label><select id="f-area"></select><div class="slot-hint" id="slotHint"></div>
+      <label class="free-toggle"><input type="checkbox" id="f-free" onchange="onFreeToggle()"><span>予約枠外で登録する（受付枠に関わらず、任意の日時で登録）</span></label></div>
+    <div class="fg"><label>回収先住所</label>
+      <div class="addr-row">
+        <input type="text" id="f-city" placeholder="市区郡（例：札幌市中央区）">
+        <input type="text" id="f-rest" placeholder="以下住所（番地・建物名）">
+        <button type="button" class="map-btn" onclick="openMap()" title="Googleマップで開く"><i class="ti ti-map-pin"></i>地図</button>
+      </div>
+    </div>
+    <div class="fg"><label>回収内容</label><div class="checks" id="f-contents">
+      <div class="check" data-v="祭壇">後飾り祭壇</div><div class="check" data-v="枕机">枕机</div><div class="check" data-v="返礼品">香典返礼品</div></div></div>
+    <div class="frow"><div class="fg"><label>経路</label><div class="seg-full">
+      <div class="toggle" id="f-web" onclick="pickChannel('web')"><i class="ti ti-world"></i>web</div>
+      <div class="toggle" id="f-phone" onclick="pickChannel('phone')"><i class="ti ti-phone"></i>荷電</div></div></div>
+      <div class="fg"><label>登録区分</label><div class="seg-full">
+      <div class="toggle" id="f-auto" onclick="pickSource('auto')">自動予約</div>
+      <div class="toggle" id="f-manual" onclick="pickSource('manual')">手入力</div></div></div></div>
+    <div class="fg"><label>メモ</label><textarea id="f-memo" placeholder="搬出経路・立会者など"></textarea></div>
+    <div class="modal-actions"><button class="btn btn-danger" id="btnDelete" onclick="cancelCurrent()"><i class="ti ti-x"></i>予約をキャンセル</button>
+      <div class="spacer"></div><button class="btn" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveModal()"><i class="ti ti-device-floppy"></i>保存して完了にする</button></div>
+  </div>
+</div></div>
+
+<!-- 通知モーダル -->
+<div class="backdrop" id="notifyBackdrop"><div class="modal modal-sm">
+  <div class="modal-header"><h3 id="notifyTitle"><i class="ti ti-message"></i>通知の送信</h3><button class="modal-close" onclick="closeNotify()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div class="fg"><label>送信先（訃報SMS通知済のご家族・最大10名）</label>
+      <div id="n-recipients" class="recip-list"></div>
+      <div class="recip-note" id="n-recipNote"></div></div>
+    <div class="fg"><label>本文（テンプレート）</label><div class="msg-preview" id="n-msg"></div></div>
+    <div class="fg" id="n-hist-wrap"><label>送信履歴</label><div id="n-history" class="hist-list"></div></div>
+    <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeNotify()">キャンセル</button>
+      <button class="btn btn-primary" onclick="doSend()"><i class="ti ti-send"></i>選択した宛先に送信</button></div>
+  </div>
+</div></div>
+<!-- 回収不要 登録モーダル -->
+<div class="backdrop" id="noneedBackdrop"><div class="modal modal-sm">
+  <div class="modal-header"><h3><i class="ti ti-ban"></i>回収不要として登録</h3><button class="modal-close" onclick="closeNoNeed()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div id="noneed-who" style="font-size:13px;color:var(--text-secondary);margin-bottom:14px"></div>
+    <div class="fg"><label>理由</label><select id="nn-reason">
+      <option>該当なし（回収物なし）</option><option>お別れの会</option><option>自宅回収不要</option><option>葬家で処分</option><option>その他</option>
+    </select></div>
+    <div class="call-note" style="margin:0 0 14px">回収不要も「完了」として扱われ、以降の自動リマインドは送信されません。</div>
+    <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeNoNeed()">キャンセル</button>
+      <button class="btn btn-primary" onclick="submitNoNeed()"><i class="ti ti-check"></i>回収不要で完了</button></div>
+  </div>
+</div></div>
+<div class="backdrop" id="hBackdrop"><div class="modal">
+  <div class="modal-header"><h3 id="hTitle"><i class="ti ti-flower"></i>法要ご希望の確定</h3><button class="modal-close" onclick="hClose()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div class="call-banner" id="hCallBanner"><div><div class="who" id="hCallWho">葬家へ発信</div><div class="tel" id="hCallTel">—</div></div>
+      <a class="call" id="hCallBtn" href="#"><i class="ti ti-phone-call"></i>発信</a></div>
+    <div class="call-note">お電話でご希望を確認し、日時を確定してください。</div>
+    <div id="hInfo"></div>
+    <div class="frow"><div class="fg"><label>故人名</label><input type="text" id="h-deceased" placeholder="例）後藤 一郎"></div>
+      <div class="fg"><label>葬家名</label><input type="text" id="h-family" placeholder="例）後藤家"></div></div>
+    <div class="frow"><div class="fg" id="h-death-field" style="display:none"><label>ご逝去日</label><input type="date" id="h-death" onchange="hRecalcHachi()"></div>
+      <div class="fg"><label id="h-hachi-label">四十九日（参考）</label><input type="text" id="h-hachi" readonly></div></div>
+    <div class="contact-box">
+      <div class="frow"><div class="fg"><label>予約者名</label><input type="text" id="h-reserver" placeholder="例）後藤 花子"></div>
+        <div class="fg"><label>電話番号</label><input type="tel" id="h-tel" placeholder="例）090-1234-5678" onchange="syncHCallTel()"></div></div>
+      <div id="h-contacts"></div>
+      <button type="button" class="add-contact-btn" onclick="addContact('h')"><i class="ti ti-phone-plus"></i>電話番号を追加</button>
+    </div>
+    <div class="fg"><label>ご希望会場</label><select id="h-venue" onchange="hVenueChange()"></select></div>
+    <div class="fg" id="h-hall-field" style="display:none"><label>やわらぎ斎場 会場（確定時に選択）</label><select id="h-hall"></select></div>
+    <div class="fg" id="h-temple-field" style="display:none"><label>お寺（寺院を検索して選択）</label>
+      <div class="temple-pick"><button type="button" class="btn btn-sm" onclick="openTemplePicker('h')"><i class="ti ti-search"></i>寺院を選択</button><span class="temple-sel" id="h-temple-sel">未選択</span></div></div>
+    <div class="fg" id="h-home-field" style="display:none"><label>ご自宅住所</label>
+      <div class="frow"><div class="fg"><label>市区郡</label><select id="h-home-city" onchange="hHomeTown()"></select></div><div class="fg"><label>町村</label><select id="h-home-town"></select></div></div>
+      <input type="text" id="h-home-rest" placeholder="以下住所（番地・建物名）" style="margin-top:8px"></div>
+    <div class="frow"><div class="fg"><label>ご希望日</label><input type="date" id="h-date"></div>
+      <div class="fg"><label>時間帯</label><select id="h-ampm"><option>午前</option><option>午後</option></select></div></div>
+    <div class="fg"><label>メモ</label><textarea id="h-memo" placeholder="お寺名・ご住所・ご要望など"></textarea></div>
+    <div class="modal-actions"><button class="btn btn-danger" id="hDelete" onclick="hCancelBooking()"><i class="ti ti-x"></i>キャンセルにする</button>
+      <div class="spacer"></div><button class="btn" onclick="hClose()">閉じる</button>
+      <button class="btn btn-primary" id="hConfirmBtn" onclick="hConfirm()"><i class="ti ti-phone-check"></i>電話で確定して保存</button></div>
+  </div>
+</div></div>
+<div class="backdrop" id="templeBackdrop"><div class="modal">
+  <div class="modal-header"><h3><i class="ti ti-building-church"></i>寺院を選択</h3><button class="modal-close" onclick="closeTemplePicker()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <input type="text" id="tp-search" class="tp-search" placeholder="寺院名 / フリガナ / 住所 / TEL" oninput="renderTemples()">
+    <div class="tp-count" id="tp-count"></div>
+    <div class="tp-filters"><select id="tp-shuha" onchange="renderTemples()"><option value="">宗派名</option></select></div>
+    <div class="tp-list" id="tp-list"></div>
+    <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeTemplePicker()">閉じる</button><button class="btn btn-primary" id="tp-confirm" onclick="confirmTemple()" disabled><i class="ti ti-check"></i>この寺院を確定</button></div>
+  </div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ====== 定数 ====== */
+const AREAS=['札幌','小樽','石狩','江別','北広島・恵庭・千歳','旭川市','深川市・滝川市','名寄市・士別市'];
+/* ===== 会場マスタ（葬儀会場設定と共通・単一ソース） ===== */
+const VENUE_MASTER=[
+  {id:1,name:'やわらぎ斎場 センティア28',short:'センティア',code:'124',addr:'北海道札幌市中央区南二条西',tel:'011-000-0124'},
+  {id:2,name:'やわらぎ斎場 山鼻',short:'山鼻',code:'118',addr:'北海道札幌市中央区南二十条西',tel:'011-000-0118'},
+  {id:3,name:'やわらぎ伏見別邸',short:'伏見',code:'132',addr:'北海道札幌市中央区南十三条西',tel:'011-000-0132'},
+  {id:4,name:'やわらぎ北円山別邸',short:'北円山',code:'145',addr:'北海道札幌市中央区北五条西',tel:'011-000-0145'},
+  {id:5,name:'やわらぎ斎場 新琴似',short:'新琴似',code:'156',addr:'北海道札幌市北区新琴似五条',tel:'011-000-0156'},
+  {id:6,name:'やわらぎ斎場 篠路',short:'篠路',code:'171',addr:'北海道札幌市北区篠路八条',tel:'011-000-0171'},
+  {id:7,name:'やわらぎ新川別邸',short:'新川',code:'163',addr:'北海道札幌市北区新川五条',tel:'011-000-0163'},
+  {id:8,name:'やわらぎ斎場 あいの里',short:'あいの里',code:'188',addr:'北海道札幌市北区あいの里二条',tel:'011-000-0188'},
+  {id:9,name:'やわらぎ斎場 屯田',short:'屯田',code:'195',addr:'北海道札幌市北区屯田六条',tel:'011-000-0195'},
+];
+const VENUES=VENUE_MASTER.map(v=>v.name);
+function venueByName(n){return VENUE_MASTER.find(v=>v.name===n);}
+function venueShort(n){const v=venueByName(n);return (v&&v.short)||n;}
+function venueCode(n){const v=venueByName(n);return (v&&v.code)||'—';}
+/* 回収住所（市区郡）：エリア別の市区郡プール／表示は「札幌市」を削除 */
+const CITY_POOL={
+  '札幌':['札幌市中央区','札幌市北区','札幌市東区','札幌市白石区','札幌市豊平区','札幌市西区'],
+  '小樽':['小樽市'],'江別':['江別市'],
+  '北広島・恵庭・千歳':['北広島市','恵庭市','千歳市','南幌町','長沼町'],
+  '石狩':['石狩市','石狩市花川南','石狩市花川北'],
+  '旭川市':['旭川市'],'深川市・滝川市':['深川市','滝川市'],'名寄市・士別市':['名寄市','士別市'],
+};
+function pickCity(area){const p=CITY_POOL[area]||['札幌市中央区'];return p[Math.floor(rnd()*p.length)];}
+function shiku(city){return (city||'').replace('札幌市','');}
+const DOW=['日','月','火','水','木','金','土'];
+const CONTENT_LABEL={祭壇:'後飾り祭壇',枕机:'枕机',返礼品:'香典返礼品'};
+const SURNAMES=['佐藤','鈴木','高橋','田中','伊藤','渡辺','山本','中村','小林','加藤','吉田','山田','佐々木','山口','松本','井上','木村','清水','山崎','森','池田','橋本','阿部','石川','前田','藤田','後藤','近藤','坂本','遠藤','青木','福田','西村','太田','岡田','中島','原田','小野','竹内','金子','和田','中山','石田','上田','森田','原','柴田','酒井','工藤','宮本'];
+const GIVEN=['太郎','花子','一郎','京子','健一','美咲','大輔','幸子','和夫','洋子','茂','千代','正雄','久美子','博','敏子','清','節子','勇','文子','昭','悦子','稔','光子','豊','静子','進','和子','孝','裕子','義男','ハル','武','トメ','三郎','よし子'];
+const TODAY='2026-07-13';
+/* エリア別 予約枠設定（予約可能な曜日・開始時刻・各枠の受付数）※フォームと同一 */
+const AREA_CONFIG={
+  '札幌':{region:'道央',days:'all',starts:[10,11,12,13,14,15,16,17],cap:2,note:'花川南・花川北はこちら',span:'毎日 10:00–18:00（1時間枠）'},
+  '小樽':{region:'道央',days:'all',starts:[11,12,13,14,15,16],cap:1,note:'',span:'毎日 11:00–17:00（1時間枠）'},
+  '石狩':{region:'道央',days:[5],starts:[10,12,14,16],cap:1,note:'花川は札幌へ',span:'毎週 金曜 10:00–18:00（2時間枠）'},
+  '江別':{region:'道央',days:[2,6],starts:[10,12,14,16],cap:1,note:'',span:'毎週 火・土曜 10:00–18:00（2時間枠）'},
+  '北広島・恵庭・千歳':{region:'道央',days:[0,3],starts:[10,12,14,16],cap:1,note:'',span:'毎週 日・水曜 10:00–18:00（2時間枠）'},
+  '旭川市':{region:'道北',days:'all',starts:[10,11,12,13,14,15,16,17],cap:4,capMap:{10:2},note:'10時台のみ2件',span:'毎日 10:00–18:00（1時間枠）'},
+  '深川市・滝川市':{region:'道北',days:'all',starts:[10,11,12,13,14,15,16,17],cap:1,note:'',span:'毎日 10:00–18:00（1時間枠）'},
+  '名寄市・士別市':{region:'道北',days:'all',starts:[10,11,12,13,14,15,16,17],cap:1,note:'',span:'毎日 10:00–18:00（1時間枠）'},
+};
+const REGIONS=['道央','道北'];
+function areasIn(region){return Object.keys(AREA_CONFIG).filter(a=>AREA_CONFIG[a].region===region);}
+function capAt(cfg,h){return (cfg.capMap&&cfg.capMap[h]!==undefined)?cfg.capMap[h]:cfg.cap;}
+function maxCapOf(cfg){let m=cfg.cap;if(cfg.capMap)Object.values(cfg.capMap).forEach(v=>{if(v>m)m=v;});return m;}
+const slotLabel=h=>String(h).padStart(2,'0')+':00';
+const ALL_HOURS=(function(){let mn=99,mx=0;Object.values(AREA_CONFIG).forEach(c=>{mn=Math.min(mn,Math.min.apply(null,c.starts));mx=Math.max(mx,Math.max.apply(null,c.starts));});const o=[];for(let h=mn;h<=mx;h++)o.push(h);return o;})();
+
+/* ====== 乱数（固定シード） ====== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mulberry32(7);
+const pick=a=>a[Math.floor(rnd()*a.length)];
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function isoAdd(i,days){const d=new Date(i+'T00:00');d.setDate(d.getDate()+days);return iso(d);}
+function addDaysDate(dt,days){const d=new Date(dt);d.setDate(d.getDate()+days);return d;}
+function mondayOfDate(dt){const d=new Date(dt);d.setDate(d.getDate()-((d.getDay()+6)%7));d.setHours(0,0,0,0);return d;}
+function diffDays(a,b){return Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/86400000);}
+
+/* ====== 基準日：デフォルト＝葬儀日+40日後の週（＝今頃が対応期） ====== */
+const STATUS_BASE=mondayOfDate(addDaysDate(new Date(TODAY+'T00:00'),-47)); // 対応週の葬儀日側（既定：47日前の週）
+const AREA_BASE=mondayOfDate(new Date(TODAY+'T00:00'));                     // 回収訪問側＝当週
+
+/* ====== データ生成（葬儀ベース：没日→葬儀日→回収予約） ====== */
+let seq=0; let data=[];
+function areaValidDates(area,fromISO,count){const cfg=AREA_CONFIG[area];const out=[];
+  for(let i=0;i<45&&out.length<count;i++){const s=isoAdd(fromISO,i);const wd=new Date(s+'T00:00').getDay();
+    if(cfg.days==='all'||cfg.days.includes(wd))out.push(s);}return out;}
+(function seed(){
+  const start=isoAdd(TODAY,-63); // 9週前から
+  for(let i=0;i<77;i++){                     // 11週分
+    const death=isoAdd(start,i);
+    const n=1+Math.floor(rnd()*5);           // 1日1〜5件
+    for(let k=0;k<n;k++){
+      const fdate=isoAdd(death,1+Math.floor(rnd()*3));
+      const sur=pick(SURNAMES);const fam=sur+'家';const deceased=sur+'\u3000'+pick(GIVEN);
+      const tel=(rnd()<.5?'090':'080')+'-'+String(1000+Math.floor(rnd()*9000))+'-'+String(1000+Math.floor(rnd()*9000));
+      const roll=rnd();
+      let reservation=null,noCollection=null;
+      if(roll<.50){ // 予約完了
+        const area=pick(AREAS),cfg=AREA_CONFIG[area];
+        const cand=areaValidDates(area,isoAdd(fdate,5),8);
+        const vDate=cand.length?pick(cand):isoAdd(fdate,7);
+        const web=rnd()<.62;
+        reservation={reservedDate:isoAdd(fdate,1+Math.floor(rnd()*3)),visitDate:vDate,visitTime:slotLabel(pick(cfg.starts)),reserver:sur+'\u3000'+pick(GIVEN),
+          area,addr:{city:pickCity(area),rest:(1+Math.floor(rnd()*20))+'丁目'+(1+Math.floor(rnd()*15))+'-'+(1+Math.floor(rnd()*20))},contents:rnd()<.5?['祭壇','返礼品']:(rnd()<.5?['祭壇']:['枕机','返礼品']),
+          channel:web?'web':'phone',source:web?'auto':'manual',status:{kakuno:rnd()<.4,zenjitsu:rnd()<.3,toujitsu:false},
+          memo:'',editedFields:rnd()<.15?['visitTime']:[]};
+      }else if(roll<.62){ // 回収不要（フォーム全て「いいえ」＝該当なし／お別れの会 など）
+        const web=rnd()<.6;
+        noCollection={date:isoAdd(fdate,2+Math.floor(rnd()*10)),reason:web?'該当なし（フォーム回答）':pick(['お別れの会','自宅回収不要','葬家で処分']),source:web?'form':'manual'};
+      }
+      if(reservation){
+        if(rnd()<.12){ reservation.cancel={date:isoAdd(fdate,6+Math.floor(rnd()*20)),by:(rnd()<.5?'ユーザー':'管理画面')}; }
+        else if(rnd()<.18){ reservation.change={date:isoAdd(fdate,5+Math.floor(rnd()*16)),by:(rnd()<.5?'ユーザー':'管理画面'),fromDate:isoAdd(reservation.visitDate,-(2+Math.floor(rnd()*5))),fromTime:reservation.visitTime}; reservation.editedFields=['visitDate']; }
+      }
+      const notify={sms:null,line:null};
+      if(!reservation&&!noCollection&&rnd()<.25){ if(rnd()<.5)notify.sms=isoAdd(fdate,20); else notify.line=isoAdd(fdate,20); }
+      const nRec=1+Math.floor(rnd()*4); const smsRecipients=[];
+      for(let k=0;k<nRec;k++) smsRecipients.push({name:sur+'\u3000'+pick(GIVEN),tel:pick(['090','080','070'])+'-'+String(1000+Math.floor(rnd()*9000))+'-'+String(1000+Math.floor(rnd()*9000)),obitDate:isoAdd(fdate,-1)});
+      const notifyHistory=[];
+      if(notify.sms) notifyHistory.push({date:notify.sms,kind:'sms',recipients:smsRecipients.slice(0,Math.min(smsRecipients.length,1+Math.floor(rnd()*nRec))).map(r=>r.name)});
+      if(notify.line) notifyHistory.push({date:notify.line,kind:'line',recipients:[fam+'（LINE連携）']});
+      data.push({id:++seq,deathDate:death,funeralDate:fdate,family:fam,deceased:deceased,venue:pick(VENUES),tel,reservation,noCollection,notify,smsRecipients,notifyHistory});
+    }
+  }
+})();
+
+/* ====== 状態 ====== */
+let weekOffset=0, currentView='status', filter='pending', currentRegion='道央', statusRegion='道央', currentAreaSel='札幌';
+let closedSlots=new Map(); /* 予約不可にした空き枠数：'エリア|日付|時刻' → 件数 */
+function closedOf(key){return closedSlots.get(key)||0;}
+function closeOne(key){
+  const parts=key.split('|'),area=parts[0],dISO=parts[1],time=parts[2],cap=capAt(AREA_CONFIG[area],parseInt(time,10));
+  const ba=Math.min(cap,activeAt(area,dISO,time).length),cur=closedOf(key),open=cap-ba-cur;
+  if(open<=0){toast('空き枠がありません');return;}
+  closedSlots.set(key,cur+1);renderArea();toast('空き枠を1つ予約不可にしました');
+}
+function openOne(key){const cur=closedOf(key);if(cur<=0)return;if(cur-1<=0)closedSlots.delete(key);else closedSlots.set(key,cur-1);renderArea();toast('予約不可を1つ解除しました');}
+
+/* ====== 共通ヘルパ ====== */
+function isCancelled(f){return !!(f.reservation&&f.reservation.cancel);}
+function isReserved(f){return !!(f.reservation&&!f.reservation.cancel);}
+function isNoNeed(f){return !!f.noCollection;}
+function isResolved(f){return isReserved(f)||isNoNeed(f);} // 予約完了 または 回収不要 ＝ 完了（キャンセルは含めない）
+function isChanged(f){return !!(f.reservation&&f.reservation.change);}
+function autoRemind(f){ if(isResolved(f)||isCancelled(f))return null; const dt=isoAdd(f.deathDate,42); return {date:dt,sent:diffDays(dt,TODAY)>=0}; } // 没日+42日 正午（未解決のみ送信）
+function manualNotified(f){return f.notify.sms||f.notify.line;}
+function anyNotified(f){const a=autoRemind(f);return manualNotified(f)||(a&&a.sent);}
+function fmtMD(i){const d=new Date(i+'T00:00');return (d.getMonth()+1)+'/'+d.getDate();}
+function fmtFull(i){const d=new Date(i+'T00:00');return (d.getMonth()+1)+'月'+d.getDate()+'日（'+DOW[d.getDay()]+'）';}
+function statusWeek(){const mon=addDaysDate(STATUS_BASE,weekOffset*7);const days=[...Array(7)].map((_,i)=>iso(addDaysDate(mon,i)));return {mon,days,set:new Set(days)};}
+function weekFunerals(){const {set}=statusWeek();return data.filter(f=>set.has(f.funeralDate));}
+
+/* ====== 表示切替 ====== */
+function setView(v){currentView=v;weekOffset=0;
+  document.querySelectorAll('#viewSeg button').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  document.getElementById('statusView').style.display=v==='status'?'block':'none';
+  document.getElementById('areaView').style.display=v==='area'?'block':'none';
+  document.getElementById('statusFilters').style.visibility=v==='status'?'visible':'hidden';
+  document.getElementById('statusRegions').style.display=v==='status'?'':'none';
+  render();}
+function setFilter(f){filter=f;document.querySelectorAll('#statusFilters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderStatus();}
+function shiftWeek(n){weekOffset=n===0?0:weekOffset+n;render();}
+function render(){renderWeekLabel();renderKPI();currentView==='status'?renderStatus():renderArea();}
+
+function renderWeekLabel(){
+  if(currentView==='status'){
+    const {mon,days}=statusWeek();
+    document.getElementById('weekLabel').textContent=mon.getFullYear()+'年 '+fmtMD(days[0])+' – '+fmtMD(days[6])+'（葬儀日）';
+    document.getElementById('weekSub').textContent='回収対応の目安：葬儀から約40日後＝'+(weekOffset===0?'今週':fmtMD(isoAdd(days[0],40))+'頃');
+    document.getElementById('homeBtn').textContent='対応週へ';
+  }else{
+    const mon=addDaysDate(AREA_BASE,weekOffset*7);const d0=iso(mon),d6=iso(addDaysDate(mon,6));
+    document.getElementById('weekLabel').textContent=mon.getFullYear()+'年 '+fmtMD(d0)+' – '+fmtMD(d6)+'（回収訪問日）';
+    document.getElementById('weekSub').textContent='予約枠の埋まり状況';
+    document.getElementById('homeBtn').textContent='今週へ';
+  }
+}
+
+/* ====== KPI ====== */
+function renderKPI(){
+  const list=weekFunerals();
+  const total=list.length;
+  const reserved=list.filter(isReserved).length, noNeed=list.filter(isNoNeed).length, cancelled=list.filter(isCancelled).length;
+  const done=reserved+noNeed, pending=total-done-cancelled;
+  const notified=list.filter(f=>!isResolved(f)&&!isCancelled(f)&&anyNotified(f)).length;
+  const uncontacted=pending-notified;
+  const autoSent=list.filter(f=>{const a=autoRemind(f);return a&&a.sent;}).length;
+  const rate=total?Math.round(done/total*100):0;
+  document.getElementById('kpi').innerHTML=
+    card('','対応対象の葬儀',total,'件','葬儀日+約40日の週')+
+    card('done','完了',done,'件','予約 '+reserved+'・回収不要 '+noNeed)+
+    card('alert','未完了 / キャンセル',pending+' / '+cancelled,'件','未連絡 '+uncontacted+' 件は最優先')+
+    card('info','自動リマインド送信済',autoSent,'件','没日+42日 正午に送信');
+  document.getElementById('rateNum').textContent=rate+'%';
+  const p=x=>total?x/total*100:0;
+  document.getElementById('compBar').innerHTML='<span class="s-done" style="width:'+p(reserved)+'%"></span><span class="s-noneed" style="width:'+p(noNeed)+'%"></span><span class="s-notified" style="width:'+p(notified)+'%"></span><span class="s-alert" style="width:'+p(uncontacted)+'%"></span><span class="s-cancel" style="width:'+p(cancelled)+'%"></span>';
+}
+function card(cls,lbl,num,unit,sub){return '<div class="kpi-card '+cls+'"><div class="lbl">'+lbl+'</div><div class="num">'+num+'<small>'+unit+'</small></div><div class="sub">'+sub+'</div></div>';}
+
+/* ====== 予約状況 ====== */
+function areaRegion(f){const a=f.reservation&&f.reservation.area;return (a&&AREA_CONFIG[a])?AREA_CONFIG[a].region:null;}
+function setStatusRegion(r){statusRegion=r;document.querySelectorAll('#statusRegions .rtab').forEach(b=>b.classList.toggle('on',b.dataset.r===r));renderStatus();}
+function renderStatus(){
+  let list=weekFunerals();
+  if(filter==='pending')list=list.filter(f=>!isResolved(f));
+  if(filter==='done')list=list.filter(f=>isResolved(f)||isCancelled(f));
+  list=list.filter(f=>{const rg=areaRegion(f);return rg===null||rg===statusRegion;});
+  const {days}=statusWeek();
+  const cap=document.getElementById('listCap');
+  cap.innerHTML = filter==='pending'
+    ? '<i class="ti ti-alert-triangle"></i>未対応の葬家です。荷電で予約を完了させるか、回収不要として登録してください（見落とし防止）。'
+    : '<i class="ti ti-list-check"></i><b>'+statusRegion+'</b>エリアの状況です（葬儀日ベース）。予約前の葬家は両エリアに表示されます。';
+  const body=document.getElementById('statusBody'); body.innerHTML='';
+  document.getElementById('statusEmpty').style.display=list.length?'none':'block';
+  days.forEach(day=>{
+    const rows=list.filter(f=>f.funeralDate===day).sort((a,b)=>a.family.localeCompare(b.family));
+    if(!rows.length)return;
+    const dn=rows.filter(isResolved).length;
+    const gh=document.createElement('tr');gh.className='daygroup';
+    gh.innerHTML='<td colspan="6">'+fmtFull(day)+'<span class="cnt">'+rows.length+'件</span><span class="mini">完了 <b>'+dn+'</b> / '+rows.length+'</span></td>';
+    body.appendChild(gh);
+    rows.forEach(f=>{
+      const resolved=isResolved(f),cancelled=isCancelled(f),elapsed=diffDays(f.funeralDate,TODAY);
+      const overdue=!resolved&&!cancelled&&elapsed>=40;
+      const tr=document.createElement('tr');tr.className='row'+(resolved?'':(cancelled?' cancel-row':(overdue?' pending-row overdue':' pending-row')));
+      let doneCell,dateCell,ops;
+      if(cancelled){
+        const cx=f.reservation.cancel,r=f.reservation;
+        doneCell='<span class="badge b-cancel"><i class="ti ti-x"></i>キャンセル</span>';
+        dateCell='<div class="rdate">'+fmtMD(cx.date)+' キャンセル</div><div class="rsub">'+cx.by+'による取消／元予約 '+fmtMD(r.visitDate)+' '+r.visitTime+'</div>';
+        ops='<button class="op" onclick="openEdit('+f.id+')"><i class="ti ti-eye"></i>詳細</button>';
+      }else if(isReserved(f)){
+        const r=f.reservation,changed=isChanged(f);
+        doneCell='<span class="badge b-done"><i class="ti ti-check"></i>予約完了</span>'+(changed?' <span class="badge b-change"><i class="ti ti-refresh"></i>変更 '+fmtMD(r.change.date)+'</span>':'');
+        dateCell='<div class="rdate">'+fmtMD(r.reservedDate)+' 予約</div><div class="rsub">回収 '+fmtMD(r.visitDate)+' '+r.visitTime+'／'+(r.channel==='web'?'web':'荷電')+(changed?'　<span style="color:var(--edit)">変更：'+r.change.by+'</span>':'')+'</div>';
+        ops='<button class="op" onclick="openEdit('+f.id+')"><i class="ti ti-edit"></i>詳細</button>';
+      }else if(isNoNeed(f)){
+        const nc=f.noCollection;
+        doneCell='<span class="badge b-noneed"><i class="ti ti-check"></i>回収不要</span>';
+        dateCell='<div class="rdate">'+fmtMD(nc.date)+' 登録</div><div class="rsub">'+nc.reason+'／'+(nc.source==='form'?'フォーム':'手入力')+'</div>';
+        ops='<button class="op" onclick="revertNoNeed('+f.id+')"><i class="ti ti-arrow-back-up"></i>取消</button>';
+      }else{
+        doneCell='<span class="badge b-pending"><i class="ti ti-alert-triangle"></i>未完了</span>';
+        const a=autoRemind(f),chips=[];
+        if(a){ chips.push(a.sent?'<span class="n-chip n-auto-sent"><i class="ti ti-robot"></i>自動送信済 '+fmtMD(a.date)+'</span>'
+                              :'<span class="n-chip n-auto-plan"><i class="ti ti-clock"></i>送信予定 '+fmtMD(a.date)+' 12:00</span>'); }
+        if(f.notify.sms)chips.push('<span class="n-chip n-sms"><i class="ti ti-message"></i>SMS '+fmtMD(f.notify.sms)+'</span>');
+        if(f.notify.line)chips.push('<span class="n-chip n-line"><i class="ti ti-brand-line"></i>LINE '+fmtMD(f.notify.line)+'</span>');
+        dateCell='<div class="notif">'+chips.join('')+'</div>';
+        ops='<button class="op op-sms" onclick="openNotify('+f.id+',\'sms\')"><i class="ti ti-message"></i>SMS</button>'+
+            '<button class="op op-line" onclick="openNotify('+f.id+',\'line\')"><i class="ti ti-brand-line"></i>LINE</button>'+
+            '<button class="op op-reg" onclick="openRegister('+f.id+')"><i class="ti ti-phone-plus"></i>登録（荷電）</button>'+
+            '<button class="op op-none" onclick="openNoNeed('+f.id+')"><i class="ti ti-ban"></i>回収不要</button>';
+      }
+      const wd=DOW[new Date(f.funeralDate+'T00:00').getDay()];
+      tr.innerHTML='<td class="c-day"><span class="d">'+fmtMD(f.funeralDate)+'（'+wd+'）</span><div class="sub'+(overdue?' od':'')+'">葬儀から'+elapsed+'日</div></td>'+
+        '<td class="fam">'+(f.deceased||f.family)+'<div class="rsub">'+f.family+'</div></td>'+
+        '<td class="venue"><span class="vshort">'+venueShort(f.venue)+'</span><span class="vcode">'+venueCode(f.venue)+'</span><div class="vfull">'+f.venue+'</div></td>'+
+        '<td>'+doneCell+'</td><td>'+dateCell+'</td><td><div class="ops">'+ops+'</div></td>';
+      body.appendChild(tr);
+    });
+  });
+}
+
+/* ====== エリア別 予約枠シート ====== */
+function reservationsAt(area,dateISO,time){return data.filter(f=>f.reservation&&f.reservation.area===area&&f.reservation.visitDate===dateISO&&f.reservation.visitTime===time);}
+function activeAt(area,dateISO,time){return reservationsAt(area,dateISO,time).filter(f=>!isCancelled(f));}
+function bkCard(f){
+  const cancelled=isCancelled(f),changed=isChanged(f);
+  const city=shiku(f.reservation.addr&&f.reservation.addr.city||'');
+  let tag='';
+  if(cancelled)tag='<div class="bk-tag t-cancel"><i class="ti ti-x"></i>キャンセル '+fmtMD(f.reservation.cancel.date)+'（'+f.reservation.cancel.by+'）</div>';
+  else if(changed)tag='<div class="bk-tag t-change"><i class="ti ti-refresh"></i>変更 '+fmtMD(f.reservation.change.date)+'（'+f.reservation.change.by+'）</div>';
+  return '<div class="bk'+(cancelled?' bk-cancelled':(changed?' ed':''))+'" onclick="openEdit('+f.id+')">'+
+    '<div class="bk-name">'+(f.deceased||f.family)+'<span class="bk-ch">'+(f.reservation.channel==='web'?'<i class="ti ti-world"></i>':'<i class="ti ti-phone"></i>')+'</span></div>'+
+    '<div class="bk-meta">'+fmtMD(f.funeralDate)+'葬儀・'+venueShort(f.venue)+'</div>'+
+    (city?'<div class="bk-city"><i class="ti ti-map-pin"></i>'+city+'</div>':'')+
+    tag+'</div>';
+}
+function slotActions(area,dateISO,time,skey,open){
+  let c='';
+  for(let i=0;i<open;i++) c+='<button class="slot-btn create" onclick="openCreate(\''+area+'\',\''+dateISO+'\',\''+time+'\')"><i class="ti ti-plus"></i>新規作成</button>';
+  return '<div class="slot-foot2"><div class="create-col">'+c+'</div>'+
+    '<button class="slot-close-btn tall" onclick="closeOne(\''+skey+'\')" title="空き枠を予約不可にする"><i class="ti ti-ban"></i><span>予約不可</span></button></div>';
+}
+function renderArea(){
+  const rt=document.getElementById('areaRegions');rt.innerHTML='';
+  REGIONS.forEach(rg=>{const b=document.createElement('button');b.className='rtab'+(rg===currentRegion?' on':'');b.textContent=rg;
+    b.onclick=()=>{currentRegion=rg;currentAreaSel=areasIn(rg)[0];renderArea();};rt.appendChild(b);});
+  const tabs=document.getElementById('areaTabs');tabs.innerHTML='';
+  areasIn(currentRegion).forEach(a=>{const b=document.createElement('button');b.className='atab'+(a===currentAreaSel?' on':'');b.textContent=a;
+    b.onclick=()=>{currentAreaSel=a;renderArea();};tabs.appendChild(b);});
+  const cfg=AREA_CONFIG[currentAreaSel];
+  const mon=addDaysDate(AREA_BASE,weekOffset*7);
+  const week=[...Array(7)].map((_,i)=>addDaysDate(mon,i));
+  const cols=week;
+  const operates=d=>cfg.days==='all'||cfg.days.includes(d.getDay());
+  const isSlotAt=(d,h)=>operates(d)&&cfg.starts.indexOf(h)>=0;
+  const capDesc=cfg.capMap?('各枠 '+cfg.cap+'件（'+Object.keys(cfg.capMap).map(hh=>hh+'時台 '+cfg.capMap[hh]+'件').join('・')+'）'):('各枠 '+cfg.cap+'件');
+  document.getElementById('areaSched').innerHTML='<b>'+currentAreaSel+'</b>　'+cfg.span+'　／　'+capDesc+(cfg.note?'　<span style="color:var(--text-muted)">（'+cfg.note+'）</span>':'');
+  // 集計（キャンセルは枠を占有しない。枠のあるセルのみ）
+  let slots=0,booked=0,closed=0;
+  cols.forEach(d=>cfg.starts.forEach(h=>{ if(!operates(d))return; const k=currentAreaSel+'|'+iso(d)+'|'+slotLabel(h);const cap=capAt(cfg,h);
+    const ba=Math.min(cap,activeAt(currentAreaSel,iso(d),slotLabel(h)).length);
+    const cc=Math.min(closedOf(k),cap-ba);
+    slots+=cap-cc; booked+=ba; closed+=cc;}));
+  const pct=slots?Math.round(booked/slots*100):0;
+  document.getElementById('fillText').textContent='この週の予約枠 '+booked+' / '+slots+'（'+pct+'%）'+(closed?'　予約不可 '+closed+'枠':'');
+  document.getElementById('fillBar').style.width=pct+'%';
+  // グリッド（全7日 × 1時間刻み）
+  const ROWH=maxCapOf(cfg)>=2?134:112;
+  const grid=document.getElementById('sheetGrid');
+  grid.style.gridTemplateColumns='54px repeat(7,132px)';
+  grid.innerHTML='<div class="sh-corner"></div>';
+  cols.forEach(d=>{const h=document.createElement('div');
+    h.className='sh-head'+(d.getDay()===6?' sat':'')+(d.getDay()===0?' sun':'')+(iso(d)===TODAY?' today':'')+(operates(d)?'':' off');
+    h.innerHTML='<div class="dow">'+DOW[d.getDay()]+'</div><div class="day">'+d.getDate()+'</div>';grid.appendChild(h);});
+  ALL_HOURS.forEach(h=>{
+    const tl=document.createElement('div');tl.className='sh-time';tl.textContent=slotLabel(h);tl.style.height=ROWH+'px';grid.appendChild(tl);
+    cols.forEach(d=>{
+      const dISO=iso(d),time=slotLabel(h),skey=currentAreaSel+'|'+dISO+'|'+time;
+      const all=reservationsAt(currentAreaSel,dISO,time), active=all.filter(f=>!isCancelled(f)), cancelledList=all.filter(isCancelled);
+      const cell=document.createElement('div');cell.style.height=ROWH+'px';
+      if(!isSlotAt(d,h)){
+        // 予約枠が無い → 何も表示しない（ただし管理画面で移動された予約があればカードのみ表示）
+        if(all.length===0){ cell.className='bslot noslot'; }
+        else { cell.className='bslot noslot has'; cell.innerHTML='<div class="bslot-main"><div class="bk-scroll">'+active.map(bkCard).join('')+cancelledList.map(bkCard).join('')+'</div></div>'; }
+        grid.appendChild(cell); return;
+      }
+      const cap=capAt(cfg,h);
+      const bookedActive=Math.min(cap,active.length);
+      const closedCount=Math.min(closedOf(skey),cap-bookedActive);
+      const open=cap-bookedActive-closedCount;
+      const full=bookedActive>=cap;
+      const isEmpty=(active.length===0&&cancelledList.length===0&&closedCount===0);
+      cell.className='bslot'+(full?' full':'')+(isEmpty?' empty':'');
+      const cards=active.map(bkCard).join('')+cancelledList.map(bkCard).join('');
+      let closedChips='';
+      for(let i=0;i<closedCount;i++) closedChips+='<div class="slot-closed" onclick="openOne(\''+skey+'\')" title="クリックで予約可能に戻す"><i class="ti ti-ban"></i>予約不可<span class="undo">解除</span></div>';
+      let createBtns='';
+      for(let i=0;i<open;i++) createBtns+='<button class="slot-btn create" onclick="openCreate(\''+currentAreaSel+'\',\''+dISO+'\',\''+time+'\')"><i class="ti ti-plus"></i>新規作成</button>';
+      const scroll=(cards||closedChips)?'<div class="bk-scroll">'+cards+closedChips+'</div>':'';
+      const createBlock=open>0?'<div class="create-col">'+createBtns+'</div>':'';
+      const side=open>0?'<div class="bslot-side"><button class="slot-close-btn tall" onclick="closeOne(\''+skey+'\')" title="空き枠を予約不可にする"><i class="ti ti-ban"></i><span>予約不可</span></button></div>':'';
+      cell.innerHTML='<div class="bslot-main">'+scroll+createBlock+'</div>'+side;
+      grid.appendChild(cell);
+    });
+  });
+}
+
+/* ====== 通知モーダル ====== */
+let notifyCtx=null;
+function openNotify(id,kind){const f=data.find(x=>x.id===id);notifyCtx={id,kind};
+  document.getElementById('notifyTitle').innerHTML=kind==='sms'?'<i class="ti ti-message"></i>SMSで予約案内を送信':'<i class="ti ti-brand-line"></i>LINEで予約案内を送信';
+  const box=document.getElementById('n-recipients');box.innerHTML='';
+  let recips = kind==='sms' ? (f.smsRecipients||[]).map(r=>({name:r.name,tel:r.tel,obit:r.obitDate})) : [{name:f.family+'（LINE連携）',tel:''}];
+  const MAX=10;
+  recips.forEach((r,i)=>{const over=i>=MAX;const row=document.createElement('label');row.className='recip-row'+(over?' over':'');
+    row.innerHTML='<input type="checkbox" '+(over?'disabled':'checked')+'><span class="rc-name">'+r.name+'</span><span class="rc-tel">'+(r.tel||'')+'</span>'+(r.obit?'<span class="rc-obit">訃報SMS '+fmtMD(r.obit)+'</span>':'');
+    box.appendChild(row);});
+  document.getElementById('n-recipNote').textContent = '送信可能数は最大10名です。'+(recips.length>MAX?('（'+recips.length+'名中、上位10名まで送信）'):('（'+Math.min(recips.length,MAX)+'名）'));
+  document.getElementById('n-msg').textContent=f.family+' ご家族さま\n\nこの度はご葬儀を賜り誠にありがとうございました。\n後飾り祭壇・香典返礼品の回収予約がまだお済みでないようです。\n下記より、ご希望の回収日時をご登録ください。\n\n▶ 回収予約フォーム\nhttps://itowa.example/collect/'+f.id+'\n\nやわらぎ斎場 回収受付窓口';
+  renderNotifyHistory(f);
+  document.getElementById('notifyBackdrop').classList.add('open');}
+function renderNotifyHistory(f){const wrap=document.getElementById('n-hist-wrap'),h=document.getElementById('n-history');const hist=(f.notifyHistory||[]);
+  if(!hist.length){wrap.style.display='none';return;} wrap.style.display='';
+  h.innerHTML=hist.slice().reverse().map(x=>'<div class="hist-item"><span class="hi-kind '+(x.kind==='sms'?'k-sms':'k-line')+'">'+(x.kind==='sms'?'SMS':'LINE')+'</span><span class="hi-date">'+fmtFull(x.date)+'</span><span class="hi-rec">'+(x.recipients||[]).length+'名：'+(x.recipients||[]).join('、')+'</span></div>').join('');}
+function doSend(){const f=data.find(x=>x.id===notifyCtx.id);const kind=notifyCtx.kind;
+  const names=[...document.querySelectorAll('#n-recipients .recip-row input:checked')].map(c=>c.closest('.recip-row').querySelector('.rc-name').textContent);
+  if(!names.length){toast('送信先を1名以上お選びください');return;}
+  f.notify[kind]=TODAY; f.notifyHistory=f.notifyHistory||[]; f.notifyHistory.push({date:TODAY,kind:kind,recipients:names});
+  renderNotifyHistory(f); render();
+  toast((kind==='sms'?'SMS':'LINE')+'を'+names.length+'名に送信しました（'+f.family+'）');}
+function closeNotify(){document.getElementById('notifyBackdrop').classList.remove('open');}
+
+/* ====== 回収不要 登録 ====== */
+let noNeedId=null;
+function openNoNeed(id){const f=data.find(x=>x.id===id);noNeedId=id;
+  document.getElementById('noneed-who').innerHTML='<b>'+f.family+'</b>（'+f.venue+'）を回収不要にします。';
+  document.getElementById('nn-reason').value='該当なし（回収物なし）';
+  document.getElementById('noneedBackdrop').classList.add('open');}
+function submitNoNeed(){const f=data.find(x=>x.id===noNeedId);f.noCollection={date:TODAY,reason:document.getElementById('nn-reason').value,source:'manual'};f.notify={sms:null,line:null};
+  closeNoNeed();render();toast(f.family+' を回収不要（完了）に登録しました');}
+function closeNoNeed(){document.getElementById('noneedBackdrop').classList.remove('open');}
+function revertNoNeed(id){const f=data.find(x=>x.id===id);if(confirm(f.family+' の「回収不要」を取り消し、未完了に戻します。よろしいですか？')){f.noCollection=null;render();toast(f.family+' を未完了に戻しました');}}
+
+/* ====== 登録/編集 モーダル ====== */
+let editingId=null,draft=null;
+function fillSelects(){
+  document.getElementById('f-area').innerHTML=AREAS.map(a=>'<option>'+a+'</option>').join('');
+  document.getElementById('f-area').onchange=function(){fillTimeOptions(this.value,true);updateSlotHint();};
+  document.getElementById('f-date').addEventListener('change',updateSlotHint);
+  document.getElementById('f-time').addEventListener('change',updateSlotHint);
+  fillTimeOptions(AREAS[0],false);}
+function setToggle(){
+  document.getElementById('f-web').classList.toggle('on-web',draft.channel==='web');
+  document.getElementById('f-phone').classList.toggle('on-phone',draft.channel==='phone');
+  document.getElementById('f-auto').classList.toggle('on-auto',draft.source==='auto');
+  document.getElementById('f-manual').classList.toggle('on-manual',draft.source==='manual');
+  document.querySelectorAll('#f-contents .check').forEach(c=>c.classList.toggle('on',draft.contents.includes(c.dataset.v)));}
+function pickChannel(v){draft.channel=v;setToggle();}
+function pickSource(v){draft.source=v;setToggle();}
+document.getElementById('f-contents').addEventListener('click',e=>{const c=e.target.closest('.check');if(!c)return;const v=c.dataset.v,i=draft.contents.indexOf(v);if(i>=0)draft.contents.splice(i,1);else draft.contents.push(v);setToggle();});
+function openCreate(area,date,time){editingId='new';
+  draft={family:'',venue:VENUES[0],reserver:'',tel:'',contacts:[],fdate:TODAY,date:date||isoAdd(TODAY,7),time:time||'10:00',area:area||AREAS[0],addr:{city:'',rest:''},contents:[],channel:'phone',source:'manual',memo:'',status:{kakuno:false,zenjitsu:false,toujitsu:false},editedFields:[]};
+  document.getElementById('modalTitle').innerHTML='<i class="ti ti-user-plus"></i>新規作成（予約枠内）';
+  document.getElementById('callBanner').style.display='none';document.getElementById('callNote').style.display='none';
+  document.getElementById('btnDelete').style.display='none';
+  document.getElementById('modalInfo').innerHTML='';
+  document.getElementById('f-free').checked=false;
+  loadDraft();openModal();}
+function openCreateFree(){editingId='new';
+  const area=currentAreaSel||AREAS[0];
+  draft={family:'',venue:VENUES[0],reserver:'',tel:'',contacts:[],fdate:TODAY,date:isoAdd(TODAY,3),time:slotLabel(ALL_HOURS[0]),area:area,addr:{city:'',rest:''},contents:[],channel:'phone',source:'manual',memo:'',status:{kakuno:false,zenjitsu:false,toujitsu:false},editedFields:[]};
+  document.getElementById('modalTitle').innerHTML='<i class="ti ti-calendar-plus"></i>予約枠外で登録';
+  document.getElementById('callBanner').style.display='none';document.getElementById('callNote').style.display='none';
+  document.getElementById('btnDelete').style.display='none';
+  document.getElementById('modalInfo').innerHTML='<div class="m-info mi-change"><i class="ti ti-adjustments-alt"></i><div><b>予約枠外の登録</b>　受付枠に関わらず、任意の日時で登録できます。</div></div>';
+  document.getElementById('f-free').checked=true;
+  loadDraft();openModal();}
+function openRegister(id){const f=data.find(x=>x.id===id);editingId=id;
+  draft={family:f.family,venue:f.venue,reserver:'',tel:f.tel||'',contacts:[],fdate:f.funeralDate,date:isoAdd(TODAY,7),time:'10:00',area:AREAS[0],addr:{city:'',rest:''},contents:[],channel:'phone',source:'manual',memo:'',status:{kakuno:false,zenjitsu:false,toujitsu:false},editedFields:[]};
+  document.getElementById('modalTitle').innerHTML='<i class="ti ti-phone-plus"></i>回収予約の登録（荷電）';
+  showCall(f,true);document.getElementById('btnDelete').style.display='none';document.getElementById('modalInfo').innerHTML='';document.getElementById('f-free').checked=false;loadDraft();openModal();}
+function openEdit(id){const f=data.find(x=>x.id===id);if(!f.reservation)return;editingId=id;const r=f.reservation;
+  draft={family:f.family,venue:f.venue,reserver:(r.reserver||''),tel:f.tel||'',contacts:(r.contacts||[]),fdate:f.funeralDate,date:r.visitDate,time:r.visitTime,area:r.area,addr:{city:(r.addr&&r.addr.city)||'',rest:(r.addr&&r.addr.rest)||''},contents:r.contents.slice(),channel:r.channel,source:r.source,memo:r.memo,status:{...r.status},editedFields:r.editedFields.slice()};
+  document.getElementById('modalTitle').innerHTML=isCancelled(f)?'<i class="ti ti-eye"></i>予約の詳細（キャンセル済）':'<i class="ti ti-edit"></i>回収予約の編集';
+  const bd=document.getElementById('btnDelete');bd.style.display='inline-flex';
+  if(isCancelled(f)){bd.innerHTML='<i class="ti ti-arrow-back-up"></i>キャンセルを取り消す';bd.onclick=uncancelCurrent;}
+  else{bd.innerHTML='<i class="ti ti-x"></i>予約をキャンセル';bd.onclick=cancelCurrent;}
+  const info=document.getElementById('modalInfo');
+  if(isCancelled(f)){const cx=r.cancel;
+    info.innerHTML='<div class="m-info mi-cancel"><i class="ti ti-ban"></i><div><b>キャンセル済み</b>　'+fmtMD(cx.date)+'（'+cx.by+'による）<div class="mi-sub">元の予約：回収 '+fmtMD(r.visitDate)+' '+r.visitTime+'</div></div></div>';
+  }else if(r.change){
+    info.innerHTML='<div class="m-info mi-change"><i class="ti ti-refresh"></i><div><b>変更あり</b>　変更日 '+fmtMD(r.change.date)+'（'+r.change.by+'）'
+      +'<div class="mi-sub"><span class="mi-old">変更前　'+(r.change.fromDate?fmtMD(r.change.fromDate)+' '+(r.change.fromTime||''):'—')+'</span><i class="ti ti-arrow-right"></i><span class="mi-new">変更後　'+fmtMD(r.visitDate)+' '+r.visitTime+'</span></div></div></div>';
+  }else{ info.innerHTML=''; }
+  document.getElementById('f-free').checked = !isAcceptedSlot(r.area,r.visitDate,r.visitTime);
+  showCall(f,false);loadDraft();openModal();}
+function showCall(f,on){document.getElementById('callBanner').style.display='flex';document.getElementById('callNote').style.display=on?'block':'none';
+  document.getElementById('callWho').textContent=f.family+' へ発信';document.getElementById('callTel').textContent=f.tel;document.getElementById('callBtn').href='tel:'+(f.tel||'').replace(/-/g,'');}
+function isAcceptedSlot(area,dateISO,time){const cfg=AREA_CONFIG[area];if(!cfg||!dateISO)return false;
+  const wd=new Date(dateISO+'T00:00').getDay();
+  const okDay=cfg.days==='all'||cfg.days.indexOf(wd)>=0;
+  const okTime=cfg.starts.map(slotLabel).indexOf(time)>=0;
+  return okDay&&okTime;}
+function syncCallTel(){const t=document.getElementById('f-tel').value.trim();document.getElementById('callTel').textContent=t||'—';document.getElementById('callBtn').href='tel:'+t.replace(/-/g,'');}
+function syncHCallTel(){const t=document.getElementById('h-tel').value.trim();document.getElementById('hCallTel').textContent=t||'—';document.getElementById('hCallBtn').href='tel:'+t.replace(/-/g,'');}
+function contactCount(prefix){return document.getElementById(prefix+'-contacts').querySelectorAll('.contact-row').length;}
+function updateAddBtn(prefix){const b=document.getElementById(prefix+'-contacts').nextElementSibling;if(b&&b.classList.contains('add-contact-btn'))b.style.display=(contactCount(prefix)>=3)?'none':'';}
+function addContact(prefix,c){
+  const wrap=document.getElementById(prefix+'-contacts');
+  if(!c && wrap.querySelectorAll('.contact-row').length>=3){toast('追加できる電話番号は3件までです');return;}
+  const div=document.createElement('div');div.className='contact-row';
+  div.innerHTML='<input type="text" placeholder="お名前（予約者以外）"><input type="tel" placeholder="電話番号"><a class="c-call" title="発信"><i class="ti ti-phone-call"></i></a><button type="button" class="c-del" title="削除"><i class="ti ti-x"></i></button>';
+  const ins=div.querySelectorAll('input');ins[0].value=(c&&c.name)||'';ins[1].value=(c&&c.tel)||'';
+  const call=div.querySelector('.c-call');
+  const upd=()=>{const t=(ins[1].value||'').replace(/[^0-9+]/g,'');call.href='tel:'+t;call.classList.toggle('off',!t);};
+  ins[1].addEventListener('input',upd);upd();
+  div.querySelector('.c-del').onclick=()=>{div.remove();updateAddBtn(prefix);};
+  wrap.appendChild(div);updateAddBtn(prefix);
+}
+function renderContacts(prefix,list){const wrap=document.getElementById(prefix+'-contacts');wrap.innerHTML='';(list||[]).slice(0,3).forEach(c=>addContact(prefix,c));updateAddBtn(prefix);}
+function readContacts(prefix){return [...document.querySelectorAll('#'+prefix+'-contacts .contact-row')].map(r=>{const i=r.querySelectorAll('input');return {name:i[0].value.trim(),tel:i[1].value.trim()};}).filter(c=>c.name||c.tel);}
+function isFreeMode(){const el=document.getElementById('f-free');return !!(el&&el.checked);}
+function fillTimeOptions(area,keep){const cfg=AREA_CONFIG[area]||AREA_CONFIG[AREAS[0]];const ft=document.getElementById('f-time');
+  const cur=keep?ft.value:null; const hrs=isFreeMode()?ALL_HOURS:cfg.starts; const opts=hrs.map(slotLabel);
+  ft.innerHTML=opts.map(t=>'<option'+(t===cur?' selected':'')+'>'+t+'</option>').join('');
+  if(cur&&opts.indexOf(cur)<0)ft.value=opts[0];}
+function updateSlotHint(){const area=document.getElementById('f-area').value,cfg=AREA_CONFIG[area],date=document.getElementById('f-date').value;
+  const el=document.getElementById('slotHint');if(!el)return;
+  if(isFreeMode()){el.className='slot-hint free';el.innerHTML='<i class="ti ti-adjustments-alt"></i>予約枠外での登録です（受付枠に関わらず、任意の日時で登録します）';return;}
+  const bad=date&&!isAcceptedSlot(area,date,document.getElementById('f-time').value);
+  el.className='slot-hint'+(bad?' bad':'');
+  el.innerHTML='<i class="ti ti-info-circle"></i>予約受付：'+(cfg?cfg.span:'—')+(bad?'　<b>※この曜日・時間は受付枠外です（枠外で登録する場合は下のチェックをON）</b>':'');}
+function onFreeToggle(){fillTimeOptions(document.getElementById('f-area').value,true);updateSlotHint();}
+function loadDraft(){document.getElementById('f-family').value=draft.family;document.getElementById('f-venue').value=draft.venue;
+  document.getElementById('f-reserver').value=draft.reserver||'';document.getElementById('f-tel').value=draft.tel||'';renderContacts('f',draft.contacts||[]);
+  document.getElementById('f-fdate').value=draft.fdate;document.getElementById('f-date').value=draft.date;
+  document.getElementById('f-area').value=draft.area;
+  fillTimeOptions(draft.area,false);
+  const ft=document.getElementById('f-time');
+  if(draft.time&&![...ft.options].some(o=>o.value===draft.time)) ft.insertAdjacentHTML('afterbegin','<option>'+draft.time+'</option>');
+  ft.value=draft.time;
+  document.getElementById('f-city').value=draft.addr.city;document.getElementById('f-rest').value=draft.addr.rest;document.getElementById('f-memo').value=draft.memo;setToggle();updateSlotHint();}
+function readDraft(){draft.family=document.getElementById('f-family').value.trim();draft.venue=document.getElementById('f-venue').value.trim();
+  draft.reserver=document.getElementById('f-reserver').value.trim();draft.tel=document.getElementById('f-tel').value.trim();draft.contacts=readContacts('f');
+  draft.fdate=document.getElementById('f-fdate').value||TODAY;draft.date=document.getElementById('f-date').value;draft.time=document.getElementById('f-time').value;draft.area=document.getElementById('f-area').value;
+  draft.addr={city:document.getElementById('f-city').value.trim(),rest:document.getElementById('f-rest').value.trim()};draft.memo=document.getElementById('f-memo').value.trim();}
+function openMap(){const city=document.getElementById('f-city').value.trim(),rest=document.getElementById('f-rest').value.trim();
+  const q='北海道'+city+rest;if(!city&&!rest){toast('住所を入力すると地図が開けます');return;}
+  window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener');}
+function saveModal(){readDraft();if(!draft.family){alert('葬家名をご入力ください。');return;}
+  if(!draft.date){alert('回収 訪問日をご入力ください。');return;}
+  if(!isFreeMode() && !isAcceptedSlot(draft.area,draft.date,draft.time)){alert('「'+draft.area+'」は選択された曜日・時間の予約枠がありません。\n受付枠のある日時（'+AREA_CONFIG[draft.area].span+'）をお選びいただくか、「予約枠外で登録する」をONにしてください。');return;}
+  if(editingId==='new'){
+    const nf={id:++seq,deathDate:isoAdd(draft.fdate,-2),funeralDate:draft.fdate,family:draft.family,venue:draft.venue,tel:draft.tel||'',
+      reservation:{reservedDate:TODAY,visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,status:draft.status,memo:draft.memo,editedFields:[]},
+      noCollection:null,notify:{sms:null,line:null}};
+    data.push(nf);closeModal();render();toast('新規の葬家「'+nf.family+'」の予約を作成しました');return;
+  }
+  const f=data.find(x=>x.id===editingId);if(!f)return;
+  f.tel=draft.tel||'';
+  if(!f.reservation){f.reservation={reservedDate:TODAY,visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,status:draft.status,memo:draft.memo,editedFields:[]};f.family=draft.family;f.venue=draft.venue;f.funeralDate=draft.fdate;toast(f.family+' の回収予約を登録しました（完了）');}
+  else{const r=f.reservation,ch=new Set(r.editedFields),oldDate=r.visitDate,oldTime=r.visitTime;let moved=false;if(r.visitDate!==draft.date){ch.add('visitDate');moved=true;}if(r.visitTime!==draft.time){ch.add('visitTime');moved=true;}if(r.area!==draft.area){ch.add('area');moved=true;}if(JSON.stringify(r.contents.slice().sort())!==JSON.stringify(draft.contents.slice().sort()))ch.add('contents');if(r.memo!==draft.memo)ch.add('memo');
+    Object.assign(r,{visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,memo:draft.memo,status:draft.status,editedFields:[...ch]});
+    if(moved) r.change={date:TODAY,by:'管理画面',fromDate:oldDate,fromTime:oldTime};
+    f.family=draft.family;f.venue=draft.venue;f.funeralDate=draft.fdate;toast(f.family+' の予約を更新しました');}
+  closeModal();render();}
+function cancelCurrent(){const f=data.find(x=>x.id===editingId);if(!f||!f.reservation)return;if(confirm(f.family+' の回収予約をキャンセルします。キャンセルとして記録されます。よろしいですか？')){f.reservation.cancel={date:TODAY,by:'管理画面'};closeModal();render();toast(f.family+' の予約をキャンセルしました（管理画面）');}}
+function uncancelCurrent(){const f=data.find(x=>x.id===editingId);if(!f||!f.reservation)return;f.reservation.cancel=null;closeModal();render();toast(f.family+' のキャンセルを取り消しました');}
+function openModal(){document.getElementById('backdrop').classList.add('open');}
+function closeModal(){document.getElementById('backdrop').classList.remove('open');}
+document.getElementById('backdrop').addEventListener('click',e=>{if(e.target.id==='backdrop')closeModal();});
+document.getElementById('notifyBackdrop').addEventListener('click',e=>{if(e.target.id==='notifyBackdrop')closeNotify();});
+document.getElementById('noneedBackdrop').addEventListener('click',e=>{if(e.target.id==='noneedBackdrop')closeNoNeed();});
+document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200);}
+
+/* ====== 初期化 ====== */
+fillSelects();render();
+
+/* ====== ページ切替 ====== */
+function showPage(p){
+  document.getElementById('page-kaishu').style.display=p==='kaishu'?'block':'none';
+  document.getElementById('page-venue').style.display=p==='venue'?'block':'none';
+  document.getElementById('page-houyou').style.display=p==='houyou'?'block':'none';
+  document.getElementById('page-follow').style.display=p==='follow'?'block':'none';
+  document.getElementById('nav-kaishu').classList.toggle('active',p==='kaishu');
+  document.getElementById('nav-houyou').classList.toggle('active',p==='houyou');
+  document.getElementById('nav-follow').classList.toggle('active',p==='follow');
+  document.getElementById('nav-venue').classList.toggle('sub-active',p==='venue');
+  if(p==='venue') renderVenueList();
+  if(p==='houyou') renderHouyou();
+  if(p==='follow') renderFollow();
+  window.scrollTo(0,0);
+}
+function toggleSettings(){const s=document.getElementById('settingsSub');s.style.display=(s.style.display==='none')?'block':'none';}
+/* ====== 葬儀会場設定 ====== */
+let vEditingId=null;
+function renderVenueList(){
+  document.getElementById('v-detail').style.display='none';
+  document.getElementById('v-list').style.display='block';
+  const q=(document.getElementById('v-search').value||'').trim();
+  const tb=document.getElementById('v-rows');tb.innerHTML='';
+  VENUE_MASTER.filter(v=>!q||v.name.includes(q)).forEach(v=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td><a class="vs-link" onclick="openVenue('+v.id+')">'+v.name+'</a></td>'+
+      '<td class="vs-short">'+(v.short||'<span class="vs-muted">未登録</span>')+'</td>'+
+      '<td>'+(v.code?'<span class="vs-code">'+v.code+'</span>':'<span class="vs-muted">—</span>')+'</td>'+
+      '<td>'+v.addr+'</td>';
+    tb.appendChild(tr);
+  });
+}
+function openVenue(id){
+  vEditingId=id;const v=VENUE_MASTER.find(x=>x.id===id)||{name:'',short:'',code:'',addr:'',tel:''};
+  document.getElementById('v-crumb2').textContent=(v.name||'新規会場');
+  document.getElementById('v-name').value=v.name;document.getElementById('v-addr').value=v.addr;
+  document.getElementById('v-tel').value=v.tel||'';document.getElementById('v-code').value=v.code||'';
+  document.getElementById('v-short').value=v.short||'';
+  document.getElementById('v-codeErr').style.display='none';document.getElementById('v-code').classList.remove('vs-invalid');
+  document.getElementById('v-list').style.display='none';document.getElementById('v-detail').style.display='block';window.scrollTo(0,0);
+}
+document.addEventListener('input',function(e){if(e.target.id==='v-code'){e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,3);}});
+function saveVenue(){
+  const codeI=document.getElementById('v-code'),code=codeI.value;
+  if(!/^[0-9]{3}$/.test(code)){codeI.classList.add('vs-invalid');document.getElementById('v-codeErr').style.display='block';codeI.focus();return;}
+  const v=VENUE_MASTER.find(x=>x.id===vEditingId);
+  if(v){v.name=document.getElementById('v-name').value;v.addr=document.getElementById('v-addr').value;v.tel=document.getElementById('v-tel').value;v.code=code;v.short=document.getElementById('v-short').value;}
+  renderVenueList();render();/* 回収管理へ即反映 */
+  toast('会場設定を保存しました（コード '+code+'／短縮名 '+(v?v.short:'')+'）— 回収管理へ反映');
+}
+/* ====== CSV ダウンロード（予約状況・葬儀日基準・完了系／未完了除外） ====== */
+function csvEsc(s){s=String(s==null?'':s);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
+function downloadCSV(){
+  const list=weekFunerals().filter(f=>isResolved(f)||isCancelled(f)).sort((a,b)=>(a.funeralDate+a.family).localeCompare(b.funeralDate+b.family));
+  const head=['葬儀日','故人名','予約者名','会場短縮名','会場コード','状態','予約日/登録日','変更/取消','予約方法','実施者','回収日','回収時間','回収内容','エリア','住所（回収場所）','電話番号','追加電話番号','SMS送信数','LINE送信数','メモ'];
+  const lines=[head.join(',')];
+  const chLabel=cs=>(cs||[]).map(c=>CONTENT_LABEL[c]||c).join('・');
+  const ctLabel=cs=>(cs||[]).map(c=>c.name+'('+c.tel+')').join(' / ');
+  const method=ch=>ch==='web'?'web':'電話';
+  list.forEach(f=>{
+    const sms=f.notify&&f.notify.sms?1:0, line=f.notify&&f.notify.line?1:0;
+    let st,regd,chg='',by='',mtd='',vday='',vtime='',cont='',ar='',addr='',memo='',resv='',cts='';
+    if(isCancelled(f)){const r=f.reservation;st='キャンセル';regd=r.reservedDate;chg=fmtMD(r.cancel.date);by=r.cancel.by;mtd=method(r.channel);vday=r.visitDate;vtime=r.visitTime;cont=chLabel(r.contents);ar=r.area;addr=r.addr?('北海道'+(r.addr.city||'')+(r.addr.rest||'')):'';memo=r.memo||'';resv=r.reserver||'';cts=ctLabel(r.contacts);}
+    else if(isReserved(f)){const r=f.reservation;st='予約完了';regd=r.reservedDate;if(r.change){chg=fmtMD(r.change.date);by=r.change.by;}mtd=method(r.channel);vday=r.visitDate;vtime=r.visitTime;cont=chLabel(r.contents);ar=r.area;addr=r.addr?('北海道'+(r.addr.city||'')+(r.addr.rest||'')):'';memo=r.memo||'';resv=r.reserver||'';cts=ctLabel(r.contacts);}
+    else{const nc=f.noCollection;st='回収不要';regd=nc.date;mtd=nc.source==='form'?'web':'電話';cont='（回収不要）'+(nc.reason||'');}
+    lines.push([f.funeralDate,f.deceased||'',resv,venueShort(f.venue),venueCode(f.venue),st,regd,chg,mtd,by,vday,vtime,cont,ar,addr,f.tel||'',cts,sms,line,memo].map(csvEsc).join(','));
+  });
+  const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='回収予約_'+iso(statusWeek().mon)+'週.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  toast('CSVをダウンロードしました（完了＋キャンセル '+list.length+'件）');
+}
+
+/* ====== 法事希望管理 ====== */
+const HVENUES=['やわらぎ斎場','ご自宅','お寺'];
+const HOKKAIDO_H={'札幌市':['中央区','北区','東区','白石区','豊平区','南区','西区','厚別区','手稲区','清田区'],'小樽市':['花園','稲穂','築港','桜','銭函'],'石狩市':['花川南','花川北','花川東','樽川','本町'],'江別市':['野幌町','大麻','文京台','高砂町','萩ケ岡'],'北広島市':['中央','美沢','大曲','西の里','輪厚'],'恵庭市':['和光町','黄金中央','恵み野','島松'],'千歳市':['本町','千代田町','北栄','桜木','錦町']};
+const TEMPLES=[
+ {shuha:'真宗大谷派',name:'本光寺',kana:'ホンコウジ',addr:'札幌市北区屯田8条3丁目3-15',tel:'011-771-2015'},
+ {shuha:'真宗大谷派',name:'蓮光寺',kana:'レンコウジ',addr:'札幌市北区太平9条4丁目8-1',tel:'011-772-8810'},
+ {shuha:'真宗大谷派',name:'法国寺',kana:'ホウコクジ',addr:'札幌市東区本町1条1丁目5-25',tel:'011-781-5250'},
+ {shuha:'真宗大谷派',name:'北栄寺',kana:'ホクエイジ',addr:'札幌市東区北45条東1丁目3-12',tel:'011-751-3120'},
+ {shuha:'真宗大谷派',name:'慧林寺',kana:'エリンジ',addr:'札幌市豊平区豊平4条8丁目1-2',tel:'011-811-0102'},
+ {shuha:'真宗大谷派',name:'照源寺',kana:'ショウゲンジ',addr:'札幌市南区石山3条8丁目16-11',tel:'011-591-1611'},
+ {shuha:'真宗大谷派',name:'浄恩寺',kana:'ジョウオンジ',addr:'札幌市西区琴似3条6丁目1-28',tel:'011-621-0128'},
+ {shuha:'浄土真宗本願寺派',name:'西徳寺',kana:'サイトクジ',addr:'札幌市中央区南7条西8丁目5-1',tel:'011-511-0851'},
+ {shuha:'浄土真宗本願寺派',name:'眞光寺',kana:'シンコウジ',addr:'札幌市白石区本郷通2丁目北3-5',tel:'011-861-0305'},
+ {shuha:'曹洞宗',name:'中央寺',kana:'チュウオウジ',addr:'札幌市中央区南6条西2丁目1-1',tel:'011-511-0101'},
+ {shuha:'曹洞宗',name:'瑞龍寺',kana:'ズイリュウジ',addr:'札幌市豊平区中の島1条6丁目3-20',tel:'011-831-0320'},
+ {shuha:'浄土宗',name:'新善光寺',kana:'シンゼンコウジ',addr:'札幌市中央区南6条西1丁目2-5',tel:'011-511-0125'},
+ {shuha:'日蓮宗',name:'妙覚寺',kana:'ミョウカクジ',addr:'札幌市中央区南9条西5丁目1-10',tel:'011-521-0110'},
+ {shuha:'真言宗智山派',name:'成田山札幌別院',kana:'ナリタサン',addr:'札幌市中央区南7条西3丁目2-8',tel:'011-511-0208'},
+ {shuha:'臨済宗妙心寺派',name:'龍雲寺',kana:'リュウウンジ',addr:'札幌市豊平区平岸3条9丁目2-1',tel:'011-811-0921'},
+ {shuha:'天台宗',name:'圓山寺',kana:'エンザンジ',addr:'札幌市中央区宮の森1条9丁目1-3',tel:'011-611-0913'},
+ {shuha:'浄土真宗本願寺派',name:'覚王寺',kana:'カクオウジ',addr:'小樽市若松1丁目5-8',tel:'0134-22-0508'},
+ {shuha:'曹洞宗',name:'龍徳寺',kana:'リュウトクジ',addr:'小樽市真栄1丁目3-8',tel:'0134-23-0308'},
+];
+let hWeekOffset=0, hFilter='tmp', hEditId=null;
+const MEM_TYPES=[
+ {key:'shijuku',label:'四十九日',calc:d=>isoAdd(d,48)},
+ {key:'isshuki',label:'一周忌',calc:d=>addYearsISO(d,1)},
+ {key:'sankaiki',label:'三回忌',calc:d=>addYearsISO(d,2)},
+ {key:'nanakaiki',label:'七回忌',calc:d=>addYearsISO(d,6)},
+];
+let hType='shijuku';
+function addYearsISO(isoStr,y){const d=new Date(isoStr+'T00:00');d.setFullYear(d.getFullYear()+y);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function memTypeObj(k){return MEM_TYPES.find(t=>t.key===(k||hType))||MEM_TYPES[0];}
+function memLabel(){return memTypeObj().label;}
+function memDateOf(f,k){return memTypeObj(k).calc(f.deathDate);}
+function memRec(f,k){k=k||hType;if(k==='shijuku')return f.houyou||null;f.mem=f.mem||{};return f.mem[k]||null;}
+function setMemRec(f,rec,k){k=k||hType;if(k==='shijuku')f.houyou=rec;else{f.mem=f.mem||{};f.mem[k]=rec;}}
+function hachiOf(f){return memDateOf(f,hType);} // 現在タブの法要日（四十九日／一周忌／三回忌／七回忌）
+function hInvite(f){ if(hType==='shijuku'){const d=isoAdd(f.funeralDate,5);return {date:d,sent:diffDays(d,TODAY)>=0};} const d=isoAdd(memDateOf(f,hType),-30);return {date:d,sent:diffDays(d,TODAY)>=0}; }
+function hIsTmp(f){const h=memRec(f);return h&&h.status==='仮予約';}
+function hIsFixed(f){const h=memRec(f);return h&&h.status==='確定';}
+function hIsCancel(f){const h=memRec(f);return h&&h.status==='キャンセル';}
+function hIsNone(f){return !memRec(f);}
+function hVenueLabel(h){
+  if(h.venue==='やわらぎ斎場'&&h.hall)return 'やわらぎ斎場（'+venueShort(h.hall)+'）';
+  if(h.venue==='お寺'&&h.temple)return 'お寺（'+h.temple.name+'）';
+  return h.venue;
+}
+(function seedAnniv(){const r=mulberry32(77);const tel=()=>['090','080','070'][Math.floor(r()*3)]+'-'+String(1000+Math.floor(r()*9000))+'-'+String(1000+Math.floor(r()*9000));
+  [1,2,6].forEach(y=>{ for(let k=0;k<6;k++){
+    const anniv=iso(addDaysDate(AREA_BASE,Math.floor(r()*20)-3));
+    const death=addYearsISO(anniv,-y);const sur=pick(SURNAMES);
+    const nRec=1+Math.floor(r()*3),sms=[];for(let j=0;j<nRec;j++)sms.push({name:sur+'\u3000'+pick(GIVEN),tel:tel(),obitDate:isoAdd(death,-1)});
+    data.push({id:++seq,deathDate:death,funeralDate:isoAdd(death,2),family:sur+'家',deceased:sur+'\u3000'+pick(GIVEN),venue:pick(VENUES),tel:tel(),reservation:null,noCollection:{date:isoAdd(death,10),reason:'（過年度）',source:'manual'},notify:{sms:null,line:null},smsRecipients:sms,notifyHistory:[]});
+  }});
+})();
+(function seedHouyou(){const r=mulberry32(21);
+  function mk(f,status,tk){const hc=memDateOf(f,tk),dt=new Date(isoAdd(hc,-Math.floor(r()*6))+'T00:00');
+    const venue=HVENUES[Math.floor(r()*3)];
+    const o={venue:venue,dateKey:iso(dt),dateLabel:(dt.getMonth()+1)+'月'+dt.getDate()+'日（'+DOW[dt.getDay()]+'）',ampm:(r()<.5?'午前':'午後'),status:status,appliedDate:isoAdd(hc,-(20+Math.floor(r()*15))),channel:(r()<.7?'web':'phone'),confirmedDate:null,confirmedBy:null,memo:'',cancel:null,temple:null,homeAddr:null};
+    if(venue==='お寺') o.temple=TEMPLES[Math.floor(r()*TEMPLES.length)];
+    if(venue==='ご自宅'){const ks=Object.keys(HOKKAIDO_H),c=ks[Math.floor(r()*ks.length)],tw=HOKKAIDO_H[c];o.homeAddr={pref:'北海道',city:c,town:tw[Math.floor(r()*tw.length)],rest:(1+Math.floor(r()*20))+'丁目'+(1+Math.floor(r()*15))+'-'+(1+Math.floor(r()*20))};}
+    return o;}
+  data.forEach(f=>{ f.mem={};
+    MEM_TYPES.forEach(t=>{const roll=r();let rec=null;const hc=memDateOf(f,t.key);
+      if(roll<.34){rec=mk(f,'仮予約',t.key);}
+      else if(roll<.62){rec=mk(f,'確定',t.key);rec.confirmedDate=isoAdd(hc,-(10+Math.floor(r()*10)));rec.confirmedBy='電話';}
+      else if(roll<.72){rec=mk(f,'キャンセル',t.key);rec.cancel={date:isoAdd(hc,-(8+Math.floor(r()*10))),by:(r()<.5?'ユーザー':'管理画面')};}
+      setMemRec(f,rec,t.key);
+    });
+  });
+})();
+function hStatusWeek(){const mon=addDaysDate(AREA_BASE,hWeekOffset*7);const days=[...Array(7)].map((_,i)=>iso(addDaysDate(mon,i)));return {mon,days,set:new Set(days)};}
+function hWeekFunerals(){const {set}=hStatusWeek();return data.filter(f=>set.has(hachiOf(f)));}
+function hSetFilter(f){hFilter=f;document.querySelectorAll('#h-filters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderHouyou();}
+function hShiftWeek(n){hWeekOffset=(n===0)?0:hWeekOffset+n;renderHouyou();}
+function renderHouyou(){
+  const list=hWeekFunerals(), {mon,days}=hStatusWeek();
+  const monD=new Date(mon), sun=addDaysDate(mon,6);
+  document.getElementById('h-weekLabel').textContent=(monD.getMonth()+1)+'/'+monD.getDate()+'〜'+(sun.getMonth()+1)+'/'+sun.getDate();
+  document.getElementById('h-weekSub').textContent=memLabel()+'ベース'+(hWeekOffset===0?'（今週）':'');
+  // KPI
+  const tmp=list.filter(hIsTmp).length,fixed=list.filter(hIsFixed).length,cancel=list.filter(hIsCancel).length,none=list.filter(hIsNone).length;
+  document.getElementById('h-kpi').innerHTML=
+    card('',memLabel()+' 対象',list.length,'件','この週に'+memLabel())+
+    card('alert','仮予約（要電話確定）',tmp,'件','お電話で日時を確定')+
+    card('done','確定済',fixed,'件','日程確定')+
+    card('info','未申込 / キャンセル',none+' / '+cancel,'件','案内送信済・未申込含む');
+  // list
+  let filtered=list.slice();
+  if(hFilter==='tmp')filtered=filtered.filter(hIsTmp);
+  if(hFilter==='none')filtered=filtered.filter(hIsNone);
+  if(hFilter==='fixed')filtered=filtered.filter(f=>hIsFixed(f)||hIsCancel(f));
+  document.getElementById('h-cap').innerHTML = hFilter==='tmp'
+    ? '<i class="ti ti-alert-triangle"></i>web申込の仮予約です。お電話でご希望を確認し「確定」してください。'
+    : (hFilter==='none'
+      ? '<i class="ti ti-mail"></i>ご案内は送信済みですが、まだお申込みのない葬家です。全葬儀が対象です。'
+      : '<i class="ti ti-list-check"></i>この週に'+memLabel()+'を迎える全葬家の法要ご希望状況です（未申込も表示）。');
+  const body=document.getElementById('h-body');body.innerHTML='';
+  document.getElementById('h-empty').style.display=filtered.length?'none':'block';
+  days.forEach(day=>{
+    const rows=filtered.filter(f=>hachiOf(f)===day).sort((a,b)=>a.family.localeCompare(b.family));
+    if(!rows.length)return;
+    const gh=document.createElement('tr');gh.className='daygroup';
+    gh.innerHTML='<td colspan="6">'+fmtFull(day)+' '+memLabel()+'<span class="cnt">'+rows.length+'件</span></td>';body.appendChild(gh);
+    rows.forEach(f=>{
+      const h=memRec(f); let st,want,ops;
+      if(hIsCancel(f)){st='<span class="badge b-cancel"><i class="ti ti-x"></i>キャンセル</span>';want='<div class="rsub">'+h.cancel.by+'による取消 '+fmtMD(h.cancel.date)+'</div>';ops='<button class="op" onclick="openHouyou('+f.id+')"><i class="ti ti-eye"></i>詳細</button>';}
+      else if(hIsFixed(f)){st='<span class="badge b-fixed"><i class="ti ti-check"></i>確定</span>';want='<div class="rdate">'+hVenueLabel(h)+'</div><div class="rsub">'+h.dateLabel+' '+h.ampm+'／確定 '+fmtMD(h.confirmedDate)+'</div>';ops='<button class="op" onclick="openHouyou('+f.id+')"><i class="ti ti-edit"></i>詳細</button>';}
+      else if(hIsTmp(f)){st='<span class="badge b-tmp"><i class="ti ti-clock"></i>仮予約</span>';want='<div class="rdate">'+hVenueLabel(h)+'</div><div class="rsub">'+h.dateLabel+' '+h.ampm+'／'+(h.channel==='web'?'web申込':'電話')+' '+fmtMD(h.appliedDate)+'</div>';ops='<button class="op op-reg" onclick="openHouyou('+f.id+')"><i class="ti ti-phone-check"></i>電話で確定</button>';}
+      else{const iv=hInvite(f);st='<span class="badge b-pending"><i class="ti ti-mail"></i>未申込</span>';want='<div class="notif"><span class="n-chip '+(iv.sent?'n-auto-sent':'n-auto-plan')+'"><i class="ti ti-robot"></i>案内'+(iv.sent?'送信済':'予定')+' '+fmtMD(iv.date)+'</span></div>';ops='<button class="op op-reg" onclick="openHouyou('+f.id+')"><i class="ti ti-plus"></i>代理で登録</button>';}
+      const tr=document.createElement('tr');tr.className='row'+(hIsTmp(f)?' pending-row':'');
+      const hc=new Date(day+'T00:00');
+      tr.innerHTML='<td class="c-day"><span class="d">'+fmtMD(day)+'（'+DOW[hc.getDay()]+'）</span></td>'+
+        '<td class="fam">'+(f.deceased||f.family)+'<div class="rsub">'+f.family+'</div></td>'+
+        '<td class="venue"><span class="vshort">'+venueShort(f.venue)+'</span></td>'+
+        '<td>'+st+'</td><td>'+want+'</td><td><div class="ops">'+ops+'</div></td>';
+      body.appendChild(tr);
+    });
+  });
+}
+function openHouyou(id){const f=data.find(x=>x.id===id);if(!f)return;hEditId=id;
+  const h=memRec(f)||{venue:HVENUES[0],dateKey:hachiOf(f),dateLabel:'',ampm:'午前',status:'仮予約',memo:''};
+  document.getElementById('hTitle').innerHTML=hIsFixed(f)?'<i class="ti ti-flower"></i>'+memLabel()+' ご希望（確定済）':'<i class="ti ti-flower"></i>'+memLabel()+' ご希望の確定';
+  const hl=document.getElementById('h-hachi-label');if(hl)hl.textContent=memLabel()+'（参考）';
+  document.getElementById('hCallWho').textContent=f.family+' へ発信';document.getElementById('hCallTel').textContent=f.tel||'—';document.getElementById('hCallBtn').href='tel:'+(f.tel||'').replace(/-/g,'');
+  const hc=new Date(hachiOf(f)+'T00:00');
+  document.getElementById('h-deceased').value=(f.deceased||f.family);document.getElementById('h-deceased').readOnly=true;
+  document.getElementById('h-family').value=(f.family||'');document.getElementById('h-family').readOnly=true;
+  document.getElementById('h-death-field').style.display='none';
+  document.getElementById('h-reserver').value=(h.reserver||'');
+  document.getElementById('h-tel').value=(f.tel||'');
+  renderContacts('h',h.contacts||[]);
+  document.getElementById('h-hachi').value=(hc.getMonth()+1)+'月'+hc.getDate()+'日（'+DOW[hc.getDay()]+'）';
+  document.getElementById('h-venue').innerHTML=HVENUES.map(v=>'<option'+(v===h.venue?' selected':'')+'>'+v+'</option>').join('');
+  document.getElementById('h-hall').innerHTML=VENUES.map(v=>'<option'+(v===(h.hall||'')?' selected':'')+'>'+v+'</option>').join('');
+  const ts=document.getElementById('h-temple-sel');
+  if(h.temple){ts.textContent=h.temple.name+'（'+h.temple.addr+'）';ts.dataset.temple=JSON.stringify(h.temple);}else{ts.textContent='未選択';ts.dataset.temple='';}
+  document.getElementById('h-home-city').innerHTML='<option value="">選択</option>'+Object.keys(HOKKAIDO_H).map(c=>'<option>'+c+'</option>').join('');
+  const ha=h.homeAddr||{};document.getElementById('h-home-city').value=ha.city||'';hHomeTown();document.getElementById('h-home-town').value=ha.town||'';document.getElementById('h-home-rest').value=ha.rest||'';
+  hVenueChange();
+  document.getElementById('h-date').value=h.dateKey||hachiOf(f);
+  document.getElementById('h-ampm').value=h.ampm||'午前';
+  document.getElementById('h-memo').value=h.memo||'';
+  const info=document.getElementById('hInfo');
+  if(hIsCancel(f)) info.innerHTML='<div class="m-info mi-cancel"><i class="ti ti-ban"></i><div><b>キャンセル済み</b>　'+fmtMD(f.houyou.cancel.date)+'（'+f.houyou.cancel.by+'による）</div></div>';
+  else if(hIsFixed(f)) info.innerHTML='<div class="m-info mi-change"><i class="ti ti-check"></i><div><b>確定済み</b>　確定日 '+fmtMD(f.houyou.confirmedDate)+'（'+f.houyou.confirmedBy+'）</div></div>';
+  else info.innerHTML='';
+  document.getElementById('hConfirmBtn').innerHTML = hIsFixed(f)?'<i class="ti ti-device-floppy"></i>保存する':'<i class="ti ti-phone-check"></i>電話で確定して保存';
+  document.getElementById('hDelete').style.display=hIsCancel(f)?'none':'inline-flex';
+  document.getElementById('hBackdrop').classList.add('open');
+}
+let TEMPLE_SEL=null, templeTarget=null;
+function openTemplePicker(target){templeTarget=target;TEMPLE_SEL=null;
+  const sh=document.getElementById('tp-shuha');sh.innerHTML='<option value="">宗派名</option>'+[...new Set(TEMPLES.map(t=>t.shuha))].map(s=>'<option>'+s+'</option>').join('');
+  document.getElementById('tp-search').value='';document.getElementById('tp-confirm').disabled=true;
+  renderTemples();document.getElementById('templeBackdrop').classList.add('open');}
+function renderTemples(){const q=document.getElementById('tp-search').value.trim(),sh=document.getElementById('tp-shuha').value;
+  const list=TEMPLES.filter(t=>(!sh||t.shuha===sh)&&(!q||(t.name+t.kana+t.addr+t.tel).indexOf(q)>=0));
+  document.getElementById('tp-count').textContent='候補 '+list.length+' 件';
+  document.getElementById('tp-list').innerHTML=list.map(t=>'<div class="tp-item" onclick="selectTemple('+TEMPLES.indexOf(t)+',this)"><span class="tp-shuha">'+t.shuha+'</span><span class="tp-name">'+t.name+'</span><span class="tp-addr">'+t.addr+'</span></div>').join('')||'<div class="tp-empty">該当がありません</div>';}
+function selectTemple(idx,el){TEMPLE_SEL=TEMPLES[idx];[...document.querySelectorAll('#tp-list .tp-item')].forEach(x=>x.classList.remove('sel'));el.classList.add('sel');document.getElementById('tp-confirm').disabled=false;}
+function confirmTemple(){if(!TEMPLE_SEL)return;const t=TEMPLE_SEL;
+  if(templeTarget==='h'){const ts=document.getElementById('h-temple-sel');ts.textContent=t.name+'（'+t.addr+'）';ts.dataset.temple=JSON.stringify(t);document.getElementById('h-tel').value=t.tel;syncHCallTel();}
+  closeTemplePicker();}
+function closeTemplePicker(){document.getElementById('templeBackdrop').classList.remove('open');}
+function hHomeTown(){const c=document.getElementById('h-home-city').value;document.getElementById('h-home-town').innerHTML='<option value="">選択</option>'+((HOKKAIDO_H[c]||[]).map(t=>'<option>'+t+'</option>').join(''));}
+function hVenueChange(){const v=document.getElementById('h-venue').value;
+  document.getElementById('h-hall-field').style.display=(v==='やわらぎ斎場')?'':'none';
+  document.getElementById('h-temple-field').style.display=(v==='お寺')?'':'none';
+  document.getElementById('h-home-field').style.display=(v==='ご自宅')?'':'none';}
+function hReadModal(f){const h=memRec(f)||{};const dv=document.getElementById('h-date').value;const dt=dv?new Date(dv+'T00:00'):null;
+  h.venue=document.getElementById('h-venue').value;h.hall=(h.venue==='やわらぎ斎場')?document.getElementById('h-hall').value:'';
+  if(h.venue==='お寺'){const ds=document.getElementById('h-temple-sel').dataset.temple;h.temple=ds?JSON.parse(ds):null;}else h.temple=null;
+  if(h.venue==='ご自宅'){h.homeAddr={pref:'北海道',city:document.getElementById('h-home-city').value,town:document.getElementById('h-home-town').value,rest:document.getElementById('h-home-rest').value.trim()};}else h.homeAddr=null;
+  h.dateKey=dv;h.dateLabel=dt?((dt.getMonth()+1)+'月'+dt.getDate()+'日（'+DOW[dt.getDay()]+'）'):'';h.ampm=document.getElementById('h-ampm').value;h.memo=document.getElementById('h-memo').value.trim();
+  h.reserver=document.getElementById('h-reserver').value.trim();f.tel=document.getElementById('h-tel').value.trim();h.contacts=readContacts('h');
+  if(!h.appliedDate)h.appliedDate=TODAY; if(!h.channel)h.channel='phone';
+  setMemRec(f,h);return h;}
+function hRecalcHachi(){const dv=document.getElementById('h-death').value;if(!dv){document.getElementById('h-hachi').value='';return;}const d=new Date(memTypeObj().calc(dv)+'T00:00');document.getElementById('h-hachi').value=(d.getMonth()+1)+'月'+d.getDate()+'日（'+DOW[d.getDay()]+'）';}
+function openHouyouNew(){hEditId='new';
+  document.getElementById('hTitle').innerHTML='<i class="ti ti-flower"></i>法要予約の新規作成';
+  document.getElementById('hCallWho').textContent='新規登録';document.getElementById('hCallTel').textContent='—';document.getElementById('hCallBtn').removeAttribute('href');
+  document.getElementById('hInfo').innerHTML='';
+  ['h-deceased','h-family'].forEach(id=>{const e=document.getElementById(id);e.readOnly=false;e.value='';});
+  const hl=document.getElementById('h-hachi-label');if(hl)hl.textContent=memLabel()+'（参考）';
+  document.getElementById('h-death-field').style.display='';
+  document.getElementById('h-death').value=defaultDeathFor();hRecalcHachi();
+  document.getElementById('h-reserver').value='';document.getElementById('h-tel').value='';renderContacts('h',[]);
+  document.getElementById('h-venue').innerHTML=HVENUES.map(v=>'<option>'+v+'</option>').join('');
+  document.getElementById('h-hall').innerHTML=VENUES.map(v=>'<option>'+v+'</option>').join('');
+  const ts=document.getElementById('h-temple-sel');ts.textContent='未選択';ts.dataset.temple='';
+  document.getElementById('h-home-city').innerHTML='<option value="">選択</option>'+Object.keys(HOKKAIDO_H).map(c=>'<option>'+c+'</option>').join('');document.getElementById('h-home-town').innerHTML='<option value="">選択</option>';document.getElementById('h-home-rest').value='';
+  hVenueChange();
+  document.getElementById('h-date').value=hachiOfDeath(document.getElementById('h-death').value);document.getElementById('h-ampm').value='午前';document.getElementById('h-memo').value='';
+  document.getElementById('hDelete').style.display='none';
+  document.getElementById('hConfirmBtn').innerHTML='<i class="ti ti-check"></i>この内容で登録';
+  document.getElementById('hBackdrop').classList.add('open');}
+function defaultDeathFor(){const target=isoAdd(TODAY,3);if(hType==='shijuku')return isoAdd(target,-48);const yrs={isshuki:1,sankaiki:2,nanakaiki:6}[hType]||1;return addYearsISO(target,-yrs);}
+function hachiOfDeath(dv){return dv?memTypeObj().calc(dv):isoAdd(TODAY,3);}
+function hConfirm(){
+  if(hEditId==='new'){
+    const dec=document.getElementById('h-deceased').value.trim();
+    if(!dec){alert('故人名をご入力ください。');return;}
+    const fam=document.getElementById('h-family').value.trim()||(dec.split(/[\s\u3000]/)[0]+'家');
+    const death=document.getElementById('h-death').value||defaultDeathFor();
+    const nf={id:++seq,deathDate:death,funeralDate:isoAdd(death,2),family:fam,deceased:dec,venue:VENUES[0],tel:'',reservation:null,noCollection:null,notify:{sms:null,line:null},smsRecipients:[],notifyHistory:[],houyou:null,mem:{}};
+    hReadModal(nf);
+    const nh=memRec(nf);nh.status='確定';nh.confirmedDate=TODAY;nh.confirmedBy='電話';nh.appliedDate=TODAY;nh.channel='phone';nh.cancel=null;
+    data.push(nf);
+    const mon=mondayOfDate(new Date(hachiOf(nf)+'T00:00'));hWeekOffset=Math.round((mon-AREA_BASE)/(7*86400000));
+    hClose();hFilter='all';document.querySelectorAll('#h-filters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f==='all'));renderHouyou();toast(memLabel()+'の予約を新規作成しました（'+fam+'）');return;
+  }
+  const f=data.find(x=>x.id===hEditId);if(!f)return;const wasFixed=hIsFixed(f);const h=hReadModal(f);
+  if(h.status!=='確定'){h.status='確定';h.confirmedDate=TODAY;h.confirmedBy='電話';}
+  else if(!h.confirmedDate){h.confirmedDate=TODAY;h.confirmedBy='電話';}
+  if(h.cancel)h.cancel=null;
+  hClose();renderHouyou();toast(f.family+' の法要を'+(wasFixed?'更新':'確定')+'しました');}
+function hCancelBooking(){const f=data.find(x=>x.id===hEditId);if(!f)return;if(!confirm(f.family+' の法要ご希望をキャンセルにします。よろしいですか？'))return;
+  const h=hReadModal(f);h.status='キャンセル';h.cancel={date:TODAY,by:'管理画面'};hClose();renderHouyou();toast(f.family+' の法要をキャンセルにしました');}
+function hClose(){document.getElementById('hBackdrop').classList.remove('open');}
+document.getElementById('hBackdrop').addEventListener('click',e=>{if(e.target.id==='hBackdrop')hClose();});
+function hCSV(){const list=hWeekFunerals();
+  const head=[memLabel(),'故人名','葬家名','予約者名','会場短縮名','状態','希望会場','会場名（確定）','会場住所','希望日','時間帯','申込日','確定日','実施者','電話番号','追加電話番号','メモ'];
+  const lines=[head.join(',')];
+  const ctL=cs=>(cs||[]).map(c=>c.name+'('+c.tel+')').join(' / ');
+  const vName=h=>h.venue==='やわらぎ斎場'?(h.hall?venueShort(h.hall):''):(h.venue==='お寺'?(h.temple?h.temple.name:''):(h.venue==='ご自宅'?'ご自宅':''));
+  const vAddr=h=>h.venue==='お寺'?(h.temple?h.temple.addr:''):(h.venue==='ご自宅'&&h.homeAddr?(h.homeAddr.pref+h.homeAddr.city+(h.homeAddr.town||'')+h.homeAddr.rest):'');
+  list.forEach(f=>{const h=memRec(f);
+    if(!h){const iv=hInvite(f);lines.push([hachiOf(f),f.deceased||'',f.family,'',venueShort(f.venue),'未申込','','','','','','','','案内'+(iv.sent?'送信済':'予定'),'',f.tel||'','',''].map(csvEsc).join(','));return;}
+    lines.push([hachiOf(f),f.deceased||'',f.family,h.reserver||'',venueShort(f.venue),h.status,h.venue||'',vName(h),vAddr(h),h.dateLabel||'',h.ampm||'',h.appliedDate||'',h.confirmedDate||'',h.cancel?h.cancel.by:(h.confirmedBy||''),f.tel||'',ctL(h.contacts),h.memo||''].map(csvEsc).join(','));});
+  const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=memLabel()+'_'+iso(hStatusWeek().mon)+'週.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  toast('CSVをDLしました（'+memLabel()+'・全'+list.length+'件）');}
+function hSetType(k){hType=k;hWeekOffset=0;document.querySelectorAll('#h-tabs .htab').forEach(b=>b.classList.toggle('on',b.dataset.k===k));renderHouyou();}
+
+/* ============================================================
+   遺族フォロー（あいプラン：回収・法事予約の基盤機能）
+   ============================================================ */
+/* 通数計算：メディアSMS準拠（1通目70文字/半角160、以降67文字/半角153ごと） */
+function segInfo(str){
+  str=str||'';
+  var cp=0; for(var i=0;i<str.length;i++){var c=str.codePointAt(i); if(c>0xFFFF){i++;} cp += (c>0xFFFF?2:1);}
+  var ascii=/^[\x00-\x7F]*$/.test(str);
+  var seg;
+  if(cp===0) seg=0;
+  else if(ascii) seg = (str.length<=160)?1:Math.ceil(str.length/153);
+  else seg = (cp<=70)?1:Math.ceil(cp/67);
+  return {chars:cp, seg:seg};
+}
+
+/* 通知マスタ（サンプル） */
+var NOTIF_SEQ=3;
+var NOTIF_MASTER=[
+  {id:1,name:'四十九日 法要のご案内',chan:{sms:false,line:true},base:'funeral',days:42,time:'10:00',body:'＜葬儀社名＞\n四十九日法要のご案内です。日程・会場のご確認はこちらから。 https://itw.jp/h49x',active:true},
+  {id:2,name:'香典返し 発送のお知らせ',chan:{sms:true,line:true},base:'funeral',days:35,time:'11:00',body:'＜葬儀社名＞\n香典返しの発送準備が整いました。内容のご確認をお願いいたします。',active:true},
+  {id:3,name:'新盆のご案内',chan:{sms:true,line:false},base:'death',days:90,time:'09:00',body:'＜葬儀社名＞\n新盆に関するご案内をお送りします。',active:false}
+];
+
+/* 葬家一覧：既存 data を流用してフォロー用に加工 */
+var FOLLOW_HH = data.slice(0,118).map(function(f,i){
+  var lineMembers=[]; var rel=['喪主','長男','長女','次男','ご家族'];
+  var hasLine=f.notifyHistory.some(function(h){return h.kind==='line';});
+  var lc = hasLine ? (1+(i%2)) : (i%3===0?1:0);
+  for(var j=0;j<lc;j++) lineMembers.push({name:f.family+' '+rel[j%rel.length], at:isoAdd(f.funeralDate,1)});
+  var smsNums = (f.smsRecipients||[]).map(function(r,k){return {label:(k===0?'喪主':(k===1?'ご家族':'ご親族')), tel:r.tel};});
+  var smsSent = f.notifyHistory.filter(function(h){return h.kind==='sms';}).reduce(function(a,h){return a+((h.recipients&&h.recipients.length)||1);},0);
+  var lineSent = f.notifyHistory.filter(function(h){return h.kind==='line';}).length;
+  var hist = f.notifyHistory.map(function(h){return {date:h.date,kind:h.kind,recipients:(h.recipients||[]).join('、'),seg:1};});
+  return {id:f.id, deceased:f.deceased, family:f.family, venue:f.venue, funeralDate:f.funeralDate, deathDate:f.deathDate, lineMembers:lineMembers, smsNums:smsNums, smsSent:smsSent, lineSent:lineSent, hist:hist};
+});
+
+var fCurrent=null, mEditId=null, mChanState={sms:false,line:false}, mBaseState='funeral';
+
+function renderFollow(){ fSetTab('list'); }
+function fSetTab(k){
+  document.querySelectorAll('#f-tabs .htab').forEach(function(b){b.classList.toggle('on',b.dataset.k===k);});
+  document.getElementById('f-tab-list').style.display   = (k==='list')?'block':'none';
+  document.getElementById('f-tab-indiv').style.display  = (k==='indiv')?'block':'none';
+  document.getElementById('f-tab-master').style.display = (k==='master')?'block':'none';
+  document.getElementById('f-tab-report').style.display = (k==='report')?'block':'none';
+  if(k==='list') fBackList();
+  if(k==='indiv') gcInit();
+  if(k==='master') mBackList();
+  if(k==='report') fRenderReport();
+}
+
+/* ---- 葬家一覧 ---- */
+function fRenderList(){
+  document.getElementById('f-detail').style.display='none';
+  document.getElementById('f-list').style.display='block';
+  var q=(document.getElementById('f-search').value||'').trim();
+  var all=FOLLOW_HH.filter(function(h){return !q||(h.deceased&&h.deceased.indexOf(q)>=0)||venueShort(h.venue).indexOf(q)>=0||h.venue.indexOf(q)>=0;});
+  var shown=all.slice(0,100);
+  document.getElementById('f-listcount').textContent='全'+all.length+'件'+(all.length>100?'（先頭100件を表示）':'');
+  var tb=document.getElementById('f-rows'); tb.innerHTML='';
+  shown.forEach(function(h){
+    var tr=document.createElement('tr'); tr.className='row';
+    tr.innerHTML='<td class="fam"><a class="vs-link" onclick="fOpen('+h.id+')">'+h.deceased+'</a><div class="rsub">'+h.family+'</div></td>'+
+      '<td class="venue"><span class="vshort">'+venueShort(h.venue)+'</span></td>'+
+      '<td>'+fmtFull(h.funeralDate)+'</td>'+
+      '<td><span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>'+h.smsSent+'</span></td>'+
+      '<td><span class="n-chip n-line"><i class="ti ti-brand-line"></i>'+h.lineSent+'</span></td>';
+    tb.appendChild(tr);
+  });
+  if(!shown.length) tb.innerHTML='<tr><td colspan="5" class="empty">該当する葬家がありません。</td></tr>';
+}
+function fBackList(){ document.getElementById('f-detail').style.display='none'; document.getElementById('f-list').style.display='block'; fRenderList(); }
+
+function fRenderMeta(){
+  document.getElementById('f-d-meta').innerHTML=
+    '<div><span class="k">会場</span><span class="v">'+venueShort(fCurrent.venue)+'</span></div>'+
+    '<div><span class="k">葬儀日</span><span class="v">'+fmtFull(fCurrent.funeralDate)+'</span></div>'+
+    '<div><span class="k">没日</span><span class="v">'+fmtFull(fCurrent.deathDate)+'</span></div>'+
+    '<div><span class="k">当月送信</span><span class="v">SMS '+fCurrent.smsSent+' ／ LINE '+fCurrent.lineSent+'</span></div>';
+}
+function fOpen(id){
+  fCurrent=FOLLOW_HH.find(function(h){return h.id===id;}); if(!fCurrent) return;
+  document.getElementById('f-list').style.display='none';
+  document.getElementById('f-detail').style.display='block';
+  document.getElementById('f-d-name').textContent=fCurrent.deceased+' 様（'+fCurrent.family+'）';
+  fRenderMeta(); fRenderAuto(); fRenderHist(); fRenderRecipients();
+  document.getElementById('f-body').value='＜葬儀社名＞\n'; document.getElementById('f-url').value='';
+  document.getElementById('f-url-out').style.display='none';
+  fPdfAttached=false; var ps=document.getElementById('f-pdf-status'); if(ps){ps.textContent='未添付';ps.style.color='';}
+  fUpdateCounter(); window.scrollTo(0,0);
+}
+function fRenderAuto(){
+  var tb=document.getElementById('f-d-auto'); tb.innerHTML='';
+  var act=NOTIF_MASTER.filter(function(n){return n.active;});
+  if(!act.length){ tb.innerHTML='<tr><td colspan="4" class="empty">有効な通知イベントがありません。</td></tr>'; return; }
+  act.forEach(function(n){
+    var base = (n.base==='funeral')?fCurrent.funeralDate:fCurrent.deathDate;
+    var d = isoAdd(base, n.days);
+    var past = diffDays(d,TODAY)>=0;
+    var chips=(n.chan.sms?'<span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>SMS</span> ':'')+(n.chan.line?'<span class="n-chip n-line"><i class="ti ti-brand-line"></i>LINE</span>':'');
+    var st = past?'<span class="badge b-done"><i class="ti ti-check"></i>送信済</span>':'<span class="badge b-pending"><i class="ti ti-clock"></i>予定</span>';
+    tb.innerHTML+='<tr><td>'+n.name+'<div class="rsub">'+(n.base==='funeral'?'葬儀日':'没日')+'+'+n.days+'日 '+n.time+'</div></td><td>'+chips+'</td><td>'+fmtFull(d)+' '+n.time+'</td><td>'+st+'</td></tr>';
+  });
+}
+function fRenderHist(){
+  var box=document.getElementById('f-d-hist'); box.innerHTML='';
+  if(!fCurrent.hist.length){ box.innerHTML='<div class="empty" style="padding:16px">送信履歴はまだありません。</div>'; return; }
+  fCurrent.hist.slice().reverse().forEach(function(h){
+    var k=(h.kind==='sms')?'<span class="hi-kind k-sms">SMS</span>':'<span class="hi-kind k-line">LINE</span>';
+    box.innerHTML+='<div class="hist-item">'+k+'<span class="hi-date">'+fmtMD(h.date)+'</span><span class="hi-rec">'+(h.recipients||'—')+'</span><span class="f-count-badge">'+(h.seg||1)+'通</span></div>';
+  });
+}
+function fRenderRecipients(){
+  var s=document.getElementById('f-sms-list'); s.innerHTML='';
+  if(!fCurrent.smsNums.length){ s.innerHTML='<div class="recip-note" style="padding:10px">SMS送信履歴はありません。「宛先を追加」から登録できます。</div>'; }
+  fCurrent.smsNums.forEach(function(r){
+    s.innerHTML+='<div class="recip-row"><input type="checkbox" class="f-sms-chk" onchange="fUpdateCounter()"><input class="f-lbl" value="'+r.label+'"><span class="rc-tel" style="flex:1">'+r.tel+'</span></div>';
+  });
+  var l=document.getElementById('f-line-list'); l.innerHTML='';
+  if(!fCurrent.lineMembers.length){ l.innerHTML='<div class="recip-note" style="padding:10px">LINE連携済みのご家族はいません。</div>'; }
+  fCurrent.lineMembers.forEach(function(m){
+    l.innerHTML+='<label class="recip-row"><input type="checkbox" class="f-line-chk" onchange="fUpdateCounter()"><span class="rc-name">'+m.name+'</span><span class="rc-obit">LINE連携 '+fmtMD(m.at)+'</span></label>';
+  });
+}
+function fAddSmsNum(){
+  var s=document.getElementById('f-sms-list');
+  var note=s.querySelector('.recip-note'); if(note) note.remove();
+  var div=document.createElement('div'); div.className='recip-row';
+  div.innerHTML='<input type="checkbox" class="f-sms-chk" checked onchange="fUpdateCounter()"><input class="f-lbl" placeholder="ラベル（例：長男）"><input class="f-tel-in" placeholder="090-0000-0000" oninput="fUpdateCounter()">';
+  s.appendChild(div); fUpdateCounter();
+}
+function fShortenUrl(){
+  var v=(document.getElementById('f-url').value||'').trim();
+  var out=document.getElementById('f-url-out');
+  if(!v){ toast('URLを入力してください'); return; }
+  var short='https://itw.jp/'+Math.random().toString(36).slice(2,7);
+  out.style.display='block';
+  out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="fInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>';
+  toast('URLを短縮しました（'+v.length+'文字 → '+short.length+'文字）');
+}
+function fInsertUrl(u){ var ta=document.getElementById('f-body'); ta.value=(ta.value?ta.value+' ':'')+u; fUpdateCounter(); ta.focus(); }
+function fUpdateCounter(){
+  var info=segInfo(document.getElementById('f-body').value);
+  document.getElementById('f-charcount').textContent=info.chars+'文字';
+  var pill=document.getElementById('f-segpill'); pill.textContent=info.seg+'通'; pill.classList.toggle('multi',info.seg>=2);
+  var nSms=document.querySelectorAll('#f-sms-list .f-sms-chk:checked').length;
+  var nLine=document.querySelectorAll('#f-line-list .f-line-chk:checked').length;
+  var recip=nSms+nLine;
+  document.getElementById('f-recipcount').textContent=recip;
+  document.getElementById('f-segn').textContent=info.seg;
+  document.getElementById('f-total').textContent=(recip*info.seg);
+}
+function fSend(){
+  var body=(document.getElementById('f-body').value||'').trim();
+  var info=segInfo(body);
+  var smsRows=[].slice.call(document.querySelectorAll('#f-sms-list .recip-row')).filter(function(r){var c=r.querySelector('.f-sms-chk');return c&&c.checked;});
+  var lineNames=[].slice.call(document.querySelectorAll('#f-line-list .f-line-chk:checked')).map(function(c){return c.closest('.recip-row').querySelector('.rc-name').textContent;});
+  if(!body){ toast('本文を入力してください'); return; }
+  if(!smsRows.length && !lineNames.length){ toast('宛先を1件以上選択してください'); return; }
+  var today=TODAY;
+  if(smsRows.length){
+    var names=smsRows.map(function(r){return r.querySelector('.f-lbl').value||'（無名）';});
+    fCurrent.hist.push({date:today,kind:'sms',recipients:names.join('、'),seg:info.seg});
+    fCurrent.smsSent+=smsRows.length*info.seg;
+  }
+  if(lineNames.length){
+    fCurrent.hist.push({date:today,kind:'line',recipients:lineNames.join('、'),seg:info.seg});
+    fCurrent.lineSent+=lineNames.length*info.seg;
+  }
+  var tot=(smsRows.length+lineNames.length)*info.seg;
+  REPORT_LIVE.sms += smsRows.length*info.seg;
+  REPORT_LIVE.line += lineNames.length*info.seg;
+  if(fPdfAttached) REPORT_LIVE.pdf += (smsRows.length+lineNames.length);
+  var pmsg = fPdfAttached ? '（PDF '+(smsRows.length+lineNames.length)+'件含む）' : '';
+  toast('送信しました：'+(smsRows.length+lineNames.length)+'宛先 × '+info.seg+'通 ＝ 合計'+tot+'通'+pmsg);
+  document.getElementById('f-body').value='＜葬儀社名＞\n'; document.getElementById('f-url-out').style.display='none';
+  fPdfAttached=false; var ps2=document.getElementById('f-pdf-status'); if(ps2){ps2.textContent='未添付';ps2.style.color='';}
+  document.querySelectorAll('#f-sms-list .f-sms-chk, #f-line-list .f-line-chk').forEach(function(c){c.checked=false;});
+  fRenderMeta(); fRenderHist(); fUpdateCounter();
+}
+
+/* ---- 送信実績 ---- */
+function fRenderReport(){
+  var sms=REPORT_BASE.sms+REPORT_LIVE.sms, line=REPORT_BASE.line+REPORT_LIVE.line, pdf=REPORT_BASE.pdf+REPORT_LIVE.pdf;
+  var rows=[{m:'2026年7月',sms:sms,line:line,pdf:pdf,cur:true},
+            {m:'2026年6月',sms:Math.round(REPORT_BASE.sms*1.12),line:Math.round(REPORT_BASE.line*0.9),pdf:Math.round(REPORT_BASE.pdf*1.05)},
+            {m:'2026年5月',sms:Math.round(REPORT_BASE.sms*0.95),line:Math.round(REPORT_BASE.line*0.7),pdf:Math.round(REPORT_BASE.pdf*0.8)},
+            {m:'2026年4月',sms:Math.round(REPORT_BASE.sms*0.8),line:Math.round(REPORT_BASE.line*0.5),pdf:Math.round(REPORT_BASE.pdf*0.6)}];
+  var tb=document.getElementById('f-report-rows'); tb.innerHTML='';
+  rows.forEach(function(r){
+    var tot=r.sms+r.line+r.pdf;
+    tb.innerHTML+='<tr'+(r.cur?' style="background:var(--accent-bg)"':'')+'><td><b>'+r.m+'</b>'+(r.cur?'<span class="rt-badge">当月</span>':'')+'</td>'+
+      '<td><span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>'+r.sms+'通</span></td>'+
+      '<td><span class="n-chip n-line"><i class="ti ti-brand-line"></i>'+r.line+'通</span></td>'+
+      '<td><span class="n-chip" style="color:#b25a00;background:#fbecd9"><i class="ti ti-file-text"></i>'+r.pdf+'件</span></td>'+
+      '<td class="mono">'+tot+'</td></tr>';
+  });
+}
+
+/* ---- 通知マスタ ---- */
+function mBackList(){ document.getElementById('m-detail').style.display='none'; document.getElementById('m-list').style.display='block'; mRenderList(); }
+function mRenderList(){
+  var tb=document.getElementById('m-rows'); tb.innerHTML='';
+  NOTIF_MASTER.forEach(function(n){
+    var chips=(n.chan.sms?'<span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>SMS</span> ':'')+(n.chan.line?'<span class="n-chip n-line"><i class="ti ti-brand-line"></i>LINE</span>':'');
+    var seg=segInfo(n.body).seg;
+    var st=n.active?'<span class="badge b-done"><i class="ti ti-check"></i>有効</span>':'<span class="badge b-noneed">無効</span>';
+    tb.innerHTML+='<tr class="row"><td class="fam"><a class="vs-link" onclick="mOpen('+n.id+')">'+n.name+'</a></td><td>'+(chips||'—')+'</td><td>'+(n.base==='funeral'?'葬儀日':'没日')+'</td><td>+'+n.days+'日 '+n.time+'</td><td>'+seg+'通</td><td>'+st+'</td></tr>';
+  });
+  if(!NOTIF_MASTER.length) tb.innerHTML='<tr><td colspan="6" class="empty">通知イベントがありません。</td></tr>';
+}
+function mChan(k){ mChanState[k]=!mChanState[k]; document.getElementById('m-chan-'+k).classList.toggle('on',mChanState[k]); }
+function mBase(v){ mBaseState=v; document.getElementById('m-base-funeral').classList.toggle('on-auto',v==='funeral'); document.getElementById('m-base-death').classList.toggle('on-auto',v==='death'); }
+function mOpen(id){
+  document.getElementById('m-list').style.display='none'; document.getElementById('m-detail').style.display='block';
+  var n=id?NOTIF_MASTER.find(function(x){return x.id===id;}):null; mEditId=id||null;
+  document.getElementById('m-crumb').textContent=n?n.name:'新規通知イベント';
+  document.getElementById('m-name').value=n?n.name:'';
+  mChanState={sms:n?n.chan.sms:true, line:n?n.chan.line:false};
+  document.getElementById('m-chan-sms').classList.toggle('on',mChanState.sms);
+  document.getElementById('m-chan-line').classList.toggle('on',mChanState.line);
+  mBase(n?n.base:'funeral');
+  document.getElementById('m-days').value=n?n.days:42;
+  document.getElementById('m-time').value=n?n.time:'10:00';
+  document.getElementById('m-body').value=n?n.body:'＜葬儀社名＞\n';
+  document.getElementById('m-active').checked=n?n.active:true;
+  document.getElementById('m-url').value=''; document.getElementById('m-url-out').style.display='none';
+  mUpdateActiveLbl(); mUpdateCounter(); window.scrollTo(0,0);
+}
+function mUpdateCounter(){ var info=segInfo(document.getElementById('m-body').value); document.getElementById('m-charcount').textContent=info.chars+'文字'; var p=document.getElementById('m-segpill'); p.textContent=info.seg+'通'; p.classList.toggle('multi',info.seg>=2); }
+function mShortenUrl(){ var v=(document.getElementById('m-url').value||'').trim(); var out=document.getElementById('m-url-out'); if(!v){toast('URLを入力してください');return;} var short='https://itw.jp/'+Math.random().toString(36).slice(2,7); out.style.display='block'; out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="mInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>'; toast('URLを短縮しました'); }
+function mInsertUrl(u){ var ta=document.getElementById('m-body'); ta.value=(ta.value?ta.value+' ':'')+u; mUpdateCounter(); ta.focus(); }
+function mUpdateActiveLbl(){ document.getElementById('m-active-lbl').textContent=document.getElementById('m-active').checked?'有効（自動送信ON）':'無効（自動送信OFF）'; }
+function mSave(){
+  var name=(document.getElementById('m-name').value||'').trim();
+  var body=(document.getElementById('m-body').value||'').trim();
+  if(!name){ toast('通知名を入力してください'); return; }
+  if(!mChanState.sms && !mChanState.line){ toast('チャネルを選択してください'); return; }
+  if(!body){ toast('通知内容を入力してください'); return; }
+  var rec={name:name,chan:{sms:mChanState.sms,line:mChanState.line},base:mBaseState,days:parseInt(document.getElementById('m-days').value||'0',10),time:document.getElementById('m-time').value||'10:00',body:body,active:document.getElementById('m-active').checked};
+  if(mEditId){ var n=NOTIF_MASTER.find(function(x){return x.id===mEditId;}); Object.assign(n,rec); }
+  else { rec.id=++NOTIF_SEQ; NOTIF_MASTER.push(rec); }
+  mBackList(); toast('通知イベントを保存しました（'+segInfo(body).seg+'通換算）');
+}
+document.addEventListener('change',function(e){ if(e.target && e.target.id==='m-active') mUpdateActiveLbl(); });
+
+/* ---- 送信実績カウンタ（BASE=初期値 + LIVE=当セッション送信分） ---- */
+var REPORT_BASE={sms:0,line:0,pdf:0};
+FOLLOW_HH.forEach(function(h){REPORT_BASE.sms+=h.smsSent;REPORT_BASE.line+=h.lineSent;});
+REPORT_BASE.pdf=Math.round(REPORT_BASE.sms*0.18);
+var REPORT_LIVE={sms:0,line:0,pdf:0};
+
+/* ---- PDF添付（葬家個別ページ手動送信） ---- */
+var fPdfAttached=false;
+function fAttachPdf(el){
+  var name=(el&&el.files&&el.files[0])?el.files[0].name:'請求書.pdf';
+  var short='https://itw.jp/pdf/'+Math.random().toString(36).slice(2,7);
+  var ta=document.getElementById('f-body'); ta.value=(ta.value?ta.value+' ':'')+short;
+  fPdfAttached=true;
+  var st=document.getElementById('f-pdf-status'); st.textContent='添付：'+name+' → '+short; st.style.color='var(--accent)';
+  fUpdateCounter();
+}
+
+/* ============================================================
+   個別配信（SMSのみ・問い合わせ対応／請求書PDF送付）
+   ============================================================ */
+var gcPdfAttached=false;
+function gcInit(){
+  var l=document.getElementById('gc-list'); l.innerHTML=''; gcAddNum();
+  document.getElementById('gc-body').value='＜葬儀社名＞\n';
+  document.getElementById('gc-url').value=''; document.getElementById('gc-url-out').style.display='none';
+  gcPdfAttached=false; var st=document.getElementById('gc-pdf-status'); st.textContent='未添付'; st.style.color='';
+  gcBuildMonths(); gcRenderHistory();
+  gcUpdateCounter();
+}
+function gcAddNum(){
+  var l=document.getElementById('gc-list');
+  var div=document.createElement('div'); div.className='recip-row';
+  div.innerHTML='<input type="checkbox" class="gc-chk" checked onchange="gcUpdateCounter()"><input class="f-lbl" placeholder="ラベル（例：お問い合わせ）"><input class="f-tel-in" placeholder="090-0000-0000" oninput="gcUpdateCounter()">';
+  l.appendChild(div); gcUpdateCounter();
+}
+function gcAttachPdf(el){
+  var name=(el&&el.files&&el.files[0])?el.files[0].name:'請求書.pdf';
+  var short='https://itw.jp/pdf/'+Math.random().toString(36).slice(2,7);
+  var ta=document.getElementById('gc-body'); ta.value=(ta.value?ta.value+' ':'')+short;
+  gcPdfAttached=true;
+  var st=document.getElementById('gc-pdf-status'); st.textContent='添付：'+name+' → '+short; st.style.color='var(--accent)';
+  gcUpdateCounter();
+}
+function gcShortenUrl(){
+  var v=(document.getElementById('gc-url').value||'').trim(); var out=document.getElementById('gc-url-out');
+  if(!v){ toast('URLを入力してください'); return; }
+  var short='https://itw.jp/'+Math.random().toString(36).slice(2,7);
+  out.style.display='block';
+  out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="gcInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>';
+  toast('URLを短縮しました');
+}
+function gcInsertUrl(u){ var ta=document.getElementById('gc-body'); ta.value=(ta.value?ta.value+' ':'')+u; gcUpdateCounter(); ta.focus(); }
+function gcUpdateCounter(){
+  var info=segInfo(document.getElementById('gc-body').value);
+  document.getElementById('gc-charcount').textContent=info.chars+'文字';
+  var pill=document.getElementById('gc-segpill'); pill.textContent=info.seg+'通'; pill.classList.toggle('multi',info.seg>=2);
+  var n=document.querySelectorAll('#gc-list .gc-chk:checked').length;
+  document.getElementById('gc-recipcount').textContent=n;
+  document.getElementById('gc-segn').textContent=info.seg;
+  document.getElementById('gc-total').textContent=(n*info.seg);
+}
+function gcSend(){
+  var body=(document.getElementById('gc-body').value||'').trim();
+  var info=segInfo(body);
+  var rows=[].slice.call(document.querySelectorAll('#gc-list .recip-row')).filter(function(r){var c=r.querySelector('.gc-chk');return c&&c.checked;});
+  var valid=rows.filter(function(r){return (r.querySelector('.f-tel-in').value||'').trim().length>0;});
+  if(!body){ toast('本文を入力してください'); return; }
+  if(!valid.length){ toast('送信先の電話番号を入力してください'); return; }
+  REPORT_LIVE.sms += valid.length*info.seg;
+  if(gcPdfAttached) REPORT_LIVE.pdf += valid.length;
+  var recs=valid.map(function(r){return {label:(r.querySelector('.f-lbl').value||'（無名）'), tel:(r.querySelector('.f-tel-in').value||'').trim()};});
+  GC_HISTORY.push({ts:TODAY, recipients:recs, count:valid.length, seg:info.seg, total:valid.length*info.seg, pdf:(gcPdfAttached?valid.length:0), body:body});
+  var pmsg=gcPdfAttached?'（PDF '+valid.length+'件含む）':'';
+  toast('個別配信を送信しました：'+valid.length+'件 × '+info.seg+'通 ＝ 合計'+(valid.length*info.seg)+'通'+pmsg);
+  gcInit();
+}
+
+/* ---- 個別配信履歴（月別） ---- */
+var GC_HISTORY=[
+  {ts:'2026-07-18',recipients:[{label:'お問い合わせ',tel:'090-1122-3344'}],count:1,seg:1,total:1,pdf:0,body:'＜葬儀社名＞\nお問い合わせありがとうございます。ご案内をお送りします。'},
+  {ts:'2026-07-10',recipients:[{label:'請求書送付',tel:'080-2233-4455'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n請求書をお送りします。ご確認をお願いいたします。 https://itw.jp/pdf/a1b2c'},
+  {ts:'2026-07-03',recipients:[{label:'お問い合わせ',tel:'090-7788-1122'},{label:'ご家族',tel:'090-8899-2233'}],count:2,seg:1,total:2,pdf:0,body:'＜葬儀社名＞\n先日はありがとうございました。'},
+  {ts:'2026-06-28',recipients:[{label:'請求書送付',tel:'080-5566-7788'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n6月分の請求書です。ご確認ください。 https://itw.jp/pdf/c3d4e'},
+  {ts:'2026-06-15',recipients:[{label:'お問い合わせ',tel:'090-3344-5566'}],count:1,seg:1,total:1,pdf:0,body:'＜葬儀社名＞\nご案内をお送りします。'},
+  {ts:'2026-05-22',recipients:[{label:'請求書送付',tel:'080-9900-1122'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n5月分の請求書です。'}
+];
+function gcMonthKey(ts){return ts.slice(0,7);}
+function gcMonthLabel(key){var p=key.split('-');return p[0]+'年'+parseInt(p[1],10)+'月';}
+function gcBuildMonths(){
+  var sel=document.getElementById('gc-hist-month'); var prev=sel.value;
+  var keys={}; GC_HISTORY.forEach(function(h){keys[gcMonthKey(h.ts)]=1;}); keys[gcMonthKey(TODAY)]=1;
+  var arr=Object.keys(keys).sort().reverse();
+  sel.innerHTML=arr.map(function(k){return '<option value="'+k+'">'+gcMonthLabel(k)+'</option>';}).join('');
+  sel.value=(prev && arr.indexOf(prev)>=0)?prev:arr[0];
+}
+function gcRenderHistory(){
+  var m=document.getElementById('gc-hist-month').value;
+  var list=GC_HISTORY.filter(function(h){return gcMonthKey(h.ts)===m;}).sort(function(a,b){return a.ts<b.ts?1:-1;});
+  var tb=document.getElementById('gc-hist-rows'); tb.innerHTML='';
+  if(!list.length){ tb.innerHTML='<tr><td colspan="5" class="empty">この月の個別配信はありません。</td></tr>'; return; }
+  list.forEach(function(h){
+    var to=h.recipients[0]?(h.recipients[0].label+' '+h.recipients[0].tel):'';
+    if(h.recipients.length>1) to+=' <span class="rsub">他'+(h.recipients.length-1)+'件</span>';
+    var body=(h.body||'').replace(/\n/g,' '); if(body.length>26) body=body.slice(0,26)+'…';
+    var pdf=h.pdf>0?'<span class="n-chip" style="color:#b25a00;background:#fbecd9"><i class="ti ti-file-text"></i>'+h.pdf+'件</span>':'<span class="vs-muted">—</span>';
+    tb.innerHTML+='<tr><td>'+fmtFull(h.ts)+'</td><td>'+to+'</td><td>'+body+'</td><td class="mono">合計'+h.total+'通<div class="rsub">'+h.count+'件×'+h.seg+'通</div></td><td>'+pdf+'</td></tr>';
+  });
+}
+
+</script>
+</body>
+</html>
