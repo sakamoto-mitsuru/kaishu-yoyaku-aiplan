@@ -364,6 +364,12 @@
   .recip-row input.f-tel-in{width:auto;height:auto;flex:1 1 auto;min-width:0}
   .f-num{width:74px;font-family:inherit;font-size:14px;border:1px solid #c9ccd1;border-radius:5px;padding:8px 10px;text-align:center;color:var(--text);background:#fff}
   .f-count-badge{font-size:10px;font-weight:700;border-radius:10px;padding:1px 8px;background:var(--accent-bg);color:var(--accent);flex:none}
+  .hi-stat{flex:none;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;border-radius:6px;padding:2px 8px}
+  .hi-stat i{font-size:13px}
+  .hi-stat em{font-style:normal;font-weight:700;opacity:.75;margin-left:2px}
+  .hi-stat.st-sent{background:#eef1f4;color:#495057}
+  .hi-stat.st-open{background:#faf0dc;color:#8a5a12}
+  @media(max-width:640px){.hist-item{flex-wrap:wrap}.hi-rec{flex:1 1 100%;order:5}}
   .mono{font-variant-numeric:tabular-nums}
   #page-follow .vs-card{max-width:1040px}
   #page-follow .check{display:inline-flex;align-items:center;gap:6px}
@@ -384,7 +390,216 @@
   .fb-sub{font-size:12px;color:var(--text-secondary);line-height:1.6}
   .fb-go{flex:none;display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--accent)}
   .fb-houyou .fb-go{color:#1f7a56}
-</style>
+
+  /* ===== サイドバー オーバーレイ ===== */
+  .sidebar-overlay{position:fixed;inset:0;background:rgba(20,24,32,.45);z-index:35;opacity:0;pointer-events:none;transition:opacity .22s}
+  .sidebar-overlay.show{opacity:1;pointer-events:auto}
+  body.nav-open{overflow:hidden}
+  @media(min-width:961px){.sidebar-overlay{display:none}}
+  /* 機能設定 */
+  .feature-list{max-width:720px;margin-top:18px}
+  .ff-company{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px}
+  .ff-company b{color:var(--text)}
+  .ff-row{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+  .ff-ic{flex:none;width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--accent-bg);color:var(--accent);font-size:22px}
+  .ff-body{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+  .ff-label{font-size:15px;font-weight:700;color:var(--text)}
+  .ff-desc{font-size:12px;color:var(--text-secondary);line-height:1.6}
+  .ff-key{font-size:11px;color:var(--text-muted);font-family:ui-monospace,monospace;margin-top:2px}
+  .ff-toggle{flex:none;width:50px;height:28px;border-radius:999px;border:none;background:var(--border-strong);cursor:pointer;position:relative;transition:background .18s;padding:0}
+  .ff-toggle.on{background:var(--accent)}
+  .ff-knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .18s}
+  .ff-toggle.on .ff-knob{left:25px}
+
+  /* ===== レスポンシブ（タブレット） ===== */
+  @media(max-width:960px){
+    .topbar{height:56px;padding:0 12px;gap:8px}
+    .topbar .tt{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .topbar .tr{gap:8px}
+    .page{padding:16px 12px 28px}
+    .page-title{font-size:19px}
+    .toolbar{padding:10px 12px;gap:8px}
+    .modal{max-width:none;width:100%;max-height:94vh}
+    .modal-sm{max-width:none}
+  }
+
+  /* ===== レスポンシブ（スマートフォン） ===== */
+  @media(max-width:640px){
+    .kpi{grid-template-columns:1fr;gap:10px;margin-top:14px}
+    .page{padding:14px 10px 26px}
+    .page-title{font-size:18px}
+    .page-date{font-size:12px;line-height:1.7}
+    /* 表は横スクロール（指で流せるように） */
+    .table-wrap,.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .vs-card{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .vs-table{min-width:620px}
+    table{font-size:12px}
+    /* ツールバー・フィルタは折り返して全幅 */
+    .toolbar{flex-direction:column;align-items:stretch}
+    .week-nav{justify-content:space-between}
+    .filters{width:100%}
+    .filters .fbtn{flex:1;text-align:center;padding:8px 10px;font-size:12px}
+    .area-regions,.status-regions{width:100%}
+    .area-regions .rtab{flex:1;text-align:center;padding:9px 8px;font-size:13px}
+    .area-tabs{gap:5px}
+    .atab{padding:7px 11px;font-size:12px}
+    .h-tabs{gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap}
+    .htab{padding:9px 12px;font-size:13px;white-space:nowrap}
+    /* エリア別予約枠は横スクロール */
+    .sheet{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .area-info{flex-direction:column;align-items:stretch;gap:8px}
+    .area-info .btn{margin-left:0!important;width:100%;justify-content:center}
+    .sheet-legend{gap:10px;font-size:10px}
+    /* モーダルは全画面に近づける */
+    .backdrop{padding:0;align-items:flex-end}
+    .modal{border-radius:14px 14px 0 0;max-height:96vh}
+    .modal-header{position:sticky;top:0;background:var(--surface);z-index:2}
+    .modal-body{padding:14px}
+    .frow{grid-template-columns:1fr;gap:0}
+    .modal-actions{flex-wrap:wrap;gap:8px;position:sticky;bottom:0;background:var(--surface);padding-top:10px}
+    .modal-actions .btn{flex:1;justify-content:center}
+    .modal-actions .spacer{display:none}
+    /* 連絡先行（名前・電話・発信・削除） */
+    .contact-row{grid-template-columns:1fr 1fr 38px 38px;gap:6px}
+    .contact-row input{font-size:16px;padding:9px 8px} /* 16px=iOSで自動ズームしない */
+    input,select,textarea{font-size:16px!important}
+    /* 寺院選択 */
+    .tp-list{max-height:46vh}
+    .tp-item{flex-wrap:wrap;gap:4px}
+    /* 送信先・履歴 */
+    .recip-row{flex-wrap:wrap}
+    .rc-obit{margin-left:0}
+    /* 予約フォームバナー */
+    .form-banners{margin-top:20px}
+    .fb-card{padding:15px 16px;gap:11px}
+    .fb-title{font-size:15px}
+    .fb-sub{font-size:11.5px}
+    .fb-go{font-size:12px}
+  }
+  @media(max-width:400px){
+    .fb-go span{display:none}
+    .contact-row{grid-template-columns:1fr 1fr 34px 34px}
+  }
+.vs-ziprow{display:flex;gap:8px;align-items:center}
+  .vs-ziprow input{flex:1}
+  .vs-zipbtn{flex:none;white-space:nowrap}
+  /* 配信：課金・ファイル表示 */
+  .file-info-link{font-size:12px;color:var(--accent);margin-left:8px;cursor:pointer;font-weight:600}
+  .file-info-link i{vertical-align:-2px}
+  .f-cost-head{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--text-secondary)}
+  .f-cost-detail{margin-top:8px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface)}
+  .f-cost-detail:empty{display:none}
+  .fc-line{display:flex;justify-content:space-between;gap:12px;padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border)}
+  .fc-line:last-child{border-bottom:none}
+  .fc-line span:first-child{color:var(--text-secondary);flex:none}
+  .fc-line span:last-child{text-align:right}
+  .fc-sum{background:var(--accent-bg);font-weight:600}
+  .fc-sum b{color:var(--accent)}
+  .f-cost-note{margin-top:7px;font-size:12px;color:var(--text-muted)}
+  .bill-method{background:#f0f7ff;border:1px solid #cfe3fa;border-radius:10px;padding:12px 15px;margin-bottom:12px}
+  .bill-method .bm-title{font-size:13px;font-weight:700;color:#1a4a7a;display:flex;align-items:center;gap:7px;margin-bottom:5px}
+  .bill-method .bm-body{font-size:13px;color:#2b4a63;line-height:1.8}
+  .bill-summary{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px 16px;margin-bottom:14px;max-width:460px}
+  .bs-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .bs-row:last-child{border-bottom:none}
+  .bs-row span:first-child{color:var(--text-secondary)}
+  .bs-total{font-size:16px;font-weight:700}
+  .bs-total span:last-child{color:var(--accent)}
+  .file-info-table{width:100%;border-collapse:collapse;font-size:13px}
+  .file-info-table th,.file-info-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+  .file-info-table thead th{color:var(--text-secondary);font-size:12px}
+  .al-src{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:2px 8px}
+  .al-src-follow{background:#e6f1fb;color:#185fa5}
+  .al-src-kaishu{background:#eaf5ef;color:#1f7a56}
+  .al-src-houyou{background:#fbecd9;color:#b25a00}
+  /* 予約フォーム PDFカタログ設定 */
+  .catalog-panel{padding:0;margin-top:18px;overflow:hidden}
+  .form-banners{margin-top:22px}
+  .fb-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:12px}
+  .fb-title i{color:var(--accent)}
+  .fb-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  .fb-card{display:block;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;text-decoration:none;transition:box-shadow .15s,transform .15s;border-left:5px solid var(--accent)}
+  .fb-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.08);transform:translateY(-1px)}
+  .fb-card.fb-dohoku{border-left-color:#b25a00}
+  .fb-region{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--accent);border-radius:5px;padding:2px 10px;margin-bottom:8px}
+  .fb-card.fb-dohoku .fb-region{background:#b25a00}
+  .fb-name{font-size:15px;font-weight:700;color:var(--text-primary)}
+  .fb-sub{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-top:4px}
+  .cat-toggle{width:100%;display:flex;align-items:center;gap:10px;background:var(--surface);border:none;padding:14px 18px;font-family:inherit;font-size:14px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:left}
+  .cat-toggle>i:first-child{color:var(--accent);font-size:18px}
+  .cat-toggle b{color:var(--text-primary)}
+  .cat-toggle-sub{margin-left:6px;font-size:12px;font-weight:500;color:var(--text-muted)}
+  .cat-caret{margin-left:auto;transition:transform .2s}
+  .catalog-panel.collapsed .cat-caret{transform:rotate(-90deg)}
+  .cat-collapse{max-height:800px;transition:max-height .25s ease;border-top:1px solid var(--border)}
+  .catalog-panel.collapsed .cat-collapse{max-height:0;border-top-color:transparent}
+  .cat-inner{padding:16px 18px}
+  .cat-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:14px;margin-bottom:12px}
+  .cat-tabs{display:inline-flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:14px}
+  .cat-tab{font-size:13px;font-weight:600;padding:6px 20px;border:none;background:#fff;color:var(--text-secondary);cursor:pointer}
+  .cat-tab.on{background:var(--accent);color:#fff}
+  .cat-body{max-width:560px}
+  .cat-file-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+  .cat-upload{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:8px;padding:8px 14px;cursor:pointer;background:var(--accent-bg)}
+  .cat-file{font-size:13px;color:var(--text-secondary)}
+  .cat-preview-box{margin-top:10px;padding:12px 14px;background:var(--surface);border:1px dashed var(--border-strong);border-radius:8px;font-size:13px;color:var(--text-secondary)}
+  .cat-linkview{display:inline-flex;align-items:center;gap:6px;margin-left:8px;color:var(--accent);font-weight:600;cursor:pointer;text-decoration:underline}
+  .mpat{display:inline-flex;gap:0;margin-top:6px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .mpat-b{font-size:11px;font-weight:600;padding:3px 9px;border:none;background:#fff;color:var(--text-secondary);cursor:pointer}
+  .mpat-b.on{background:var(--accent);color:#fff}
+  /* ===== 葬儀会場設定：既存(AdminLTE/Bootstrap)UI 準拠（#page-venue にスコープ） ===== */
+  #page-venue .lte{color:#212529;font-size:.95rem;max-width:960px}
+  #page-venue .lte .content-header{padding:2px 0 14px}
+  #page-venue .lte .content-header h1{font-size:1.6rem;font-weight:400;margin:0;color:#343a40}
+  #page-venue .lte .content-header small{font-size:.9rem;color:#6c757d;margin-left:8px}
+  #page-venue .lte .card{background:#fff;border:1px solid rgba(0,0,0,.125);border-radius:.25rem;box-shadow:0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);margin-bottom:1rem}
+  #page-venue .lte .card-header{padding:.75rem 1.25rem;border-bottom:1px solid rgba(0,0,0,.125);background:transparent}
+  #page-venue .lte .card-title{font-size:1.1rem;font-weight:400;margin:0;display:inline-block}
+  #page-venue .lte .card-body{padding:1.25rem}
+  #page-venue .lte .card-body.p-0{padding:0}
+  #page-venue .lte .card-footer{padding:.75rem 1.25rem;background:#fff;border-top:1px solid rgba(0,0,0,.125);border-radius:0 0 .25rem .25rem;overflow:hidden}
+  #page-venue .lte .card-added{border-top:3px solid #17a2b8}
+  #page-venue .lte .form-group{margin-bottom:1rem}
+  #page-venue .lte .control-label{display:inline-block;margin-bottom:.5rem;font-weight:400;color:#212529}
+  #page-venue .lte .control-label.d-block{display:block}
+  #page-venue .lte .form-control{display:block;width:100%;height:calc(2.25rem + 2px);padding:.375rem .75rem;font-size:1rem;line-height:1.5;color:#495057;background:#fff;border:1px solid #ced4da;border-radius:.25rem;font-family:inherit}
+  #page-venue .lte .form-control:focus{border-color:#80bdff;outline:0;box-shadow:0 0 0 .2rem rgba(0,123,255,.25)}
+  #page-venue .lte .form-row{display:flex;flex-wrap:wrap;margin-right:-5px;margin-left:-5px}
+  #page-venue .lte .form-row>[class*=col]{padding-right:5px;padding-left:5px}
+  #page-venue .lte .col-md-4{flex:0 0 33.3333%;max-width:33.3333%}
+  #page-venue .lte .col-md-6{flex:0 0 50%;max-width:50%}
+  @media(max-width:640px){#page-venue .lte .col-md-4,#page-venue .lte .col-md-6{flex:0 0 100%;max-width:100%}}
+  #page-venue .lte .input-group{display:flex}
+  #page-venue .lte .input-group>.form-control{border-top-right-radius:0;border-bottom-right-radius:0}
+  #page-venue .lte .input-group-append .btn{border-top-left-radius:0;border-bottom-left-radius:0}
+  #page-venue .lte .btn{display:inline-block;font-weight:400;padding:.375rem .75rem;font-size:1rem;line-height:1.5;border-radius:.25rem;border:1px solid transparent;cursor:pointer;font-family:inherit}
+  #page-venue .lte .btn-primary{color:#fff;background:#007bff;border-color:#007bff}
+  #page-venue .lte .btn-success{color:#fff;background:#28a745;border-color:#28a745}
+  #page-venue .lte .btn-default{color:#212529;background:#f8f9fa;border-color:#ced4da}
+  #page-venue .lte .btn-outline-primary{color:#007bff;background:transparent;border-color:#007bff}
+  #page-venue .lte .btn-sm{padding:.25rem .5rem;font-size:.875rem;margin-top:6px}
+  #page-venue .lte .float-right{float:right}
+  #page-venue .lte .float-left{float:left}
+  #page-venue .lte .table{width:100%;margin-bottom:0;color:#212529;border-collapse:collapse}
+  #page-venue .lte .table th,#page-venue .lte .table td{padding:.75rem;vertical-align:middle;border-top:1px solid #dee2e6;text-align:left}
+  #page-venue .lte .table thead th{vertical-align:bottom;border-bottom:2px solid #dee2e6;border-top:0;font-weight:700;white-space:nowrap}
+  #page-venue .lte .table tbody tr:hover{background:#f2f2f2}
+  #page-venue .lte .table a{color:#007bff;text-decoration:none;cursor:pointer}
+  #page-venue .lte .table a:hover{text-decoration:underline}
+  #page-venue .lte .th-added{font-size:10px;font-weight:700;color:#fff;background:#17a2b8;border-radius:3px;padding:1px 5px}
+  #page-venue .lte .text-danger{color:#dc3545}
+  #page-venue .lte .text-muted{color:#6c757d}
+  #page-venue .lte .form-text{display:block;margin-top:.25rem;font-size:.8rem}
+  #page-venue .lte hr{border:0;border-top:1px solid #dee2e6;margin:1.25rem 0}
+  #page-venue .lte .chk-inline{display:inline-flex;align-items:center;gap:7px;font-weight:400}
+  #page-venue .lte input[type=checkbox]{width:auto;height:auto;margin:0}
+  #page-venue .lte .invalid-feedback{display:none;width:100%;margin-top:.25rem;font-size:.8rem;color:#dc3545}
+  #page-venue .lte .form-control.is-invalid{border-color:#dc3545}
+  #page-venue .lte .form-control.is-invalid ~ .invalid-feedback{display:block}
+  #page-venue .lte .badge{display:inline-block;padding:.28em .5em;font-size:72%;font-weight:700;border-radius:.25rem;vertical-align:middle}
+  #page-venue .lte .badge-added{color:#fff;background:#17a2b8}
+  #page-venue .lte .opt-badge{display:inline-block;font-size:11px;font-weight:600;color:#6c757d;background:#eceef0;border:1px solid #d6dae0;border-radius:3px;padding:0 6px;margin-left:4px;vertical-align:middle}
+  </style>
 </head>
 <body>
 <div class="layout">
@@ -396,9 +611,9 @@
     <nav class="nav">
       <a><i class="ti ti-dashboard"></i>ダッシュボード</a>
       <a><i class="ti ti-users"></i>葬家管理</a>
-      <a id="nav-follow" class="new" onclick="showPage('follow')"><i class="ti ti-send"></i>配信<span class="tagnew">NEW</span></a>
-      <a id="nav-kaishu" class="active new" onclick="showPage('kaishu')"><i class="ti ti-truck-delivery"></i>回収管理<span class="tagnew">NEW</span></a>
-      <a id="nav-houyou" class="new" onclick="showPage('houyou')"><i class="ti ti-flower"></i>法事希望管理<span class="tagnew">NEW</span></a>
+      <a id="nav-follow" class="new" onclick="showPage('follow')"><i class="ti ti-send"></i>配信管理<span class="tagnew">NEW</span></a>
+      <a id="nav-kaishu" class="active new" onclick="showPage('kaishu')"><i class="ti ti-truck-delivery"></i>回収予約<span class="tagnew">NEW</span></a>
+      <a id="nav-houyou" class="new" onclick="showPage('houyou')"><i class="ti ti-flower"></i>法事予約<span class="tagnew">NEW</span></a>
       <a><i class="ti ti-building-store"></i>業者管理</a>
       <a><i class="ti ti-box"></i>商品管理</a>
       <a><i class="ti ti-gift"></i>返礼品管理<i class="ti ti-chevron-left chev"></i></a>
@@ -409,12 +624,13 @@
       <a onclick="toggleSettings()"><i class="ti ti-settings"></i>設定<i class="ti ti-chevron-down chev"></i></a>
       <div class="submenu" id="settingsSub">
         <a><i class="ti ti-user-cog"></i>ユーザー管理</a>
-        <a><i class="ti ti-building"></i>葬儀社設定</a>
+        <a id="nav-company" onclick="showPage('company')"><i class="ti ti-building"></i>葬儀社設定</a>
         <a id="nav-venue" onclick="showPage('venue')"><i class="ti ti-building-community"></i>葬儀会場設定</a>
         <a><i class="ti ti-key"></i>APIキー管理</a>
       </div>
     </nav>
   </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <div class="content">
     <div class="topbar">
@@ -496,39 +712,158 @@
           </div>
         </div>
       </div>
+
+      <div class="form-banners">
+        <div class="fb-title"><i class="ti ti-external-link"></i>回収予約フォーム（ご家族へ送付／確認用）</div>
+        <div class="fb-cards">
+          <a class="fb-card fb-douo" href="kaishu_form_douo.html" target="_blank"><div class="fb-region">道央</div><div class="fb-name">回収予約フォーム 道央</div><div class="fb-sub">札幌ほか道央エリア<i class="ti ti-chevron-right"></i></div></a>
+          <a class="fb-card fb-dohoku" href="kaishu_form_dohoku.html" target="_blank"><div class="fb-region">道北</div><div class="fb-name">回収予約フォーム 道北</div><div class="fb-sub">旭川ほか道北エリア<i class="ti ti-chevron-right"></i></div></a>
+        </div>
+        <div class="f-hint" style="margin-top:8px">自動配信では葬家（会場→拠点）の地域に応じて、上記いずれかのフォームへのリンクが送られます。</div>
+      </div>
+
+      <div class="panel catalog-panel collapsed" id="cat-kaishu-panel">
+        <button class="cat-toggle" onclick="catToggle('kaishu')"><i class="ti ti-file-typography"></i><b>予約フォーム表示：PDFカタログ設定</b><span class="cat-toggle-sub">基本は変更不要。カタログPDFが変わった時のみ設定</span><i class="ti ti-chevron-down cat-caret"></i></button>
+        <div class="cat-collapse">
+          <div class="cat-inner">
+            <div class="cat-head"><span class="f-hint">予約フォームのトップに<b>テキストリンク</b>で表示されます。エリアで内容が変わるため、道央・道北で個別に設定します。</span></div>
+            <div class="cat-tabs" id="cat-kaishu-tabs">
+              <button class="cat-tab on" onclick="catSetRegion('kaishu','道央')">道央</button>
+              <button class="cat-tab" onclick="catSetRegion('kaishu','道北')">道北</button>
+            </div>
+            <div class="cat-body">
+              <div class="fg"><label>テキストリンク文言</label><input type="text" id="cat-kaishu-label" placeholder="例）プランのご確認はこちら" oninput="catSaveLabel('kaishu',this.value)"></div>
+              <div class="cat-file-row">
+                <label class="cat-upload"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="catUpload('kaishu',this)"></label>
+                <span class="cat-file" id="cat-kaishu-file">未設定</span>
+              </div>
+              <div class="cat-preview-box">予約フォームでの見え方：<a class="cat-linkview" id="cat-kaishu-view" onclick="catPreview('kaishu')"><i class="ti ti-file-text"></i><span>プランのご確認はこちら</span></a></div>
+              <div class="f-hint" style="margin-top:6px">PDFは1ファイル最大10MB。道央・道北それぞれに設定でき、自動配信時に葬家（会場→拠点）の地域に応じたフォームで表示されます。</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     </div><!-- /page-kaishu -->
 
     <div id="page-venue" style="display:none">
-      <div class="vs-washi"><h1>葬儀会場設定</h1></div>
-      <div class="vs-page">
+      <div class="page">
+      <div class="lte">
         <div id="v-list">
-          <div class="vs-card"><div class="vs-cardh">検索条件</div><div class="vs-cardb">
-            <div class="vs-fg" style="margin-bottom:6px"><label>会場名</label><input type="text" id="v-search" placeholder="会場名"></div>
-            <div class="vs-searchrow"><button class="vs-btn vs-green" onclick="openVenue(0)">新規作成</button><button class="vs-btn vs-blue" onclick="renderVenueList()">検索</button></div>
-          </div></div>
-          <div class="vs-card"><table class="vs-table"><thead><tr><th>会場名</th><th>会場短縮名</th><th>会場コード</th><th>住所</th></tr></thead><tbody id="v-rows"></tbody></table></div>
-        </div>
-        <div id="v-detail" style="display:none">
-          <div class="vs-card">
-            <div class="vs-cardh"><i class="ti ti-building-community"></i>会場情報 — <span id="v-crumb2"></span></div>
-            <div class="vs-cardb">
-              <div class="vs-fg"><label>会場名<span class="vs-req">必須</span></label><input type="text" id="v-name"></div>
-              <div class="vs-fg"><label>住所</label><input type="text" id="v-addr"><div class="vs-hint">フリー入力（郵便番号検索なし）。回収管理の一覧では頭8〜9文字を表示します。</div></div>
-              <div class="vs-fg vs-short2"><label>電話番号</label><input type="tel" id="v-tel"></div>
-              <div class="vs-added"><span class="vs-tag">今回追加</span>
-                <div class="vs-row2">
-                  <div class="vs-fg vs-short2"><label>会場コード<span class="vs-req">必須</span></label><input type="text" id="v-code" maxlength="3" inputmode="numeric" placeholder="124"><div class="vs-hint">半角数字3桁（売上データ照合用）</div><div class="vs-err" id="v-codeErr">半角数字3桁でご入力ください。</div></div>
-                  <div class="vs-fg"><label>会場短縮名</label><input type="text" id="v-short" placeholder="例）センティア"><div class="vs-hint">一覧・帳票で使う短い呼称</div></div>
-                </div>
-              </div>
-              <div class="vs-seclabel"><i class="ti ti-cloud"></i>天気予報関連</div>
-              <div class="vs-fg"><label>天気予報の表示</label><label class="vs-switch"><input type="checkbox" id="v-wx" checked><span class="vs-slider"></span></label><span class="vs-swlabel">葬家・回収の詳細画面に当日の天気予報を表示する</span></div>
-              <div class="vs-row2"><div class="vs-fg vs-short2"><label>予報地点（緯度）</label><input type="text" id="v-lat" value="43.0621"></div><div class="vs-fg vs-short2"><label>予報地点（経度）</label><input type="text" id="v-lng" value="141.3544"></div></div>
+          <div class="content-header"><h1>葬儀会場一覧</h1></div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">検索条件</h3></div>
+            <div class="card-body">
+              <label class="control-label">会場名</label>
+              <input type="text" class="form-control" id="v-search" placeholder="会場名">
             </div>
-            <div class="vs-actions"><button class="vs-btn vs-back" onclick="renderVenueList()"><i class="ti ti-arrow-left"></i> 一覧へ戻る</button><div class="vs-spacer"></div><button class="vs-btn vs-green" onclick="saveVenue()">保存する</button></div>
+            <div class="card-footer">
+              <button class="btn btn-primary float-right" onclick="renderVenueList()">検索</button>
+              <button class="btn btn-success float-left" onclick="openVenue(0)">新規作成</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body p-0">
+              <table class="table">
+                <thead><tr><th>会場名</th><th>住所</th><th>会場短縮名 <span class="th-added">追加</span></th><th>会場コード <span class="th-added">追加</span></th></tr></thead>
+                <tbody id="v-rows"></tbody>
+              </table>
+            </div>
           </div>
         </div>
+
+        <div id="v-detail" style="display:none">
+          <div class="content-header"><h1>葬儀会場情報 <small id="v-crumb2"></small></h1></div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">会場情報</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label class="control-label">会場名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="v-name" placeholder="やわらぎ斎場 ○○"></div>
+              <div class="form-group"><label class="control-label">問い合わせ電話番号 <span class="text-danger">*</span></label><input type="tel" class="form-control" id="v-tel" placeholder="011-000-0000"></div>
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">郵便番号 <span class="text-danger">*</span></label>
+                  <div class="input-group"><input type="text" class="form-control" id="v-zip" maxlength="7" inputmode="numeric" placeholder="0600001"><div class="input-group-append"><button type="button" class="btn btn-primary" onclick="vZipSearch()">住所を検索</button></div></div>
+                  <small class="form-text text-muted">ハイフンなし7桁。本番は既存の郵便番号API（zipcloud/佐川）で補完します。</small>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4"><label class="control-label">都道府県 <span class="text-danger">*</span></label><select class="form-control" id="v-pref"></select></div>
+                <div class="form-group col-md-4"><label class="control-label">市区町村</label><input type="text" class="form-control" id="v-city"></div>
+                <div class="form-group col-md-4"><label class="control-label">町域</label><input type="text" class="form-control" id="v-town"></div>
+              </div>
+              <div class="form-group"><label class="control-label">住所1 <span class="text-danger">*</span></label><input type="text" class="form-control" id="v-addr1"></div>
+              <div class="form-group"><label class="control-label">住所（番地・建物名） <span class="text-danger">*</span></label><input type="text" class="form-control" id="v-addr2"></div>
+
+              <hr>
+              <div class="form-group">
+                <label class="control-label d-block">天気予報</label>
+                <label class="chk-inline"><input type="checkbox" id="v-wx" checked> 葬家・回収の詳細画面に当日の天気予報を表示する</label>
+                <div><button type="button" class="btn btn-outline-primary btn-sm" onclick="vWxCheck()">天気予報の利用可否を確認</button></div>
+                <small class="form-text text-muted" id="v-wxnote">会場住所から予報地点を照合します。</small>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">予報地点（緯度）</label><input type="text" class="form-control" id="v-lat"></div>
+                <div class="form-group col-md-6"><label class="control-label">予報地点（経度）</label><input type="text" class="form-control" id="v-lng"></div>
+              </div>
+
+              <hr>
+              <div class="form-group"><label class="control-label">拠点選択（FAX送信先）</label><select class="form-control" id="v-hallloc"></select><small class="form-text text-muted">受注FAXの送信元拠点（HallLocations マスタ）</small></div>
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">受注FAX番号（会場用）</label><input type="tel" class="form-control" id="v-fax"></div>
+                <div class="form-group col-md-6"><label class="control-label">注文メールアドレス</label><input type="email" class="form-control" id="v-ordermail"></div>
+              </div>
+
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">銀行名</label><input type="text" class="form-control" id="v-bank"></div>
+                <div class="form-group col-md-6"><label class="control-label">支店名</label><input type="text" class="form-control" id="v-branch"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">口座番号</label><input type="text" class="form-control" id="v-acctno" inputmode="numeric"></div>
+                <div class="form-group col-md-6"><label class="control-label">口座名義</label><input type="text" class="form-control" id="v-acctname"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-added">
+            <div class="card-header"><h3 class="card-title"><span class="badge badge-added">itowa追加項目</span> 会場コード・会場短縮名</h3></div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group col-md-6"><label class="control-label">会場コード <span class="opt-badge">任意</span></label><input type="text" class="form-control" id="v-code" maxlength="3" inputmode="numeric" placeholder="124"><small class="form-text text-muted">半角数字3桁（売上データ照合用）。未入力可。</small><div class="invalid-feedback" id="v-codeErr">半角数字3桁でご入力ください。</div></div>
+                <div class="form-group col-md-6"><label class="control-label">会場短縮名 <span class="opt-badge">任意</span></label><input type="text" class="form-control" id="v-short" placeholder="例）センティア"><small class="form-text text-muted">一覧・帳票で使う短い呼称</small></div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-success float-right" onclick="saveVenue()">保存する</button>
+              <button class="btn btn-default float-left" onclick="renderVenueList()">一覧へ戻る</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- ===== 葬儀社設定（FAX送信拠点マスタ） ページ ===== -->
+    <div id="page-company" style="display:none">
+      <div class="page">
+      <div class="lte">
+        <div class="content-header"><h1>葬儀社設定</h1></div>
+        <div class="card card-added">
+          <div class="card-header"><h3 class="card-title">FAX送信拠点マスタ</h3></div>
+          <div class="card-body">
+            <p class="form-text text-muted" style="margin-top:0">回収の担当拠点です。各拠点に<b>地域（道央／道北）</b>を設定します。会場設定で拠点を選ぶと、その会場（＝葬家）の地域が決まり、回収予約の道央／道北の出し分けに使われます。</p>
+            <table class="table" style="margin-bottom:14px">
+              <thead><tr><th>拠点名</th><th>地域</th><th>FAX番号</th><th style="width:80px">操作</th></tr></thead>
+              <tbody id="hl-rows"></tbody>
+            </table>
+            <div class="form-row" style="align-items:flex-end">
+              <div class="form-group col-md-4"><label class="control-label">拠点名</label><input type="text" class="form-control" id="hl-name" placeholder="例）旭川支店"></div>
+              <div class="form-group col-md-3"><label class="control-label">地域</label><select class="form-control" id="hl-region"><option>道央</option><option>道北</option></select></div>
+              <div class="form-group col-md-3"><label class="control-label">FAX番号</label><input type="tel" class="form-control" id="hl-fax" placeholder="0166-00-0000"></div>
+              <div class="form-group col-md-2"><button class="btn btn-success" style="width:100%" onclick="hlAdd()"><i class="ti ti-plus"></i> 追加</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
     </div>
 
@@ -537,6 +872,7 @@
       <div class="page">
         <div class="page-title"><i class="ti ti-flower"></i>法事希望管理</div>
         <div class="page-date">各法要のご案内を自動送信（四十九日は葬儀日+5日、一周忌/三回忌/七回忌は各法要日の約1ヶ月前）。web申込は「仮予約」→お電話で確定します。</div>
+
         <div class="h-tabs" id="h-tabs">
           <button class="htab on" data-k="shijuku" onclick="hSetType('shijuku')">四十九日</button>
           <button class="htab" data-k="isshuki" onclick="hSetType('isshuki')">一周忌</button>
@@ -568,6 +904,37 @@
             <tbody id="h-body"></tbody>
           </table></div>
           <div class="empty" id="h-empty" style="display:none">この週に四十九日を迎える対象はありません。</div>
+        </div>
+
+        <div class="form-banners">
+          <div class="fb-title"><i class="ti ti-external-link"></i>法事予約フォーム（ご家族へ送付／確認用）</div>
+          <div class="fb-cards">
+            <a class="fb-card fb-douo" href="houyou_form_douo.html" target="_blank"><div class="fb-region">道央</div><div class="fb-name">法事予約フォーム 道央</div><div class="fb-sub">札幌ほか道央エリア<i class="ti ti-chevron-right"></i></div></a>
+            <a class="fb-card fb-dohoku" href="houyou_form_dohoku.html" target="_blank"><div class="fb-region">道北</div><div class="fb-name">法事予約フォーム 道北</div><div class="fb-sub">旭川ほか道北エリア<i class="ti ti-chevron-right"></i></div></a>
+          </div>
+          <div class="f-hint" style="margin-top:8px">自動配信では葬家（会場→拠点）の地域に応じて、上記いずれかのフォームへのリンクが送られます。</div>
+        </div>
+
+        <div class="panel catalog-panel collapsed" id="cat-houyou-panel">
+          <button class="cat-toggle" onclick="catToggle('houyou')"><i class="ti ti-file-typography"></i><b>予約フォーム表示：PDFカタログ設定</b><span class="cat-toggle-sub">基本は変更不要。カタログPDFが変わった時のみ設定</span><i class="ti ti-chevron-down cat-caret"></i></button>
+          <div class="cat-collapse">
+            <div class="cat-inner">
+              <div class="cat-head"><span class="f-hint">予約フォームのトップに<b>テキストリンク</b>で表示されます。エリアで内容が変わるため、道央・道北で個別に設定します。</span></div>
+              <div class="cat-tabs" id="cat-houyou-tabs">
+                <button class="cat-tab on" onclick="catSetRegion('houyou','道央')">道央</button>
+                <button class="cat-tab" onclick="catSetRegion('houyou','道北')">道北</button>
+              </div>
+              <div class="cat-body">
+                <div class="fg"><label>テキストリンク文言</label><input type="text" id="cat-houyou-label" placeholder="例）プランのご確認はこちら" oninput="catSaveLabel('houyou',this.value)"></div>
+                <div class="cat-file-row">
+                  <label class="cat-upload"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="catUpload('houyou',this)"></label>
+                  <span class="cat-file" id="cat-houyou-file">未設定</span>
+                </div>
+                <div class="cat-preview-box">予約フォームでの見え方：<a class="cat-linkview" id="cat-houyou-view" onclick="catPreview('houyou')"><i class="ti ti-file-text"></i><span>プランのご確認はこちら</span></a></div>
+                <div class="f-hint" style="margin-top:6px">PDFは1ファイル最大10MB。道央・道北それぞれに設定でき、自動配信時に葬家（会場→拠点）の地域に応じたフォームで表示されます。</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -629,12 +996,12 @@
                 <div class="recip-list" id="f-line-list" style="max-height:none"></div>
 
                 <div class="fg" style="margin-top:16px">
-                  <label>PDF（請求書・案内状など）を添付</label>
+                  <label>ファイル（PDF・Excel・Word など）を添付 <a class="file-info-link" onclick="fOpenFileInfo()"><i class="ti ti-info-circle"></i>対応ファイル</a></label>
                   <div class="addr-row">
-                    <label class="map-btn"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="fAttachPdf(this)"></label>
+                    <label class="map-btn"><i class="ti ti-file-upload"></i>ファイルをアップロード<input type="file" accept=".pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.csv,.txt,image/*" style="display:none" onchange="fAttachPdf(this)"></label>
                     <span id="f-pdf-status" class="f-hint" style="align-self:center">未添付</span>
                   </div>
-                  <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（PDF生成として送信実績に計上）。</div>
+                  <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（送信実績にファイル件数として計上・1件¥22）。1ファイル最大10MB。</div>
                 </div>
 
                 <div class="fg">
@@ -652,13 +1019,14 @@
                   <div class="f-counter">
                     <span id="f-charcount">0文字</span>
                     <span class="seg-pill" id="f-segpill">0通</span>
-                    <span class="f-hint">1通目70文字／2通目以降67文字ごとに1通（メディアSMS準拠）。全角・半角混在は全角基準。</span>
+                    <span class="f-hint">SMS選択時のみ通数計算（1通目70／2通目以降67文字ごと）。LINEは長さに関わらず1送信1通。</span>
                   </div>
                 </div>
 
                 <div class="f-cost">
-                  <span>選択中の宛先 <b id="f-recipcount">0</b> 件 × <b id="f-segn">0</b>通</span>
-                  <span>合計送信通数 <b id="f-total">0</b>通<span class="f-hint" style="margin-left:6px">（宛先数×通数）</span></span>
+                  <div class="f-cost-head"><span>選択中の宛先 <b id="f-recipcount">0</b> 件</span><span>SMS <b id="f-segn">0</b>通 ／ 合計 <b id="f-total">0</b>通</span></div>
+                  <div class="f-cost-detail" id="f-cost-detail"></div>
+                  <div class="f-cost-note">配信数（通数・件数）のみ表示します。ご請求金額は<b>「送信実績」ページ</b>でご確認いただけます。</div>
                 </div>
 
                 <div style="display:flex;gap:8px;margin-top:14px"><div style="flex:1"></div>
@@ -682,12 +1050,12 @@
               <div class="recip-list" id="gc-list" style="max-height:none"></div>
 
               <div class="fg" style="margin-top:16px">
-                <label>PDF（請求書・案内状など）を添付</label>
+                <label>ファイル（PDF・Excel・Word など）を添付 <a class="file-info-link" onclick="fOpenFileInfo()"><i class="ti ti-info-circle"></i>対応ファイル</a></label>
                 <div class="addr-row">
-                  <label class="map-btn"><i class="ti ti-file-upload"></i>PDFをアップロード<input type="file" accept="application/pdf" style="display:none" onchange="gcAttachPdf(this)"></label>
+                  <label class="map-btn"><i class="ti ti-file-upload"></i>ファイルをアップロード<input type="file" accept=".pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.csv,.txt,image/*" style="display:none" onchange="gcAttachPdf(this)"></label>
                   <span id="gc-pdf-status" class="f-hint" style="align-self:center">未添付</span>
                 </div>
-                <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（PDF生成として送信実績に計上）。</div>
+                <div class="f-hint" style="margin-top:5px">アップロード後、短縮URLを本文に自動挿入します（送信実績にファイル件数として計上・1件¥22）。1ファイル最大10MB。</div>
               </div>
 
               <div class="fg">
@@ -713,6 +1081,7 @@
                 <span>送信先 <b id="gc-recipcount">0</b> 件 × <b id="gc-segn">0</b>通</span>
                 <span>合計送信通数 <b id="gc-total">0</b>通<span class="f-hint" style="margin-left:6px">（宛先数×通数）</span></span>
               </div>
+              <div class="f-cost-note" style="margin-top:6px"><span id="gc-cost-detail"></span> ／ 金額は「送信実績」ページで確認</div>
 
               <div style="display:flex;gap:8px;margin-top:14px"><div style="flex:1"></div>
                 <button class="vs-btn vs-green" onclick="gcSend()"><i class="ti ti-send"></i>送信する</button>
@@ -742,9 +1111,20 @@
                 <button class="vs-btn vs-green" onclick="mOpen(null)"><i class="ti ti-plus"></i>新規作成</button>
               </div>
               <div class="tbl-wrap"><table>
-                <thead><tr><th>通知名</th><th>チャネル</th><th>基準</th><th>タイミング</th><th>通数</th><th>状態</th></tr></thead>
+                <thead><tr><th>分類</th><th>通知名</th><th>チャネル</th><th>基準</th><th>タイミング</th><th>文字 / 通数</th><th>状態</th></tr></thead>
                 <tbody id="m-rows"></tbody>
               </table></div>
+            </div>
+
+            <div class="panel" style="margin-top:16px">
+              <div class="toolbar">
+                <div class="f-hint"><i class="ti ti-robot"></i> <b>自動通知一覧（送信ログ）</b>　通知マスタ・回収予約・法事予約から自動送信された通知の履歴です。</div>
+              </div>
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>送信日</th><th>故人名 / 葬家名</th><th>通知</th><th>種別</th><th>チャネル</th><th>通数</th></tr></thead>
+                <tbody id="autolog-rows"></tbody>
+              </table></div>
+              <div class="f-hint" id="autolog-note" style="margin-top:8px"></div>
             </div>
           </div>
 
@@ -811,15 +1191,21 @@
         <div id="f-tab-report" style="display:none">
           <div class="m-info" style="background:var(--accent-bg);border:1px solid #bcd8f2;color:#1a4a7a">
             <i class="ti ti-info-circle" style="color:var(--accent)"></i>
-            <div>月毎のSMS／LINE送信数（通数）とPDF生成件数を確認できます。<b>確認表示のみ</b>で、請求データへの自動連携は行いません。</div>
+            <div>月毎の送信数・<b>リンク開封件数</b>と配信利用料を表示します。SMS/LINE本文の短縮URLと、回収・法事の<b>予約リンクの開封</b>を計測します（到達確認は行いません）。</div>
           </div>
+          <div class="bill-method">
+            <div class="bm-title"><i class="ti ti-receipt-2"></i>課金方式</div>
+            <div class="bm-body">月額利用料 <b id="bm-monthly"></b>（税別）＋ 配信利用料（従量）＝ 合計金額（月次請求）<br>
+              配信利用料：SMS <b id="bm-unit"></b>／通　・　LINE <b>¥22</b>／送信　・　ファイル <b>¥22</b>／件（短縮URLで送付）</div>
+          </div>
+          <div class="bill-summary" id="bill-summary"></div>
           <div class="panel">
             <div class="tbl-wrap"><table>
-              <thead><tr><th>対象月</th><th>SMS通数</th><th>LINE通数</th><th>PDF件数</th><th>合計</th></tr></thead>
+              <thead><tr><th>対象月</th><th>SMS通数</th><th>リンク開封</th><th>LINE通数</th><th>ファイル件数</th><th>配信利用料</th></tr></thead>
               <tbody id="f-report-rows"></tbody>
             </table></div>
           </div>
-          <div class="f-hint" style="margin-top:8px">※通数・件数のみを表示します（送信料は管理画面に表示しません）。PDFは生成1件を1カウント。LINEの通数換算（70文字＝1通の扱い）は請求方法とあわせて確定予定。</div>
+          <div class="f-hint" style="margin-top:8px">※リンク開封件数は、配信の短縮URLおよび回収・法事の予約リンクを開いた回数の実測値です。到達確認は行いません。金額は税別、実請求は月次で確定します。</div>
         </div>
       </div>
     </div>
@@ -961,23 +1347,70 @@
     <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeTemplePicker()">閉じる</button><button class="btn btn-primary" id="tp-confirm" onclick="confirmTemple()" disabled><i class="ti ti-check"></i>この寺院を確定</button></div>
   </div>
 </div></div>
+<!-- 対応ファイル モーダル -->
+<div class="backdrop" id="fileInfoBackdrop"><div class="modal modal-sm">
+  <div class="modal-header"><h3><i class="ti ti-files"></i>配信で送れるファイル</h3><button class="modal-close" onclick="fCloseFileInfo()"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <p style="margin:0 0 10px;font-size:13px;color:var(--text-secondary)">本文に短縮URLを挿入して送付します（受信者はリンクからダウンロード）。1ファイル最大 <b>10MB</b>。</p>
+    <table class="file-info-table"><thead><tr><th>形式</th><th>用途の例</th></tr></thead><tbody id="fileInfoRows"></tbody></table>
+    <p style="margin:12px 0 0;font-size:12px;color:var(--text-muted)">※ 実行ファイル（.exe 等）や上限超過ファイルは添付できません。SMS/LINE本体にはファイルを添付せず、常に短縮URLで安全に送付します。</p>
+  </div>
+  <div class="modal-actions"><div class="spacer"></div><button class="btn btn-primary" onclick="fCloseFileInfo()">閉じる</button></div>
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 /* ====== 定数 ====== */
+/* 葬儀社（テナント）ごとの機能フラグ。既存 Companies レコードの Enable* に対応。
+   ★設定は itowa 管理者が admin.itowa71.com/main（itowa管理権限）で行う。
+     この biz 管理画面（葬儀社向け）では設定せず、itowaが有効化した機能のみ表示・利用可能にする。
+     （あいプランは全ONの想定） */
+var COMPANY_NAME='あいプラングループ';
+var COMPANY_FLAGS={ EnableDelivery:true, EnableCollectionReservation:true, EnableMemorialReservation:true };
+var FEATURE_DEFS=[
+  {key:'EnableDelivery',            nav:'nav-follow', label:'配信管理', desc:'SMS/LINE/PDFの配信・通知マスタ・送信実績', icon:'ti-send'},
+  {key:'EnableCollectionReservation',nav:'nav-kaishu', label:'回収予約', desc:'後飾り祭壇・返礼品の回収予約（道央/道北・予約枠）', icon:'ti-truck-delivery'},
+  {key:'EnableMemorialReservation', nav:'nav-houyou', label:'法事予約', desc:'四十九日・一周忌・三回忌・七回忌のご希望予約', icon:'ti-flower'},
+];
+function applyFeatureFlags(){
+  FEATURE_DEFS.forEach(function(f){var el=document.getElementById(f.nav); if(el) el.style.display=COMPANY_FLAGS[f.key]?'':'none';});
+}
 const AREAS=['札幌','小樽','石狩','江別','北広島・恵庭・千歳','旭川市','深川市・滝川市','名寄市・士別市'];
 /* ===== 会場マスタ（葬儀会場設定と共通・単一ソース） ===== */
-const VENUE_MASTER=[
-  {id:1,name:'やわらぎ斎場 センティア28',short:'センティア',code:'124',addr:'北海道札幌市中央区南二条西',tel:'011-000-0124'},
-  {id:2,name:'やわらぎ斎場 山鼻',short:'山鼻',code:'118',addr:'北海道札幌市中央区南二十条西',tel:'011-000-0118'},
-  {id:3,name:'やわらぎ伏見別邸',short:'伏見',code:'132',addr:'北海道札幌市中央区南十三条西',tel:'011-000-0132'},
-  {id:4,name:'やわらぎ北円山別邸',short:'北円山',code:'145',addr:'北海道札幌市中央区北五条西',tel:'011-000-0145'},
-  {id:5,name:'やわらぎ斎場 新琴似',short:'新琴似',code:'156',addr:'北海道札幌市北区新琴似五条',tel:'011-000-0156'},
-  {id:6,name:'やわらぎ斎場 篠路',short:'篠路',code:'171',addr:'北海道札幌市北区篠路八条',tel:'011-000-0171'},
-  {id:7,name:'やわらぎ新川別邸',short:'新川',code:'163',addr:'北海道札幌市北区新川五条',tel:'011-000-0163'},
-  {id:8,name:'やわらぎ斎場 あいの里',short:'あいの里',code:'188',addr:'北海道札幌市北区あいの里二条',tel:'011-000-0188'},
-  {id:9,name:'やわらぎ斎場 屯田',short:'屯田',code:'195',addr:'北海道札幌市北区屯田六条',tel:'011-000-0195'},
+var HALL_LOCATIONS=[
+  {id:'',name:'（未選択）',fax:'',region:''},
+  {id:'HL01',name:'本社（札幌）',fax:'011-200-0001',region:'道央'},
+  {id:'HL02',name:'北支店',fax:'011-200-0002',region:'道央'},
+  {id:'HL03',name:'南支店',fax:'011-200-0003',region:'道央'},
+  {id:'HL04',name:'旭川支店',fax:'0166-00-0004',region:'道北'},
 ];
+function hallLocById(id){return HALL_LOCATIONS.find(function(h){return h.id===id;});}
+function hallRegion(id){var h=hallLocById(id);return (h&&h.region)?h.region:'道央';}
+/* 会場→拠点→地域（道央/道北）。拠点に未所属（拠点なし）の会場は既定で道央 */
+function venueRegion(name){var v=venueByName(name); if(!v||!v.hallLocationId) return '道央'; return hallRegion(v.hallLocationId)||'道央';}
+function funeralRegion(f){return venueRegion(f.venue)||'道央';}
+const PREFECTURES_V=['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','東京都','神奈川県','愛知県','大阪府','福岡県'];
+/* 郵便番号→住所 サンプル（本番は既存の郵便番号API＝zipcloud/佐川で補完） */
+const ZIP_SAMPLE_V={
+ '0600001':{pref:'北海道',city:'札幌市中央区',town:'北一条西'},
+ '0640801':{pref:'北海道',city:'札幌市中央区',town:'南一条西'},
+ '0640820':{pref:'北海道',city:'札幌市中央区',town:'大通西'},
+ '0010010':{pref:'北海道',city:'札幌市北区',town:'北十条西'},
+ '0020857':{pref:'北海道',city:'札幌市北区',town:'篠路七条'},
+};
+const VENUE_MASTER=[
+  {id:1,name:'やわらぎ斎場 センティア28',short:'センティア',code:'124',tel:'011-000-0124',zip:'0640801',pref:'北海道',city:'札幌市中央区',town:'南二条西',addr1:'8丁目',addr2:'','hallLocationId':'HL01',faxNo:'011-200-0001',orderMail:'sentia@yawaragi.example.jp',bankName:'北海道銀行',branchName:'本店',accountNo1:'1234567',accountName1:'カ）ヤワラギ',wx:true,lat:'43.0621',lng:'141.3544',addr:'北海道札幌市中央区南二条西'},
+  {id:2,name:'やわらぎ斎場 山鼻',short:'山鼻',code:'118',tel:'011-000-0118',zip:'',pref:'北海道',city:'札幌市中央区',town:'南二十条西',addr1:'','addr2':'',hallLocationId:'HL03',faxNo:'011-200-0003',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.0347',lng:'141.3436',addr:'北海道札幌市中央区南二十条西'},
+  {id:3,name:'やわらぎ伏見別邸',short:'伏見',code:'132',tel:'011-000-0132',zip:'',pref:'北海道',city:'札幌市中央区',town:'南十三条西',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.0417',lng:'141.3339',addr:'北海道札幌市中央区南十三条西'},
+  {id:4,name:'やわらぎ北円山別邸',short:'北円山',code:'145',tel:'011-000-0145',zip:'',pref:'北海道',city:'札幌市中央区',town:'北五条西',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.0688',lng:'141.3236',addr:'北海道札幌市中央区北五条西'},
+  {id:5,name:'やわらぎ斎場 新琴似',short:'新琴似',code:'156',tel:'011-000-0156',zip:'',pref:'北海道',city:'札幌市北区',town:'新琴似五条',addr1:'',addr2:'',hallLocationId:'HL02',faxNo:'011-200-0002',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.1189',lng:'141.3269',addr:'北海道札幌市北区新琴似五条'},
+  {id:6,name:'やわらぎ斎場 篠路',short:'篠路',code:'171',tel:'011-000-0171',zip:'0020857',pref:'北海道',city:'札幌市北区',town:'篠路八条',addr1:'',addr2:'',hallLocationId:'HL02',faxNo:'011-200-0002',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.1533',lng:'141.3717',addr:'北海道札幌市北区篠路八条'},
+  {id:7,name:'やわらぎ新川別邸',short:'新川',code:'163',tel:'011-000-0163',zip:'',pref:'北海道',city:'札幌市北区',town:'新川五条',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.1069',lng:'141.3175',addr:'北海道札幌市北区新川五条'},
+  {id:8,name:'やわらぎ斎場 あいの里',short:'あいの里',code:'188',tel:'011-000-0188',zip:'',pref:'北海道',city:'札幌市北区',town:'あいの里二条',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.1719',lng:'141.4133',addr:'北海道札幌市北区あいの里二条'},
+  {id:9,name:'やわらぎ斎場 屯田',short:'屯田',code:'195',tel:'011-000-0195',zip:'',pref:'北海道',city:'札幌市北区',town:'屯田六条',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.1317',lng:'141.3339',addr:'北海道札幌市北区屯田六条'},
+  {id:10,name:'やわらぎ斎場 旭川',short:'旭川',code:'201',tel:'0166-00-0201',zip:'0700030',pref:'北海道',city:'旭川市',town:'宮下通',addr1:'',addr2:'',hallLocationId:'HL04',faxNo:'0166-00-0004',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.7686',lng:'142.3649',addr:'北海道旭川市宮下通'},
+];
+function venueFullAddr(v){return (v.pref||'')+(v.city||'')+(v.town||'')+(v.addr1||'')+(v.addr2||'');}
 const VENUES=VENUE_MASTER.map(v=>v.name);
 function venueByName(n){return VENUE_MASTER.find(v=>v.name===n);}
 function venueShort(n){const v=venueByName(n);return (v&&v.short)||n;}
@@ -1147,6 +1580,37 @@ function renderKPI(){
 }
 function card(cls,lbl,num,unit,sub){return '<div class="kpi-card '+cls+'"><div class="lbl">'+lbl+'</div><div class="num">'+num+'<small>'+unit+'</small></div><div class="sub">'+sub+'</div></div>';}
 
+/* ====== 予約フォーム PDFカタログ設定（道央/道北・回収/法事） ====== */
+var CATALOG={
+  kaishu:{'道央':{label:'プランのご確認はこちら',file:'yawaragi_hoyo_img013.pdf'},'道北':{label:'プランのご確認はこちら',file:''}},
+  houyou:{'道央':{label:'プランのご確認はこちら',file:'yawaragi_hoyo_img013.pdf'},'道北':{label:'プランのご確認はこちら',file:''}}
+};
+var catRegion={kaishu:'道央',houyou:'道央'};
+function catRender(feature){
+  var region=catRegion[feature], c=CATALOG[feature][region];
+  var lab=document.getElementById('cat-'+feature+'-label'); if(lab) lab.value=c.label||'';
+  var fe=document.getElementById('cat-'+feature+'-file');
+  if(fe){ fe.textContent=c.file?('現在：'+c.file):'未設定'; fe.style.color=c.file?'var(--accent)':''; }
+  var vw=document.getElementById('cat-'+feature+'-view');
+  if(vw){ vw.querySelector('span').textContent=c.label||'（文言未設定）'; vw.style.opacity=c.file?'1':'.5'; }
+  var tabs=document.getElementById('cat-'+feature+'-tabs');
+  if(tabs) [].forEach.call(tabs.querySelectorAll('.cat-tab'),function(b){b.classList.toggle('on',b.textContent===region);});
+}
+function catSetRegion(feature,region){ catRegion[feature]=region; catRender(feature); }
+function catToggle(feature){ var p=document.getElementById('cat-'+feature+'-panel'); if(p) p.classList.toggle('collapsed'); }
+function catSaveLabel(feature,val){ CATALOG[feature][catRegion[feature]].label=val; var vw=document.getElementById('cat-'+feature+'-view'); if(vw) vw.querySelector('span').textContent=val||'（文言未設定）'; }
+function catUpload(feature,el){
+  var f=(el&&el.files&&el.files[0])?el.files[0]:null; if(!f) return;
+  if(f.type!=='application/pdf'){ toast('PDFファイルを選択してください'); el.value=''; return; }
+  if(f.size>10*1048576){ toast('ファイルサイズが上限（10MB）を超えています'); el.value=''; return; }
+  CATALOG[feature][catRegion[feature]].file=f.name; catRender(feature);
+  toast('カタログPDFを設定しました：'+f.name+'（'+catRegion[feature]+'）');
+}
+function catPreview(feature){
+  var c=CATALOG[feature][catRegion[feature]];
+  if(!c.file){ toast('この地域はまだPDFが未設定です'); return; }
+  toast('「'+(c.label||'（文言未設定）')+'」→ '+c.file+' を予約フォームで表示します');
+}
 /* ====== 予約状況 ====== */
 function areaRegion(f){const a=f.reservation&&f.reservation.area;return (a&&AREA_CONFIG[a])?AREA_CONFIG[a].region:null;}
 function setStatusRegion(r){statusRegion=r;document.querySelectorAll('#statusRegions .rtab').forEach(b=>b.classList.toggle('on',b.dataset.r===r));renderStatus();}
@@ -1154,12 +1618,12 @@ function renderStatus(){
   let list=weekFunerals();
   if(filter==='pending')list=list.filter(f=>!isResolved(f));
   if(filter==='done')list=list.filter(f=>isResolved(f)||isCancelled(f));
-  list=list.filter(f=>{const rg=areaRegion(f);return rg===null||rg===statusRegion;});
+  list=list.filter(f=>{const rg=funeralRegion(f);return !rg||rg===statusRegion;});
   const {days}=statusWeek();
   const cap=document.getElementById('listCap');
   cap.innerHTML = filter==='pending'
     ? '<i class="ti ti-alert-triangle"></i>未対応の葬家です。荷電で予約を完了させるか、回収不要として登録してください（見落とし防止）。'
-    : '<i class="ti ti-list-check"></i><b>'+statusRegion+'</b>エリアの状況です（葬儀日ベース）。予約前の葬家は両エリアに表示されます。';
+    : '<i class="ti ti-list-check"></i><b>'+statusRegion+'</b>の状況です（会場の拠点＝'+statusRegion+'に属する葬家。葬儀日ベース）。';
   const body=document.getElementById('statusBody'); body.innerHTML='';
   document.getElementById('statusEmpty').style.display=list.length?'none':'block';
   days.forEach(day=>{
@@ -1204,7 +1668,7 @@ function renderStatus(){
       }
       const wd=DOW[new Date(f.funeralDate+'T00:00').getDay()];
       tr.innerHTML='<td class="c-day"><span class="d">'+fmtMD(f.funeralDate)+'（'+wd+'）</span><div class="sub'+(overdue?' od':'')+'">葬儀から'+elapsed+'日</div></td>'+
-        '<td class="fam">'+(f.deceased||f.family)+'<div class="rsub">'+f.family+'</div></td>'+
+        '<td class="fam"><a class="vs-link" onclick="goFollowFamily('+f.id+')">'+(f.deceased||f.family)+'</a><div class="rsub">'+f.family+'</div></td>'+
         '<td class="venue"><span class="vshort">'+venueShort(f.venue)+'</span><span class="vcode">'+venueCode(f.venue)+'</span><div class="vfull">'+f.venue+'</div></td>'+
         '<td>'+doneCell+'</td><td>'+dateCell+'</td><td><div class="ops">'+ops+'</div></td>';
       body.appendChild(tr);
@@ -1309,7 +1773,7 @@ function openNotify(id,kind){const f=data.find(x=>x.id===id);notifyCtx={id,kind}
     row.innerHTML='<input type="checkbox" '+(over?'disabled':'checked')+'><span class="rc-name">'+r.name+'</span><span class="rc-tel">'+(r.tel||'')+'</span>'+(r.obit?'<span class="rc-obit">訃報SMS '+fmtMD(r.obit)+'</span>':'');
     box.appendChild(row);});
   document.getElementById('n-recipNote').textContent = '送信可能数は最大10名です。'+(recips.length>MAX?('（'+recips.length+'名中、上位10名まで送信）'):('（'+Math.min(recips.length,MAX)+'名）'));
-  document.getElementById('n-msg').textContent=f.family+' ご家族さま\n\nこの度はご葬儀を賜り誠にありがとうございました。\n後飾り祭壇・香典返礼品の回収予約がまだお済みでないようです。\n下記より、ご希望の回収日時をご登録ください。\n\n▶ 回収予約フォーム\nhttps://itowa.example/collect/'+f.id+'\n\nやわらぎ斎場 回収受付窓口';
+  document.getElementById('n-msg').textContent='後飾り祭壇・香典返礼品の回収日時をご予約ください→ https://yawaragi.itw.jp/c/'+f.id+'?r='+(funeralRegion(f)==='道北'?'dohoku':'douo');
   renderNotifyHistory(f);
   document.getElementById('notifyBackdrop').classList.add('open');}
 function renderNotifyHistory(f){const wrap=document.getElementById('n-hist-wrap'),h=document.getElementById('n-history');const hist=(f.notifyHistory||[]);
@@ -1319,8 +1783,15 @@ function doSend(){const f=data.find(x=>x.id===notifyCtx.id);const kind=notifyCtx
   const names=[...document.querySelectorAll('#n-recipients .recip-row input:checked')].map(c=>c.closest('.recip-row').querySelector('.rc-name').textContent);
   if(!names.length){toast('送信先を1名以上お選びください');return;}
   f.notify[kind]=TODAY; f.notifyHistory=f.notifyHistory||[]; f.notifyHistory.push({date:TODAY,kind:kind,recipients:names});
+  /* 配信（送信実績・葬家）へ計上 */
+  var cnt=(kind==='sms')?names.length:1;
+  if(kind==='sms'){ REPORT_LIVE.sms+=cnt; REPORT_LIVE.clicks+=Math.round(cnt*0.42); }
+  else { REPORT_LIVE.line+=cnt; REPORT_LIVE.clicks+=Math.round(names.length*0.5); }
+  var fh=FOLLOW_HH.find(function(x){return x.id===f.id;});
+  if(fh){ if(kind==='sms')fh.smsSent+=cnt; else fh.lineSent+=cnt; fh.hist.push({date:TODAY,kind:kind,recipients:names.join('、'),seg:1,units:cnt,clicks:(kind==='sms'?Math.round(cnt*0.42):Math.round(cnt*0.5)),link:'予約'}); }
+  AUTO_LOG.unshift({date:TODAY,id:f.id,deceased:f.deceased,family:f.family,event:'回収予約 ご案内',src:'回収予約',chan:kind,count:cnt});
   renderNotifyHistory(f); render();
-  toast((kind==='sms'?'SMS':'LINE')+'を'+names.length+'名に送信しました（'+f.family+'）');}
+  toast((kind==='sms'?'SMS':'LINE')+'を'+names.length+'名に送信しました（'+f.family+'）※配信実績に計上');}
 function closeNotify(){document.getElementById('notifyBackdrop').classList.remove('open');}
 
 /* ====== 回収不要 登録 ====== */
@@ -1464,30 +1935,78 @@ function closeModal(){document.getElementById('backdrop').classList.remove('open
 document.getElementById('backdrop').addEventListener('click',e=>{if(e.target.id==='backdrop')closeModal();});
 document.getElementById('notifyBackdrop').addEventListener('click',e=>{if(e.target.id==='notifyBackdrop')closeNotify();});
 document.getElementById('noneedBackdrop').addEventListener('click',e=>{if(e.target.id==='noneedBackdrop')closeNoNeed();});
-document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+function isMobileNav(){return typeof window.matchMedia==='function' && window.matchMedia('(max-width:960px)').matches;}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('show');document.body.classList.add('nav-open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('show');document.body.classList.remove('nav-open');}
+function toggleSidebar(){document.getElementById('sidebar').classList.contains('open')?closeSidebar():openSidebar();}
+document.getElementById('menuToggle').addEventListener('click',toggleSidebar);
+document.getElementById('sidebarOverlay').addEventListener('click',closeSidebar);
+// メニュー内のリンクを選んだらスマホでは閉じる（設定の開閉は除く）
+document.querySelectorAll('#sidebar .nav a').forEach(a=>{a.addEventListener('click',function(){
+  if(this.getAttribute('onclick')&&this.getAttribute('onclick').indexOf('toggleSettings')>=0)return;
+  if(isMobileNav())closeSidebar();
+});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSidebar();});
+window.addEventListener('resize',()=>{if(!isMobileNav())closeSidebar();});
 let toastT;function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200);}
 
 /* ====== 初期化 ====== */
-fillSelects();render();
+fillSelects();applyFeatureFlags();render();catRender('kaishu');
 
 /* ====== ページ切替 ====== */
-function showPage(p){
+function showPage(p){if(typeof isMobileNav==='function'&&isMobileNav())closeSidebar();
   document.getElementById('page-kaishu').style.display=p==='kaishu'?'block':'none';
   document.getElementById('page-venue').style.display=p==='venue'?'block':'none';
   document.getElementById('page-houyou').style.display=p==='houyou'?'block':'none';
   document.getElementById('page-follow').style.display=p==='follow'?'block':'none';
+  var pco=document.getElementById('page-company'); if(pco) pco.style.display=p==='company'?'block':'none';
   document.getElementById('nav-kaishu').classList.toggle('active',p==='kaishu');
   document.getElementById('nav-houyou').classList.toggle('active',p==='houyou');
   document.getElementById('nav-follow').classList.toggle('active',p==='follow');
   document.getElementById('nav-venue').classList.toggle('sub-active',p==='venue');
+  var nco=document.getElementById('nav-company'); if(nco) nco.classList.toggle('sub-active',p==='company');
   if(p==='venue') renderVenueList();
-  if(p==='houyou') renderHouyou();
+  if(p==='kaishu') catRender('kaishu');
+  if(p==='houyou'){ renderHouyou(); catRender('houyou'); }
   if(p==='follow') renderFollow();
+  if(p==='company') renderHallLocs();
   window.scrollTo(0,0);
 }
 function toggleSettings(){const s=document.getElementById('settingsSub');s.style.display=(s.style.display==='none')?'block':'none';}
 /* ====== 葬儀会場設定 ====== */
 let vEditingId=null;
+/* ---- FAX送信拠点マスタ（地域＝道央/道北） ---- */
+function renderHallLocs(){
+  var tb=document.getElementById('hl-rows'); if(!tb) return; tb.innerHTML='';
+  HALL_LOCATIONS.filter(function(x){return x.id;}).forEach(function(x){
+    var rcls=x.region==='道北'?'al-src-houyou':'al-src-kaishu';
+    var venCount=VENUE_MASTER.filter(function(v){return v.hallLocationId===x.id;}).length;
+    tb.innerHTML+='<tr><td><b>'+x.name+'</b> <span class="f-hint">（会場 '+venCount+'）</span></td>'+
+      '<td><select class="form-control" style="height:34px;padding:2px 8px;width:auto;display:inline-block" onchange="hlSetRegion(\''+x.id+'\',this.value)">'+
+        ['道央','道北'].map(function(r){return '<option'+(x.region===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select> '+
+        '<span class="al-src '+rcls+'">'+(x.region||'—')+'</span></td>'+
+      '<td>'+(x.fax||'—')+'</td>'+
+      '<td><button class="btn btn-default btn-sm" onclick="hlRemove(\''+x.id+'\')"><i class="ti ti-trash"></i></button></td></tr>';
+  });
+  if(HALL_LOCATIONS.filter(function(x){return x.id;}).length===0) tb.innerHTML='<tr><td colspan="4" class="empty">拠点がありません。</td></tr>';
+}
+function hlSetRegion(id,region){var x=hallLocById(id); if(x){x.region=region; renderHallLocs(); if(typeof render==='function')render(); toast(x.name+'を'+region+'に設定しました');}}
+function hlAdd(){
+  var name=(document.getElementById('hl-name').value||'').trim();
+  if(!name){toast('拠点名を入力してください');return;}
+  var region=document.getElementById('hl-region').value, fax=(document.getElementById('hl-fax').value||'').trim();
+  var newId='HL'+String(HALL_LOCATIONS.length).padStart(2,'0');
+  HALL_LOCATIONS.push({id:newId,name:name,fax:fax,region:region});
+  document.getElementById('hl-name').value=''; document.getElementById('hl-fax').value='';
+  renderHallLocs(); toast('拠点「'+name+'」（'+region+'）を追加しました');
+}
+function hlRemove(id){
+  var x=hallLocById(id); if(!x)return;
+  var used=VENUE_MASTER.filter(function(v){return v.hallLocationId===id;}).length;
+  if(used){ toast('この拠点は'+used+'会場に紐づいているため削除できません'); return; }
+  if(!confirm(x.name+' を削除します。よろしいですか？'))return;
+  var i=HALL_LOCATIONS.indexOf(x); if(i>=0)HALL_LOCATIONS.splice(i,1); renderHallLocs();
+}
 function renderVenueList(){
   document.getElementById('v-detail').style.display='none';
   document.getElementById('v-list').style.display='block';
@@ -1496,29 +2015,63 @@ function renderVenueList(){
   VENUE_MASTER.filter(v=>!q||v.name.includes(q)).forEach(v=>{
     const tr=document.createElement('tr');
     tr.innerHTML='<td><a class="vs-link" onclick="openVenue('+v.id+')">'+v.name+'</a></td>'+
+      '<td>'+(venueFullAddr(v)||v.addr||'')+'</td>'+
       '<td class="vs-short">'+(v.short||'<span class="vs-muted">未登録</span>')+'</td>'+
-      '<td>'+(v.code?'<span class="vs-code">'+v.code+'</span>':'<span class="vs-muted">—</span>')+'</td>'+
-      '<td>'+v.addr+'</td>';
+      '<td>'+(v.code?'<span class="vs-code">'+v.code+'</span>':'<span class="vs-muted">—</span>')+'</td>';
     tb.appendChild(tr);
   });
 }
+function vFillMasters(){
+  const p=document.getElementById('v-pref');if(p)p.innerHTML=PREFECTURES_V.map(x=>'<option>'+x+'</option>').join('');
+  const h=document.getElementById('v-hallloc');if(h)h.innerHTML=HALL_LOCATIONS.map(x=>'<option value="'+x.id+'">'+x.name+(x.region?'〔'+x.region+'〕':'')+'</option>').join('');
+}
 function openVenue(id){
-  vEditingId=id;const v=VENUE_MASTER.find(x=>x.id===id)||{name:'',short:'',code:'',addr:'',tel:''};
+  vEditingId=id;const v=VENUE_MASTER.find(x=>x.id===id)||{name:'',short:'',code:'',tel:'',zip:'',pref:'北海道',city:'',town:'',addr1:'',addr2:'',hallLocationId:'HL01',faxNo:'011-200-0001',orderMail:'',bankName:'',branchName:'',accountNo1:'',accountName1:'',wx:true,lat:'43.0621',lng:'141.3544'};
+  vFillMasters();
   document.getElementById('v-crumb2').textContent=(v.name||'新規会場');
-  document.getElementById('v-name').value=v.name;document.getElementById('v-addr').value=v.addr;
-  document.getElementById('v-tel').value=v.tel||'';document.getElementById('v-code').value=v.code||'';
-  document.getElementById('v-short').value=v.short||'';
-  document.getElementById('v-codeErr').style.display='none';document.getElementById('v-code').classList.remove('vs-invalid');
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.value=val==null?'':val;};
+  set('v-name',v.name);set('v-tel',v.tel);set('v-zip',v.zip);set('v-city',v.city);set('v-town',v.town);set('v-addr1',v.addr1);set('v-addr2',v.addr2);
+  document.getElementById('v-pref').value=v.pref||'北海道';
+  document.getElementById('v-hallloc').value=v.hallLocationId||'';
+  set('v-fax',v.faxNo);set('v-ordermail',v.orderMail);set('v-bank',v.bankName);set('v-branch',v.branchName);set('v-acctno',v.accountNo1);set('v-acctname',v.accountName1);
+  document.getElementById('v-wx').checked=v.wx!==false;set('v-lat',v.lat);set('v-lng',v.lng);
+  set('v-code',v.code);set('v-short',v.short);
+  document.getElementById('v-codeErr').style.display='none';document.getElementById('v-code').classList.remove('is-invalid');
+  const wn=document.getElementById('v-wxnote');if(wn)wn.textContent='会場住所から予報地点を照合します。';
   document.getElementById('v-list').style.display='none';document.getElementById('v-detail').style.display='block';window.scrollTo(0,0);
 }
-document.addEventListener('input',function(e){if(e.target.id==='v-code'){e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,3);}});
+function vZipSearch(){
+  const zip=(document.getElementById('v-zip').value||'').replace(/[^0-9]/g,'');
+  if(zip.length!==7){toast('郵便番号はハイフンなし7桁でご入力ください。');return;}
+  const hit=ZIP_SAMPLE_V[zip];
+  if(!hit){toast('該当住所が見つかりません（本番は郵便番号APIで補完します）。');return;}
+  document.getElementById('v-pref').value=hit.pref;document.getElementById('v-city').value=hit.city;document.getElementById('v-town').value=hit.town;
+  toast('住所を補完しました（'+hit.pref+hit.city+hit.town+'）');
+}
+function vWxCheck(){
+  const wn=document.getElementById('v-wxnote');
+  const addr=document.getElementById('v-pref').value+document.getElementById('v-city').value+document.getElementById('v-town').value;
+  if(wn)wn.innerHTML='<span style="color:#1f7a56">✓ 予報地点を照合しました（'+(addr||'住所未入力')+'）。緯度・経度に反映済み。</span>';
+  toast('天気予報用の位置情報を確認しました。');
+}
+document.addEventListener('input',function(e){
+  if(e.target.id==='v-code'){e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,3);}
+  if(e.target.id==='v-zip'){e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,7);}
+});
 function saveVenue(){
-  const codeI=document.getElementById('v-code'),code=codeI.value;
-  if(!/^[0-9]{3}$/.test(code)){codeI.classList.add('vs-invalid');document.getElementById('v-codeErr').style.display='block';codeI.focus();return;}
-  const v=VENUE_MASTER.find(x=>x.id===vEditingId);
-  if(v){v.name=document.getElementById('v-name').value;v.addr=document.getElementById('v-addr').value;v.tel=document.getElementById('v-tel').value;v.code=code;v.short=document.getElementById('v-short').value;}
+  const codeI=document.getElementById('v-code'),code=codeI.value.trim();
+  if(code&&!/^[0-9]{3}$/.test(code)){codeI.classList.add('is-invalid');codeI.focus();return;}
+  codeI.classList.remove('is-invalid');
+  const g=id=>{const el=document.getElementById(id);return el?el.value:'';};
+  let v=VENUE_MASTER.find(x=>x.id===vEditingId);
+  if(!v){v={id:Math.max(0,...VENUE_MASTER.map(x=>x.id))+1};VENUE_MASTER.push(v);}
+  v.name=g('v-name');v.tel=g('v-tel');v.zip=g('v-zip');v.pref=g('v-pref');v.city=g('v-city');v.town=g('v-town');v.addr1=g('v-addr1');v.addr2=g('v-addr2');
+  v.hallLocationId=g('v-hallloc');v.faxNo=g('v-fax');v.orderMail=g('v-ordermail');
+  v.bankName=g('v-bank');v.branchName=g('v-branch');v.accountNo1=g('v-acctno');v.accountName1=g('v-acctname');
+  v.wx=document.getElementById('v-wx').checked;v.lat=g('v-lat');v.lng=g('v-lng');
+  v.code=code;v.short=g('v-short');v.addr=venueFullAddr(v);
   renderVenueList();render();/* 回収管理へ即反映 */
-  toast('会場設定を保存しました（コード '+code+'／短縮名 '+(v?v.short:'')+'）— 回収管理へ反映');
+  toast('会場設定を保存しました（コード '+(code||'—')+'／短縮名 '+(v.short||'—')+'）— 回収管理へ反映');
 }
 /* ====== CSV ダウンロード（予約状況・葬儀日基準・完了系／未完了除外） ====== */
 function csvEsc(s){s=String(s==null?'':s);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
@@ -1545,7 +2098,7 @@ function downloadCSV(){
 
 /* ====== 法事希望管理 ====== */
 const HVENUES=['やわらぎ斎場','ご自宅','お寺'];
-const HOKKAIDO_H={'札幌市':['中央区','北区','東区','白石区','豊平区','南区','西区','厚別区','手稲区','清田区'],'小樽市':['花園','稲穂','築港','桜','銭函'],'石狩市':['花川南','花川北','花川東','樽川','本町'],'江別市':['野幌町','大麻','文京台','高砂町','萩ケ岡'],'北広島市':['中央','美沢','大曲','西の里','輪厚'],'恵庭市':['和光町','黄金中央','恵み野','島松'],'千歳市':['本町','千代田町','北栄','桜木','錦町']};
+const HOKKAIDO_H={'札幌市':['中央区','北区','東区','白石区','豊平区','南区','西区','厚別区','手稲区','清田区'],'小樽市':['花園','稲穂','築港','桜','銭函'],'石狩市':['花川南','花川北','花川東','樽川','本町'],'江別市':['野幌町','大麻','文京台','高砂町','萩ケ岡'],'北広島市':['中央','美沢','大曲','西の里','輪厚'],'恵庭市':['和光町','黄金中央','恵み野','島松']};
 const TEMPLES=[
  {shuha:'真宗大谷派',name:'本光寺',kana:'ホンコウジ',addr:'札幌市北区屯田8条3丁目3-15',tel:'011-771-2015'},
  {shuha:'真宗大谷派',name:'蓮光寺',kana:'レンコウジ',addr:'札幌市北区太平9条4丁目8-1',tel:'011-772-8810'},
@@ -1657,7 +2210,7 @@ function renderHouyou(){
       const tr=document.createElement('tr');tr.className='row'+(hIsTmp(f)?' pending-row':'');
       const hc=new Date(day+'T00:00');
       tr.innerHTML='<td class="c-day"><span class="d">'+fmtMD(day)+'（'+DOW[hc.getDay()]+'）</span></td>'+
-        '<td class="fam">'+(f.deceased||f.family)+'<div class="rsub">'+f.family+'</div></td>'+
+        '<td class="fam"><a class="vs-link" onclick="goFollowFamily('+f.id+')">'+(f.deceased||f.family)+'</a><div class="rsub">'+f.family+'</div></td>'+
         '<td class="venue"><span class="vshort">'+venueShort(f.venue)+'</span></td>'+
         '<td>'+st+'</td><td>'+want+'</td><td><div class="ops">'+ops+'</div></td>';
       body.appendChild(tr);
@@ -1793,14 +2346,45 @@ function segInfo(str){
   else seg = (cp<=70)?1:Math.ceil(cp/67);
   return {chars:cp, seg:seg};
 }
+/* ===== 配信：課金・ファイル定義 ===== */
+var SMS_UNIT_PRICE=22;   // SMS 1通あたり（円）
+var LINE_UNIT_PRICE=22;  // LINE 1送信あたり（円・文字数によらず一律）
+var FILE_UNIT_PRICE=22;  // ファイル添付 1件あたり（円）
+var MONTHLY_FEE=11000;   // 月額利用料（円）
+var MAX_FILE_MB=10;      // 添付ファイル上限
+var ALLOWED_FILES=[
+  {ext:'PDF（.pdf）',            desc:'請求書・案内状・書類全般'},
+  {ext:'Excel（.xlsx / .xls）',  desc:'見積・明細・一覧表'},
+  {ext:'Word（.docx / .doc）',   desc:'案内文・各種書類'},
+  {ext:'PowerPoint（.pptx / .ppt）',desc:'説明資料'},
+  {ext:'画像（JPEG / PNG / GIF）',desc:'写真・地図・チラシ'},
+  {ext:'CSV（.csv）',            desc:'データ・一覧'},
+  {ext:'テキスト（.txt）',       desc:'メモ・案内文'},
+];
+var FILE_ACCEPT='.pdf,.xlsx,.xls,.docx,.doc,.pptx,.ppt,.csv,.txt,image/*';
+function yen(n){return '¥'+Number(Math.round(n)).toLocaleString('ja-JP');}
+/* LINEは文字数に関係なく 1送信=1通。SMS選択時のみ通数（文字数）計算 */
+function fCounts(){
+  var nSms=document.querySelectorAll('#f-sms-list .f-sms-chk:checked').length;
+  var nLine=document.querySelectorAll('#f-line-list .f-line-chk:checked').length;
+  var si=segInfo(document.getElementById('f-body').value);
+  var seg = nSms>0 ? si.seg : 0;
+  return {nSms:nSms,nLine:nLine,chars:si.chars,seg:seg,smsUnits:nSms*seg,lineUnits:nLine};
+}
 
 /* 通知マスタ（サンプル） */
-var NOTIF_SEQ=3;
+var NOTIF_SEQ=7;
 var NOTIF_MASTER=[
-  {id:1,name:'四十九日 法要のご案内',chan:{sms:false,line:true},base:'funeral',days:42,time:'10:00',body:'＜葬儀社名＞\n四十九日法要のご案内です。日程・会場のご確認はこちらから。 https://itw.jp/h49x',active:true},
-  {id:2,name:'香典返し 発送のお知らせ',chan:{sms:true,line:true},base:'funeral',days:35,time:'11:00',body:'＜葬儀社名＞\n香典返しの発送準備が整いました。内容のご確認をお願いいたします。',active:true},
-  {id:3,name:'新盆のご案内',chan:{sms:true,line:false},base:'death',days:90,time:'09:00',body:'＜葬儀社名＞\n新盆に関するご案内をお送りします。',active:false}
+  {id:1,cat:'回収予約',name:'回収予約 ご案内',        chan:{sms:true,line:true}, base:'funeral',days:3,   time:'10:00',body:'＜やわらぎ斎場＞\n後飾り祭壇・香典返礼品の回収日時をご予約ください→ https://yawaragi.itw.jp/c/xxxxx',active:true},
+  {id:2,cat:'回収予約',name:'回収予約 リマインド（未予約）',chan:{sms:true,line:true},base:'funeral',days:10,  time:'10:00',body:'＜やわらぎ斎場＞\n回収のご予約がまだのようです。ご希望日をご登録ください→ https://yawaragi.itw.jp/c/xxxxx',active:true},
+  {id:3,cat:'法事予約',name:'四十九日 法要のご案内',   chan:{sms:true,line:true}, base:'funeral',days:5,   time:'10:00',pattern:'std',body:'＜やわらぎ斎場＞\n四十九日法要のご案内です。ご確認・ご予約はこちら→ https://yawaragi.itw.jp/h/xxxxx',bodyCatalog:'＜やわらぎ斎場＞\n四十九日法要のご予約・引き物Webカタログはこちら→ https://yawaragi.itw.jp/h/xxxxx',active:true},
+  {id:4,cat:'法事予約',name:'一周忌 法要のご案内',     chan:{sms:true,line:true}, base:'death',  days:335, time:'10:00',pattern:'std',body:'＜やわらぎ斎場＞\n一周忌法要のご案内です。ご確認・ご予約はこちら→ https://yawaragi.itw.jp/h/xxxxx',bodyCatalog:'＜やわらぎ斎場＞\n一周忌法要のご予約・引き物Webカタログはこちら→ https://yawaragi.itw.jp/h/xxxxx',active:true},
+  {id:5,cat:'法事予約',name:'三回忌 法要のご案内',     chan:{sms:true,line:true}, base:'death',  days:700, time:'10:00',pattern:'std',body:'＜やわらぎ斎場＞\n三回忌法要のご案内です。ご確認・ご予約はこちら→ https://yawaragi.itw.jp/h/xxxxx',bodyCatalog:'＜やわらぎ斎場＞\n三回忌法要のご予約・引き物Webカタログはこちら→ https://yawaragi.itw.jp/h/xxxxx',active:true},
+  {id:6,cat:'法事予約',name:'七回忌 法要のご案内',     chan:{sms:true,line:true}, base:'death',  days:2160,time:'10:00',pattern:'std',body:'＜やわらぎ斎場＞\n七回忌法要のご案内です。ご確認・ご予約はこちら→ https://yawaragi.itw.jp/h/xxxxx',bodyCatalog:'＜やわらぎ斎場＞\n七回忌法要のご予約・引き物Webカタログはこちら→ https://yawaragi.itw.jp/h/xxxxx',active:true},
+  {id:7,cat:'その他',  name:'香典返し 発送のお知らせ', chan:{sms:true,line:true}, base:'funeral',days:35,  time:'11:00',body:'＜やわらぎ斎場＞\n香典返しの発送準備が整いました。内容のご確認をお願いいたします。',active:true},
 ];
+/* 有効な本文（法事予約はパターン切替） */
+function mActiveBody(n){ return (n.pattern==='catalog' && n.bodyCatalog) ? n.bodyCatalog : n.body; }
 
 /* 葬家一覧：既存 data を流用してフォロー用に加工 */
 var FOLLOW_HH = data.slice(0,118).map(function(f,i){
@@ -1811,13 +2395,25 @@ var FOLLOW_HH = data.slice(0,118).map(function(f,i){
   var smsNums = (f.smsRecipients||[]).map(function(r,k){return {label:(k===0?'喪主':(k===1?'ご家族':'ご親族')), tel:r.tel};});
   var smsSent = f.notifyHistory.filter(function(h){return h.kind==='sms';}).reduce(function(a,h){return a+((h.recipients&&h.recipients.length)||1);},0);
   var lineSent = f.notifyHistory.filter(function(h){return h.kind==='line';}).length;
-  var hist = f.notifyHistory.map(function(h){return {date:h.date,kind:h.kind,recipients:(h.recipients||[]).join('、'),seg:1};});
+  var hist = f.notifyHistory.map(function(h){return {date:h.date,kind:h.kind,recipients:(h.recipients||[]).join('、'),seg:1,link:'予約'};});
   return {id:f.id, deceased:f.deceased, family:f.family, venue:f.venue, funeralDate:f.funeralDate, deathDate:f.deathDate, lineMembers:lineMembers, smsNums:smsNums, smsSent:smsSent, lineSent:lineSent, hist:hist};
 });
 
 var fCurrent=null, mEditId=null, mChanState={sms:false,line:false}, mBaseState='funeral';
 
 function renderFollow(){ fSetTab('list'); }
+/* 回収/法事の故人名 → 配信の葬家詳細へ遷移 */
+function goFollowFamily(id){
+  var h=FOLLOW_HH.find(function(x){return x.id===id;});
+  if(!h){
+    var f=data.find(function(x){return x.id===id;});
+    if(f){ h={id:f.id,deceased:f.deceased,family:f.family,venue:f.venue,funeralDate:f.funeralDate,deathDate:f.deathDate,
+      lineMembers:[], smsNums:(f.smsRecipients||[]).map(function(r,k){return {label:(k===0?'喪主':'ご家族'),tel:r.tel};}),
+      smsSent:0,lineSent:0,hist:[]}; FOLLOW_HH.push(h); }
+  }
+  if(!h){ toast('配信の葬家情報が見つかりません'); return; }
+  showPage('follow'); fSetTab('list'); fOpen(id);
+}
 function fSetTab(k){
   document.querySelectorAll('#f-tabs .htab').forEach(function(b){b.classList.toggle('on',b.dataset.k===k);});
   document.getElementById('f-tab-list').style.display   = (k==='list')?'block':'none';
@@ -1887,8 +2483,18 @@ function fRenderHist(){
   var box=document.getElementById('f-d-hist'); box.innerHTML='';
   if(!fCurrent.hist.length){ box.innerHTML='<div class="empty" style="padding:16px">送信履歴はまだありません。</div>'; return; }
   fCurrent.hist.slice().reverse().forEach(function(h){
-    var k=(h.kind==='sms')?'<span class="hi-kind k-sms">SMS</span>':'<span class="hi-kind k-line">LINE</span>';
-    box.innerHTML+='<div class="hist-item">'+k+'<span class="hi-date">'+fmtMD(h.date)+'</span><span class="hi-rec">'+(h.recipients||'—')+'</span><span class="f-count-badge">'+(h.seg||1)+'通</span></div>';
+    var isLine=(h.kind==='line');
+    var k=isLine?'<span class="hi-kind k-line">LINE</span>':'<span class="hi-kind k-sms">SMS</span>';
+    var units=h.units||h.seg||1;
+    var opened=(h.clicks!=null)?h.clicks:Math.round(units*(isLine?0.5:0.4));
+    var openLbl=(h.link==='予約')?'予約リンク開封':'リンク開封';
+    var oRate=units?Math.round(opened/units*100):0;
+    box.innerHTML+='<div class="hist-item">'+k+
+      '<span class="hi-date">'+fmtMD(h.date)+'</span>'+
+      '<span class="hi-rec">'+(h.recipients||'—')+'</span>'+
+      '<span class="hi-stat st-sent"><i class="ti ti-send"></i>送信 '+units+'通</span>'+
+      '<span class="hi-stat st-open"><i class="ti ti-link"></i>'+openLbl+' '+opened+'<em>'+oRate+'%</em></span>'+
+      '</div>';
   });
 }
 function fRenderRecipients(){
@@ -1914,82 +2520,115 @@ function fShortenUrl(){
   var v=(document.getElementById('f-url').value||'').trim();
   var out=document.getElementById('f-url-out');
   if(!v){ toast('URLを入力してください'); return; }
-  var short='https://itw.jp/'+Math.random().toString(36).slice(2,7);
+  var short='https://yawaragi.itw.jp/'+Math.random().toString(36).slice(2,7);
   out.style.display='block';
   out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="fInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>';
   toast('URLを短縮しました（'+v.length+'文字 → '+short.length+'文字）');
 }
 function fInsertUrl(u){ var ta=document.getElementById('f-body'); ta.value=(ta.value?ta.value+' ':'')+u; fUpdateCounter(); ta.focus(); }
 function fUpdateCounter(){
-  var info=segInfo(document.getElementById('f-body').value);
-  document.getElementById('f-charcount').textContent=info.chars+'文字';
-  var pill=document.getElementById('f-segpill'); pill.textContent=info.seg+'通'; pill.classList.toggle('multi',info.seg>=2);
-  var nSms=document.querySelectorAll('#f-sms-list .f-sms-chk:checked').length;
-  var nLine=document.querySelectorAll('#f-line-list .f-line-chk:checked').length;
-  var recip=nSms+nLine;
-  document.getElementById('f-recipcount').textContent=recip;
-  document.getElementById('f-segn').textContent=info.seg;
-  document.getElementById('f-total').textContent=(recip*info.seg);
+  var c=fCounts();
+  var pill=document.getElementById('f-segpill');
+  var cc=document.getElementById('f-charcount');
+  if(c.nSms>0){
+    cc.textContent=c.chars+'文字'; cc.style.opacity='';
+    pill.textContent=c.seg+'通'; pill.classList.toggle('multi',c.seg>=2); pill.style.opacity='';
+  }else{
+    cc.textContent='文字数カウントなし'; cc.style.opacity='.55';
+    pill.textContent=(c.nLine>0?'LINEのみ':'—'); pill.classList.remove('multi'); pill.style.opacity='.55';
+  }
+  document.getElementById('f-recipcount').textContent=(c.nSms+c.nLine);
+  document.getElementById('f-segn').textContent=c.seg;
+  document.getElementById('f-total').textContent=(c.smsUnits+c.lineUnits);
+  // 個別ページは配信数（通数・件数）のみ表示。金額計算は「送信実績」ページで行う
+  var fileCnt=fPdfAttached?1:0;
+  var el=document.getElementById('f-cost-detail');
+  if(el){
+    el.innerHTML=
+      '<div class="fc-line"><span>SMS</span><span>'+c.nSms+'件 × '+c.seg+'通 = <b>'+c.smsUnits+'通</b></span></div>'+
+      '<div class="fc-line"><span>LINE</span><span>'+c.nLine+'件 × 1送信 = <b>'+c.lineUnits+'通</b>（文字数によらず一律）</span></div>'+
+      (fileCnt?'<div class="fc-line"><span>ファイル</span><span><b>'+fileCnt+'件</b></span></div>':'')+
+      '<div class="fc-line fc-sum"><span>この送信の配信数</span><span><b>'+(c.smsUnits+c.lineUnits)+'通</b>'+(fileCnt?' ＋ ファイル'+fileCnt+'件':'')+'</span></div>';
+  }
 }
 function fSend(){
   var body=(document.getElementById('f-body').value||'').trim();
-  var info=segInfo(body);
-  var smsRows=[].slice.call(document.querySelectorAll('#f-sms-list .recip-row')).filter(function(r){var c=r.querySelector('.f-sms-chk');return c&&c.checked;});
-  var lineNames=[].slice.call(document.querySelectorAll('#f-line-list .f-line-chk:checked')).map(function(c){return c.closest('.recip-row').querySelector('.rc-name').textContent;});
+  var c=fCounts();
+  var smsRows=[].slice.call(document.querySelectorAll('#f-sms-list .recip-row')).filter(function(r){var ch=r.querySelector('.f-sms-chk');return ch&&ch.checked;});
+  var lineNames=[].slice.call(document.querySelectorAll('#f-line-list .f-line-chk:checked')).map(function(ch){return ch.closest('.recip-row').querySelector('.rc-name').textContent;});
   if(!body){ toast('本文を入力してください'); return; }
   if(!smsRows.length && !lineNames.length){ toast('宛先を1件以上選択してください'); return; }
   var today=TODAY;
+  var hasLink=/https?:\/\//.test(body)||fPdfAttached;
   if(smsRows.length){
     var names=smsRows.map(function(r){return r.querySelector('.f-lbl').value||'（無名）';});
-    fCurrent.hist.push({date:today,kind:'sms',recipients:names.join('、'),seg:info.seg});
-    fCurrent.smsSent+=smsRows.length*info.seg;
+    var clicks=hasLink?Math.round(smsRows.length*0.42):0;
+    fCurrent.hist.push({date:today,kind:'sms',recipients:names.join('、'),seg:c.seg,units:c.smsUnits,clicks:clicks});
+    fCurrent.smsSent+=c.smsUnits;
+    REPORT_LIVE.sms+=c.smsUnits; REPORT_LIVE.clicks+=clicks;
   }
   if(lineNames.length){
-    fCurrent.hist.push({date:today,kind:'line',recipients:lineNames.join('、'),seg:info.seg});
-    fCurrent.lineSent+=lineNames.length*info.seg;
+    var lclicks=hasLink?Math.round(lineNames.length*0.5):0;
+    fCurrent.hist.push({date:today,kind:'line',recipients:lineNames.join('、'),seg:1,units:lineNames.length,clicks:lclicks});
+    fCurrent.lineSent+=lineNames.length; /* LINEは1送信=1通 */
+    REPORT_LIVE.line+=lineNames.length; REPORT_LIVE.clicks+=lclicks;
   }
-  var tot=(smsRows.length+lineNames.length)*info.seg;
-  REPORT_LIVE.sms += smsRows.length*info.seg;
-  REPORT_LIVE.line += lineNames.length*info.seg;
-  if(fPdfAttached) REPORT_LIVE.pdf += (smsRows.length+lineNames.length);
-  var pmsg = fPdfAttached ? '（PDF '+(smsRows.length+lineNames.length)+'件含む）' : '';
-  toast('送信しました：'+(smsRows.length+lineNames.length)+'宛先 × '+info.seg+'通 ＝ 合計'+tot+'通'+pmsg);
+  if(fPdfAttached) REPORT_LIVE.pdf += 1; /* ファイルは1件¥22 */
+  var tot=c.smsUnits+c.lineUnits;
+  var pmsg = fPdfAttached ? '（ファイル添付あり）' : '';
+  toast('送信しました：SMS '+c.smsUnits+'通／LINE '+c.lineUnits+'通'+pmsg);
   document.getElementById('f-body').value='＜葬儀社名＞\n'; document.getElementById('f-url-out').style.display='none';
   fPdfAttached=false; var ps2=document.getElementById('f-pdf-status'); if(ps2){ps2.textContent='未添付';ps2.style.color='';}
-  document.querySelectorAll('#f-sms-list .f-sms-chk, #f-line-list .f-line-chk').forEach(function(c){c.checked=false;});
+  document.querySelectorAll('#f-sms-list .f-sms-chk, #f-line-list .f-line-chk').forEach(function(ch){ch.checked=false;});
   fRenderMeta(); fRenderHist(); fUpdateCounter();
 }
 
 /* ---- 送信実績 ---- */
 function fRenderReport(){
+  var bm=document.getElementById('bm-monthly'); if(bm)bm.textContent=yen(MONTHLY_FEE);
+  var bu=document.getElementById('bm-unit'); if(bu)bu.textContent=yen(SMS_UNIT_PRICE);
   var sms=REPORT_BASE.sms+REPORT_LIVE.sms, line=REPORT_BASE.line+REPORT_LIVE.line, pdf=REPORT_BASE.pdf+REPORT_LIVE.pdf;
-  var rows=[{m:'2026年7月',sms:sms,line:line,pdf:pdf,cur:true},
-            {m:'2026年6月',sms:Math.round(REPORT_BASE.sms*1.12),line:Math.round(REPORT_BASE.line*0.9),pdf:Math.round(REPORT_BASE.pdf*1.05)},
-            {m:'2026年5月',sms:Math.round(REPORT_BASE.sms*0.95),line:Math.round(REPORT_BASE.line*0.7),pdf:Math.round(REPORT_BASE.pdf*0.8)},
-            {m:'2026年4月',sms:Math.round(REPORT_BASE.sms*0.8),line:Math.round(REPORT_BASE.line*0.5),pdf:Math.round(REPORT_BASE.pdf*0.6)}];
+  var deliv=REPORT_BASE.delivered+REPORT_LIVE.delivered, clk=REPORT_BASE.clicks+REPORT_LIVE.clicks;
+  var rows=[{m:'2026年7月',sms:sms,line:line,pdf:pdf,deliv:deliv,clk:clk,cur:true},
+            {m:'2026年6月',sms:Math.round(REPORT_BASE.sms*1.12),line:Math.round(REPORT_BASE.line*0.9),pdf:Math.round(REPORT_BASE.pdf*1.05),deliv:Math.round(REPORT_BASE.sms*1.12*0.965),clk:Math.round(REPORT_BASE.sms*1.12*0.3)},
+            {m:'2026年5月',sms:Math.round(REPORT_BASE.sms*0.95),line:Math.round(REPORT_BASE.line*0.7),pdf:Math.round(REPORT_BASE.pdf*0.8),deliv:Math.round(REPORT_BASE.sms*0.95*0.96),clk:Math.round(REPORT_BASE.sms*0.95*0.29)},
+            {m:'2026年4月',sms:Math.round(REPORT_BASE.sms*0.8),line:Math.round(REPORT_BASE.line*0.5),pdf:Math.round(REPORT_BASE.pdf*0.6),deliv:Math.round(REPORT_BASE.sms*0.8*0.955),clk:Math.round(REPORT_BASE.sms*0.8*0.28)}];
   var tb=document.getElementById('f-report-rows'); tb.innerHTML='';
   rows.forEach(function(r){
-    var tot=r.sms+r.line+r.pdf;
+    var fee=r.sms*SMS_UNIT_PRICE+r.line*LINE_UNIT_PRICE+r.pdf*FILE_UNIT_PRICE;
     tb.innerHTML+='<tr'+(r.cur?' style="background:var(--accent-bg)"':'')+'><td><b>'+r.m+'</b>'+(r.cur?'<span class="rt-badge">当月</span>':'')+'</td>'+
       '<td><span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>'+r.sms+'通</span></td>'+
+      '<td><span class="n-chip" style="color:#8a5a12;background:#faf0dc"><i class="ti ti-link"></i>'+r.clk+'</span></td>'+
       '<td><span class="n-chip n-line"><i class="ti ti-brand-line"></i>'+r.line+'通</span></td>'+
-      '<td><span class="n-chip" style="color:#b25a00;background:#fbecd9"><i class="ti ti-file-text"></i>'+r.pdf+'件</span></td>'+
-      '<td class="mono">'+tot+'</td></tr>';
+      '<td><span class="n-chip" style="color:#b25a00;background:#fbecd9"><i class="ti ti-paperclip"></i>'+r.pdf+'件</span></td>'+
+      '<td class="mono"><b>'+yen(fee)+'</b></td></tr>';
   });
+  // 当月の合計金額（月額 + 配信利用料）
+  var curFee=sms*SMS_UNIT_PRICE+line*LINE_UNIT_PRICE+pdf*FILE_UNIT_PRICE, total=MONTHLY_FEE+curFee;
+  var bs=document.getElementById('bill-summary');
+  if(bs){ bs.innerHTML=
+    '<div class="bs-row"><span>月額利用料</span><span>'+yen(MONTHLY_FEE)+'</span></div>'+
+    '<div class="bs-row"><span>配信利用料（当月）<span class="f-hint">SMS '+sms+'＋LINE '+line+'＋ファイル '+pdf+' × '+yen(SMS_UNIT_PRICE)+'</span></span><span>'+yen(curFee)+'</span></div>'+
+    '<div class="bs-row bs-total"><span>合計金額（当月・税別）</span><span>'+yen(total)+'</span></div>'; }
 }
 
 /* ---- 通知マスタ ---- */
-function mBackList(){ document.getElementById('m-detail').style.display='none'; document.getElementById('m-list').style.display='block'; mRenderList(); }
+function mBackList(){ document.getElementById('m-detail').style.display='none'; document.getElementById('m-list').style.display='block'; mRenderList(); renderAutoLog(); }
 function mRenderList(){
   var tb=document.getElementById('m-rows'); tb.innerHTML='';
   NOTIF_MASTER.forEach(function(n){
     var chips=(n.chan.sms?'<span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>SMS</span> ':'')+(n.chan.line?'<span class="n-chip n-line"><i class="ti ti-brand-line"></i>LINE</span>':'');
-    var seg=segInfo(n.body).seg;
+    var si=segInfo(mActiveBody(n)); var seg=si.seg; var over=si.chars>70;
+    var cat=n.cat||'その他';
+    var catcls=cat==='回収予約'?'al-src-kaishu':(cat==='法事予約'?'al-src-houyou':'al-src-follow');
     var st=n.active?'<span class="badge b-done"><i class="ti ti-check"></i>有効</span>':'<span class="badge b-noneed">無効</span>';
-    tb.innerHTML+='<tr class="row"><td class="fam"><a class="vs-link" onclick="mOpen('+n.id+')">'+n.name+'</a></td><td>'+(chips||'—')+'</td><td>'+(n.base==='funeral'?'葬儀日':'没日')+'</td><td>+'+n.days+'日 '+n.time+'</td><td>'+seg+'通</td><td>'+st+'</td></tr>';
+    var cnt='<b'+(over?' style="color:#c0392b"':'')+'>'+si.chars+'字</b> / '+seg+'通'+(over?' <span class="f-hint" style="color:#c0392b">70字超</span>':'');
+    var pat = (cat==='法事予約' && n.bodyCatalog) ? '<div class="mpat"><button class="mpat-b'+(n.pattern!=='catalog'?' on':'')+'" onclick="mSetPattern('+n.id+',\'std\')">標準</button><button class="mpat-b'+(n.pattern==='catalog'?' on':'')+'" onclick="mSetPattern('+n.id+',\'catalog\')">Webカタログ</button></div>' : '';
+    tb.innerHTML+='<tr class="row"><td><span class="al-src '+catcls+'">'+cat+'</span></td><td class="fam"><a class="vs-link" onclick="mOpen('+n.id+')">'+n.name+'</a>'+pat+'</td><td>'+(chips||'—')+'</td><td>'+(n.base==='funeral'?'葬儀日':'没日')+'</td><td>+'+n.days+'日 '+n.time+'</td><td>'+cnt+'</td><td>'+st+'</td></tr>';
   });
-  if(!NOTIF_MASTER.length) tb.innerHTML='<tr><td colspan="6" class="empty">通知イベントがありません。</td></tr>';
+  if(!NOTIF_MASTER.length) tb.innerHTML='<tr><td colspan="7" class="empty">通知イベントがありません。</td></tr>';
 }
+function mSetPattern(id,p){ var n=NOTIF_MASTER.find(function(x){return x.id===id;}); if(!n)return; n.pattern=p; mRenderList(); toast(n.name+'：'+(p==='catalog'?'Webカタログ版':'標準版')+'に切替'); }
 function mChan(k){ mChanState[k]=!mChanState[k]; document.getElementById('m-chan-'+k).classList.toggle('on',mChanState[k]); }
 function mBase(v){ mBaseState=v; document.getElementById('m-base-funeral').classList.toggle('on-auto',v==='funeral'); document.getElementById('m-base-death').classList.toggle('on-auto',v==='death'); }
 function mOpen(id){
@@ -2003,13 +2642,13 @@ function mOpen(id){
   mBase(n?n.base:'funeral');
   document.getElementById('m-days').value=n?n.days:42;
   document.getElementById('m-time').value=n?n.time:'10:00';
-  document.getElementById('m-body').value=n?n.body:'＜葬儀社名＞\n';
+  document.getElementById('m-body').value=n?mActiveBody(n):'＜やわらぎ斎場＞\n';
   document.getElementById('m-active').checked=n?n.active:true;
   document.getElementById('m-url').value=''; document.getElementById('m-url-out').style.display='none';
   mUpdateActiveLbl(); mUpdateCounter(); window.scrollTo(0,0);
 }
-function mUpdateCounter(){ var info=segInfo(document.getElementById('m-body').value); document.getElementById('m-charcount').textContent=info.chars+'文字'; var p=document.getElementById('m-segpill'); p.textContent=info.seg+'通'; p.classList.toggle('multi',info.seg>=2); }
-function mShortenUrl(){ var v=(document.getElementById('m-url').value||'').trim(); var out=document.getElementById('m-url-out'); if(!v){toast('URLを入力してください');return;} var short='https://itw.jp/'+Math.random().toString(36).slice(2,7); out.style.display='block'; out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="mInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>'; toast('URLを短縮しました'); }
+function mUpdateCounter(){ var info=segInfo(document.getElementById('m-body').value); var over=info.chars>70; var cc=document.getElementById('m-charcount'); cc.textContent=info.chars+'文字'+(over?'（70字超）':' / 70字'); cc.style.color=over?'#c0392b':''; var p=document.getElementById('m-segpill'); p.textContent=info.seg+'通'; p.classList.toggle('multi',info.seg>=2); }
+function mShortenUrl(){ var v=(document.getElementById('m-url').value||'').trim(); var out=document.getElementById('m-url-out'); if(!v){toast('URLを入力してください');return;} var short='https://yawaragi.itw.jp/'+Math.random().toString(36).slice(2,7); out.style.display='block'; out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="mInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>'; toast('URLを短縮しました'); }
 function mInsertUrl(u){ var ta=document.getElementById('m-body'); ta.value=(ta.value?ta.value+' ':'')+u; mUpdateCounter(); ta.focus(); }
 function mUpdateActiveLbl(){ document.getElementById('m-active-lbl').textContent=document.getElementById('m-active').checked?'有効（自動送信ON）':'無効（自動送信OFF）'; }
 function mSave(){
@@ -2018,29 +2657,102 @@ function mSave(){
   if(!name){ toast('通知名を入力してください'); return; }
   if(!mChanState.sms && !mChanState.line){ toast('チャネルを選択してください'); return; }
   if(!body){ toast('通知内容を入力してください'); return; }
-  var rec={name:name,chan:{sms:mChanState.sms,line:mChanState.line},base:mBaseState,days:parseInt(document.getElementById('m-days').value||'0',10),time:document.getElementById('m-time').value||'10:00',body:body,active:document.getElementById('m-active').checked};
-  if(mEditId){ var n=NOTIF_MASTER.find(function(x){return x.id===mEditId;}); Object.assign(n,rec); }
-  else { rec.id=++NOTIF_SEQ; NOTIF_MASTER.push(rec); }
-  mBackList(); toast('通知イベントを保存しました（'+segInfo(body).seg+'通換算）');
+  if(segInfo(body).chars>70 && !confirm('本文が70文字を超えています（'+segInfo(body).chars+'字・'+segInfo(body).seg+'通）。このまま保存しますか？')) return;
+  var editing = mEditId ? NOTIF_MASTER.find(function(x){return x.id===mEditId;}) : null;
+  var rec={cat:(editing&&editing.cat)||'その他',name:name,chan:{sms:mChanState.sms,line:mChanState.line},base:mBaseState,days:parseInt(document.getElementById('m-days').value||'0',10),time:document.getElementById('m-time').value||'10:00',active:document.getElementById('m-active').checked};
+  if(editing){
+    Object.assign(editing,rec);
+    if(editing.pattern==='catalog' && editing.bodyCatalog!=null){ editing.bodyCatalog=body; } else { editing.body=body; }
+  } else { rec.body=body; rec.id=++NOTIF_SEQ; NOTIF_MASTER.push(rec); }
+  mBackList(); toast('通知イベントを保存しました（'+segInfo(body).chars+'字・'+segInfo(body).seg+'通）');
 }
 document.addEventListener('change',function(e){ if(e.target && e.target.id==='m-active') mUpdateActiveLbl(); });
 
 /* ---- 送信実績カウンタ（BASE=初期値 + LIVE=当セッション送信分） ---- */
 var REPORT_BASE={sms:0,line:0,pdf:0};
-FOLLOW_HH.forEach(function(h){REPORT_BASE.sms+=h.smsSent;REPORT_BASE.line+=h.lineSent;});
-REPORT_BASE.pdf=Math.round(REPORT_BASE.sms*0.18);
-var REPORT_LIVE={sms:0,line:0,pdf:0};
+/* 回収予約の案内（data の通知履歴）を全件集計 */
+data.forEach(function(f){
+  (f.notifyHistory||[]).forEach(function(h){
+    if(h.kind==='sms') REPORT_BASE.sms += ((h.recipients&&h.recipients.length)||1);
+    else if(h.kind==='line') REPORT_BASE.line += 1;
+  });
+});
+/* 法事予約の案内（四十九日 自動送信・送信済分）を集計 */
+data.forEach(function(f){ var d=isoAdd(f.funeralDate,5); if(diffDays(d,TODAY)>=0) REPORT_BASE.sms += 1; });
+REPORT_BASE.pdf=Math.round(REPORT_BASE.sms*0.12);
+REPORT_BASE.delivered=Math.round(REPORT_BASE.sms*0.965); // SMS到達（配信レシート）
+REPORT_BASE.clicks=Math.round((REPORT_BASE.sms+REPORT_BASE.line)*0.31); // 短縮URLクリック
+var REPORT_LIVE={sms:0,line:0,pdf:0,delivered:0,clicks:0};
 
-/* ---- PDF添付（葬家個別ページ手動送信） ---- */
-var fPdfAttached=false;
-function fAttachPdf(el){
-  var name=(el&&el.files&&el.files[0])?el.files[0].name:'請求書.pdf';
-  var short='https://itw.jp/pdf/'+Math.random().toString(36).slice(2,7);
-  var ta=document.getElementById('f-body'); ta.value=(ta.value?ta.value+' ':'')+short;
-  fPdfAttached=true;
-  var st=document.getElementById('f-pdf-status'); st.textContent='添付：'+name+' → '+short; st.style.color='var(--accent)';
-  fUpdateCounter();
+/* ===== 自動通知一覧（送信ログ）：通知マスタ・回収予約・法事予約からの自動送信 ===== */
+var AUTO_LOG=[];
+function buildAutoLog(){
+  AUTO_LOG=[];
+  /* 回収予約の実送信（notifyHistory） */
+  data.forEach(function(f){
+    (f.notifyHistory||[]).forEach(function(h){
+      AUTO_LOG.push({date:h.date,id:f.id,deceased:f.deceased,family:f.family,event:'回収予約 ご案内',src:'回収予約',chan:h.kind,count:((h.recipients&&h.recipients.length)||1)});
+    });
+  });
+  /* 通知マスタ（有効）の自動送信：送信予定日が過去の葬家をサンプル計上（分類＝発生元） */
+  NOTIF_MASTER.filter(function(n){return n.active;}).forEach(function(n){
+    var added=0;
+    FOLLOW_HH.forEach(function(h){
+      if(added>=12) return;
+      var base=(n.base==='funeral')?h.funeralDate:h.deathDate;
+      var dd=isoAdd(base,n.days);
+      if(diffDays(dd,TODAY)>=0){
+        var src=n.cat||'配信管理';
+        var chan=n.chan.sms?'sms':(n.chan.line?'line':'sms');
+        AUTO_LOG.push({date:dd,id:h.id,deceased:h.deceased,family:h.family,event:n.name,src:src,chan:chan,count:1});
+        added++;
+      }
+    });
+  });
+  AUTO_LOG.sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:0);});
 }
+buildAutoLog();
+function renderAutoLog(){
+  var tb=document.getElementById('autolog-rows'); if(!tb) return;
+  var show=AUTO_LOG.slice(0,60);
+  tb.innerHTML='';
+  show.forEach(function(a){
+    var chan=(a.chan==='line')?'<span class="n-chip n-line"><i class="ti ti-brand-line"></i>LINE</span>':'<span class="n-chip n-sms"><i class="ti ti-device-mobile"></i>SMS</span>';
+    var srccls=a.src==='配信管理'?'al-src-follow':(a.src==='回収予約'?'al-src-kaishu':'al-src-houyou');
+    tb.innerHTML+='<tr><td>'+fmtFull(a.date)+'</td>'+
+      '<td class="fam"><a class="vs-link" onclick="goFollowFamily('+a.id+')">'+a.deceased+'</a><div class="rsub">'+a.family+'</div></td>'+
+      '<td>'+a.event+'</td>'+
+      '<td><span class="al-src '+srccls+'">'+a.src+'</span></td>'+
+      '<td>'+chan+'</td><td class="mono">'+a.count+'通</td></tr>';
+  });
+  if(!show.length) tb.innerHTML='<tr><td colspan="6" class="empty">自動通知の送信履歴はありません。</td></tr>';
+  var note=document.getElementById('autolog-note'); if(note) note.textContent='全'+AUTO_LOG.length+'件'+(AUTO_LOG.length>60?'（新しい順に先頭60件を表示）':'')+'。故人名から配信の葬家詳細へ移動できます。';
+}
+
+/* ---- 対応ファイル モーダル ---- */
+function fOpenFileInfo(){
+  var box=document.getElementById('fileInfoRows');
+  box.innerHTML=ALLOWED_FILES.map(function(f){return '<tr><td><b>'+f.ext+'</b></td><td>'+f.desc+'</td></tr>';}).join('');
+  document.getElementById('fileInfoBackdrop').classList.add('open');
+}
+function fCloseFileInfo(){ document.getElementById('fileInfoBackdrop').classList.remove('open'); }
+
+/* ---- ファイル添付（多形式・サイズ上限。短縮URLで送付） ---- */
+function attachFile(el,taId,statusId,setFlag){
+  var file=(el&&el.files&&el.files[0])?el.files[0]:null;
+  var name=file?file.name:'請求書.pdf';
+  var sizeMB=file?(file.size/1048576):0.4;
+  if(file && file.size>MAX_FILE_MB*1048576){
+    toast('ファイルサイズが上限（'+MAX_FILE_MB+'MB）を超えています。'); el.value=''; return false;
+  }
+  var short='https://yawaragi.itw.jp/f/'+Math.random().toString(36).slice(2,7);
+  var ta=document.getElementById(taId); ta.value=(ta.value?ta.value+' ':'')+short;
+  var st=document.getElementById(statusId);
+  st.textContent='添付：'+name+'（'+sizeMB.toFixed(1)+'MB）→ '+short; st.style.color='var(--accent)';
+  return true;
+}
+var fPdfAttached=false;
+function fAttachPdf(el){ if(attachFile(el,'f-body','f-pdf-status')){ fPdfAttached=true; fUpdateCounter(); } }
 
 /* ============================================================
    個別配信（SMSのみ・問い合わせ対応／請求書PDF送付）
@@ -2060,18 +2772,11 @@ function gcAddNum(){
   div.innerHTML='<input type="checkbox" class="gc-chk" checked onchange="gcUpdateCounter()"><input class="f-lbl" placeholder="ラベル（例：お問い合わせ）"><input class="f-tel-in" placeholder="090-0000-0000" oninput="gcUpdateCounter()">';
   l.appendChild(div); gcUpdateCounter();
 }
-function gcAttachPdf(el){
-  var name=(el&&el.files&&el.files[0])?el.files[0].name:'請求書.pdf';
-  var short='https://itw.jp/pdf/'+Math.random().toString(36).slice(2,7);
-  var ta=document.getElementById('gc-body'); ta.value=(ta.value?ta.value+' ':'')+short;
-  gcPdfAttached=true;
-  var st=document.getElementById('gc-pdf-status'); st.textContent='添付：'+name+' → '+short; st.style.color='var(--accent)';
-  gcUpdateCounter();
-}
+function gcAttachPdf(el){ if(attachFile(el,'gc-body','gc-pdf-status')){ gcPdfAttached=true; gcUpdateCounter(); } }
 function gcShortenUrl(){
   var v=(document.getElementById('gc-url').value||'').trim(); var out=document.getElementById('gc-url-out');
   if(!v){ toast('URLを入力してください'); return; }
-  var short='https://itw.jp/'+Math.random().toString(36).slice(2,7);
+  var short='https://yawaragi.itw.jp/'+Math.random().toString(36).slice(2,7);
   out.style.display='block';
   out.innerHTML='短縮URL：<b>'+short+'</b> <button class="btn btn-sm" style="margin-left:6px" onclick="gcInsertUrl(\''+short+'\')"><i class="ti ti-arrow-down"></i>本文に挿入</button>';
   toast('URLを短縮しました');
@@ -2085,6 +2790,9 @@ function gcUpdateCounter(){
   document.getElementById('gc-recipcount').textContent=n;
   document.getElementById('gc-segn').textContent=info.seg;
   document.getElementById('gc-total').textContent=(n*info.seg);
+  var fee=n*info.seg*SMS_UNIT_PRICE;
+  var el=document.getElementById('gc-cost-detail');
+  if(el){ el.innerHTML='SMS '+n+'件 × '+info.seg+'通 = <b>'+(n*info.seg)+'通</b>'; }
 }
 function gcSend(){
   var body=(document.getElementById('gc-body').value||'').trim();
@@ -2094,7 +2802,7 @@ function gcSend(){
   if(!body){ toast('本文を入力してください'); return; }
   if(!valid.length){ toast('送信先の電話番号を入力してください'); return; }
   REPORT_LIVE.sms += valid.length*info.seg;
-  if(gcPdfAttached) REPORT_LIVE.pdf += valid.length;
+  if(gcPdfAttached) REPORT_LIVE.pdf += 1; /* ファイルは1件¥22 */
   var recs=valid.map(function(r){return {label:(r.querySelector('.f-lbl').value||'（無名）'), tel:(r.querySelector('.f-tel-in').value||'').trim()};});
   GC_HISTORY.push({ts:TODAY, recipients:recs, count:valid.length, seg:info.seg, total:valid.length*info.seg, pdf:(gcPdfAttached?valid.length:0), body:body});
   var pmsg=gcPdfAttached?'（PDF '+valid.length+'件含む）':'';
@@ -2105,9 +2813,9 @@ function gcSend(){
 /* ---- 個別配信履歴（月別） ---- */
 var GC_HISTORY=[
   {ts:'2026-07-18',recipients:[{label:'お問い合わせ',tel:'090-1122-3344'}],count:1,seg:1,total:1,pdf:0,body:'＜葬儀社名＞\nお問い合わせありがとうございます。ご案内をお送りします。'},
-  {ts:'2026-07-10',recipients:[{label:'請求書送付',tel:'080-2233-4455'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n請求書をお送りします。ご確認をお願いいたします。 https://itw.jp/pdf/a1b2c'},
+  {ts:'2026-07-10',recipients:[{label:'請求書送付',tel:'080-2233-4455'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n請求書をお送りします。ご確認をお願いいたします。 https://yawaragi.itw.jp/f/a1b2c'},
   {ts:'2026-07-03',recipients:[{label:'お問い合わせ',tel:'090-7788-1122'},{label:'ご家族',tel:'090-8899-2233'}],count:2,seg:1,total:2,pdf:0,body:'＜葬儀社名＞\n先日はありがとうございました。'},
-  {ts:'2026-06-28',recipients:[{label:'請求書送付',tel:'080-5566-7788'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n6月分の請求書です。ご確認ください。 https://itw.jp/pdf/c3d4e'},
+  {ts:'2026-06-28',recipients:[{label:'請求書送付',tel:'080-5566-7788'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n6月分の請求書です。ご確認ください。 https://yawaragi.itw.jp/f/c3d4e'},
   {ts:'2026-06-15',recipients:[{label:'お問い合わせ',tel:'090-3344-5566'}],count:1,seg:1,total:1,pdf:0,body:'＜葬儀社名＞\nご案内をお送りします。'},
   {ts:'2026-05-22',recipients:[{label:'請求書送付',tel:'080-9900-1122'}],count:1,seg:2,total:2,pdf:1,body:'＜葬儀社名＞\n5月分の請求書です。'}
 ];
