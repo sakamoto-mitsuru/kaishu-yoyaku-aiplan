@@ -1195,7 +1195,7 @@
           </div>
           <div class="bill-method">
             <div class="bm-title"><i class="ti ti-receipt-2"></i>課金方式</div>
-            <div class="bm-body">月額利用料 <b id="bm-monthly"></b>（税別）＋ 配信利用料（従量）＝ 合計金額（月次請求）<br>
+            <div class="bm-body">配信利用料（従量・月次請求）<br>
               配信利用料：SMS <b id="bm-unit"></b>／通　・　LINE <b>¥22</b>／送信　・　ファイル <b>¥22</b>／件（短縮URLで送付）</div>
           </div>
           <div class="bill-summary" id="bill-summary"></div>
@@ -2563,7 +2563,6 @@ function fSend(){
 
 /* ---- 送信実績 ---- */
 function fRenderReport(){
-  var bm=document.getElementById('bm-monthly'); if(bm)bm.textContent=yen(MONTHLY_FEE);
   var bu=document.getElementById('bm-unit'); if(bu)bu.textContent=yen(SMS_UNIT_PRICE);
   var sms=REPORT_BASE.sms+REPORT_LIVE.sms, line=REPORT_BASE.line+REPORT_LIVE.line, pdf=REPORT_BASE.pdf+REPORT_LIVE.pdf;
   var deliv=REPORT_BASE.delivered+REPORT_LIVE.delivered, clk=REPORT_BASE.clicks+REPORT_LIVE.clicks;
@@ -2581,13 +2580,12 @@ function fRenderReport(){
       '<td><span class="n-chip" style="color:#b25a00;background:#fbecd9"><i class="ti ti-paperclip"></i>'+r.pdf+'件</span></td>'+
       '<td class="mono"><b>'+yen(fee)+'</b></td></tr>';
   });
-  // 当月の合計金額（月額 + 配信利用料）
-  var curFee=sms*SMS_UNIT_PRICE+line*LINE_UNIT_PRICE+pdf*FILE_UNIT_PRICE, total=MONTHLY_FEE+curFee;
+  // 当月の合計（配信利用料のみ。月額利用料は廃止）
+  var curFee=sms*SMS_UNIT_PRICE+line*LINE_UNIT_PRICE+pdf*FILE_UNIT_PRICE;
   var bs=document.getElementById('bill-summary');
   if(bs){ bs.innerHTML=
-    '<div class="bs-row"><span>月額利用料</span><span>'+yen(MONTHLY_FEE)+'</span></div>'+
     '<div class="bs-row"><span>配信利用料（当月）<span class="f-hint">SMS '+sms+'＋LINE '+line+'＋ファイル '+pdf+' × '+yen(SMS_UNIT_PRICE)+'</span></span><span>'+yen(curFee)+'</span></div>'+
-    '<div class="bs-row bs-total"><span>合計金額（当月・税別）</span><span>'+yen(total)+'</span></div>'; }
+    '<div class="bs-row bs-total"><span>合計金額（当月・税別）</span><span>'+yen(curFee)+'</span></div>'; }
 }
 
 /* ---- 通知マスタ ---- */
