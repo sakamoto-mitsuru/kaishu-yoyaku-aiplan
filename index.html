@@ -512,9 +512,54 @@
   .al-src-follow{background:#e6f1fb;color:#185fa5}
   .al-src-kaishu{background:#eaf5ef;color:#1f7a56}
   .al-src-houyou{background:#fbecd9;color:#b25a00}
+  /* ユーザー管理（既存UI準拠） */
+  .user-table2{width:100%;border-collapse:collapse;font-size:13px}
+  .user-table2 th,.user-table2 td{padding:11px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
+  .user-table2 thead th{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+  .card-hd-btn{float:right;margin-top:-4px}
+  .u-role-badge{display:inline-block;font-size:11px;font-weight:700;border-radius:5px;padding:2px 9px;margin-right:4px}
+  .u-role-badge.u-adm{background:#eaf1fb;color:#1a5fa5}
+  .u-role-badge.u-stf{background:#eef1f4;color:#495057}
+  .uf-chip{display:inline-block;font-size:11px;font-weight:600;background:#eef6f1;color:#1f7a56;border-radius:5px;padding:2px 8px;margin-right:4px}
+  .uf-chip.uf-all{background:#e8f0fb;color:#1a5fa5}
+  /* 作成/編集フォーム（スクショ準拠） */
+  #user-form .uf-field{margin-bottom:18px;max-width:760px}
+  #user-form .uf-field label{display:block;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:7px}
+  #user-form .uf-field .form-control{width:100%;height:44px;font-size:15px}
+  .uf-checks{margin:22px 0 6px;display:flex;flex-direction:column;gap:14px}
+  .uf-check{display:inline-flex;align-items:center;gap:11px;font-size:15px;font-weight:700;color:var(--text-primary);cursor:pointer;width:max-content}
+  .uf-check input{width:22px;height:22px;accent-color:var(--accent);cursor:pointer;border-radius:5px}
+  .uf-check input:disabled{opacity:.55;cursor:not-allowed}
+  .uf-check-div{font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:.04em;margin:4px 0 -2px;padding-top:8px;border-top:1px dashed var(--border);max-width:760px}
+  .uf-actions{display:flex;justify-content:space-between;margin-top:26px;padding-top:18px;border-top:1px solid var(--border);max-width:760px}
+  .btn-secondary{background:#6c757d;color:#fff;border:none}
   /* 予約フォーム PDFカタログ設定 */
   .catalog-panel{padding:0;margin-top:18px;overflow:hidden}
   .form-banners{margin-top:22px}
+  .oplog-table td{font-size:12.5px;vertical-align:top}
+  .oplog-table .mono{white-space:nowrap;color:var(--text-secondary)}
+  .oplog-modal{margin:16px 0 4px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .oplog-modal-h{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--text-primary);padding:9px 12px;background:var(--surface);border-bottom:1px solid var(--border)}
+  .oplog-modal-h i{color:var(--accent)}
+  .oplog-modal .tbl-wrap{max-height:220px;overflow:auto}
+  .op-actor{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;white-space:nowrap}
+  .op-actor i{font-size:14px}
+  .op-actor.op-end{color:#b2551f}
+  .op-actor.op-sys{color:#185fa5}
+  .op-actor.op-auto{color:#6b7280}
+  /* 遺族による変更・キャンセル 通知 */
+  .fam-alert{display:flex;align-items:center;gap:10px;background:#fff5f0;border:1px solid #f3c6b0;border-left:4px solid #d9663f;border-radius:10px;padding:11px 15px;margin-bottom:12px;cursor:pointer}
+  .fam-alert i{color:#d9663f;font-size:19px}
+  .fam-alert .fa-txt{flex:1;font-size:13.5px;color:#8a3d1f}
+  .fam-alert .fa-open{font-size:12px;font-weight:700;color:#d9663f;white-space:nowrap}
+  .fam-log-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px}
+  .fam-log-panel .cat-toggle>i:first-child{color:#d9663f}
+  .badge.b-fam{background:#fdeee6;color:#b2551f;border:1px solid #f0c4ac;position:relative}
+  .badge.b-fam.unread,.badge.b-change.unread{box-shadow:0 0 0 2px #f6c9b4}
+  .unread-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#d9663f;margin-left:5px;vertical-align:middle;animation:fam-pulse 1.4s infinite}
+  @keyframes fam-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .fam-unread td{background:#fff8f4}
+  .op-ack{color:#1f7a56!important;border-color:#8fce b2}
   .fb-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:12px}
   .fb-title i{color:var(--accent)}
   .fb-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
@@ -623,7 +668,7 @@
       <a><i class="ti ti-report-money"></i>月別累計売上高</a>
       <a onclick="toggleSettings()"><i class="ti ti-settings"></i>設定<i class="ti ti-chevron-down chev"></i></a>
       <div class="submenu" id="settingsSub">
-        <a><i class="ti ti-user-cog"></i>ユーザー管理</a>
+        <a id="nav-user" onclick="showPage('user')"><i class="ti ti-user-cog"></i>ユーザー管理</a>
         <a id="nav-company" onclick="showPage('company')"><i class="ti ti-building"></i>葬儀社設定</a>
         <a id="nav-venue" onclick="showPage('venue')"><i class="ti ti-building-community"></i>葬儀会場設定</a>
         <a><i class="ti ti-key"></i>APIキー管理</a>
@@ -685,6 +730,21 @@
         </div>
 
         <div id="statusView">
+          <div class="fam-alert" id="famAlert" style="display:none" onclick="toggleFamLog(true)">
+            <i class="ti ti-bell-ringing"></i>
+            <div class="fa-txt" id="famAlertTxt"></div>
+            <span class="fa-open">通知を確認 <i class="ti ti-chevron-down"></i></span>
+          </div>
+          <div class="fam-log-panel collapsed" id="famLogPanel">
+            <button class="cat-toggle" onclick="toggleFamLog()"><i class="ti ti-user-exclamation"></i><b>遺族による予約の変更・キャンセル通知</b><span class="cat-toggle-sub" id="famLogSub"></span><i class="ti ti-chevron-down cat-caret"></i></button>
+            <div class="cat-collapse"><div class="cat-inner">
+              <div class="toolbar"><div class="f-hint"><i class="ti ti-info-circle"></i> ご家族が予約リンクから変更・キャンセルすると、ここに届きます。</div><button class="btn btn-sm" onclick="ackAllFam()"><i class="ti ti-checks"></i>すべて確認済みにする</button></div>
+              <div class="tbl-wrap"><table>
+                <thead><tr><th>操作日</th><th>故人名 / 葬家名</th><th>会場（拠点）</th><th>内容</th><th style="text-align:right">操作</th></tr></thead>
+                <tbody id="famLogRows"></tbody>
+              </table></div>
+            </div></div>
+          </div>
           <div class="list-cap" id="listCap"></div>
           <div class="tbl-wrap"><table>
             <thead><tr><th>葬儀日</th><th>故人名 / 葬家名</th><th>会場名</th><th>状態</th><th>予約日 / 通知</th><th style="text-align:right">操作</th></tr></thead>
@@ -842,11 +902,68 @@
       </div>
     </div>
 
+    <!-- ===== ユーザー管理 ページ ===== -->
+    <div id="page-user" style="display:none">
+      <div class="page">
+      <div class="lte">
+        <!-- 一覧 -->
+        <div id="user-list">
+          <div class="content-header"><h1>ユーザー管理</h1></div>
+          <div class="card card-added">
+            <div class="card-header"><h3 class="card-title">葬儀社ユーザ</h3><button class="btn btn-success card-hd-btn" onclick="userOpen(null)"><i class="ti ti-user-plus"></i> 新規作成</button></div>
+            <div class="card-body">
+              <table class="table user-table2">
+                <thead><tr><th>ユーザ名 / メール</th><th>権限</th><th>使える機能</th><th>受注メール</th><th style="width:110px">操作</th></tr></thead>
+                <tbody id="user-rows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- 新規作成／編集 -->
+        <div id="user-form" style="display:none">
+          <div class="content-header"><h1 id="uf-title">葬儀社ユーザ新規作成</h1></div>
+          <div class="card card-added"><div class="card-body">
+            <div class="uf-field"><label>メールアドレス</label><input type="email" class="form-control" id="uf-email" placeholder=""></div>
+            <div class="uf-field"><label>ユーザ名</label><input type="text" class="form-control" id="uf-name" placeholder=""></div>
+            <div class="uf-field"><label>電話番号</label><input type="tel" class="form-control" id="uf-tel" placeholder="03-1234-5678"></div>
+            <div class="uf-field"><label>社員ID</label><input type="text" class="form-control" id="uf-empid" placeholder=""></div>
+            <div class="uf-checks">
+              <label class="uf-check"><input type="checkbox" id="uf-admin" onchange="ufOnAdmin(this.checked)"><span>管理者</span></label>
+              <label class="uf-check"><input type="checkbox" id="uf-staff"><span>担当者</span></label>
+              <div class="uf-check-div">使える機能</div>
+              <label class="uf-check"><input type="checkbox" id="uf-delivery"><span>配信機能</span></label>
+              <label class="uf-check"><input type="checkbox" id="uf-kaishu"><span>回収予約</span></label>
+              <label class="uf-check"><input type="checkbox" id="uf-houyou"><span>法事予約</span></label>
+              <div class="uf-check-div"></div>
+              <label class="uf-check"><input type="checkbox" id="uf-ordermail"><span>受注メールを受け取る</span></label>
+            </div>
+            <div class="uf-actions">
+              <button class="btn btn-success" onclick="userSave()" id="uf-save"><i class="ti ti-check"></i> 作成</button>
+              <button class="btn btn-secondary" onclick="userBack()">戻る</button>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      </div>
+    </div>
+
     <!-- ===== 葬儀社設定（FAX送信拠点マスタ） ページ ===== -->
     <div id="page-company" style="display:none">
       <div class="page">
       <div class="lte">
         <div class="content-header"><h1>葬儀社設定</h1></div>
+        <div class="card card-added">
+          <div class="card-header"><h3 class="card-title">受注メールアドレス</h3></div>
+          <div class="card-body">
+            <p class="form-text text-muted" style="margin-top:0"><b>回収予約・法事予約</b>の予約完了・変更・キャンセル時に、<b>ご家族へお送りするメールと同じ内容</b>のメールが、この受注メールアドレスにも送信されます。</p>
+            <div class="form-row">
+              <div class="form-group col-md-6"><label class="control-label">受注メールアドレス</label><input type="email" class="form-control" id="co-ordermail" placeholder="order@yawaragi.example.jp"></div>
+              <div class="form-group col-md-6"><label class="control-label">CC（任意・カンマ区切り）</label><input type="text" class="form-control" id="co-ordercc" placeholder="cc1@example.jp, cc2@example.jp"></div>
+            </div>
+            <div class="f-hint" style="margin-top:2px">※ ユーザー管理で「受注メールを受け取る」がオンの担当者にも、あわせて通知されます。</div>
+            <button class="btn btn-success" style="margin-top:12px" onclick="saveCompanyMail()"><i class="ti ti-device-floppy"></i> 保存</button>
+          </div>
+        </div>
         <div class="card card-added">
           <div class="card-header"><h3 class="card-title">FAX送信拠点マスタ</h3></div>
           <div class="card-body">
@@ -972,6 +1089,14 @@
             <div class="vs-card">
               <div class="vs-cardh"><i class="ti ti-user"></i><span id="f-d-name"></span></div>
               <div class="vs-cardb"><div class="f-meta" id="f-d-meta"></div></div>
+            </div>
+
+            <div class="vs-card">
+              <div class="vs-cardh"><i class="ti ti-clipboard-list"></i>操作ログ（配信・回収予約・法事予約）</div>
+              <div class="vs-cardb" style="padding:0">
+                <div class="tbl-wrap"><table class="vs-table oplog-table"><thead><tr><th style="width:150px">日時</th><th style="width:96px">機能</th><th style="width:110px">担当者</th><th>内容</th></tr></thead>
+                <tbody id="f-d-oplog"></tbody></table></div>
+              </div>
             </div>
 
             <div class="vs-card">
@@ -1251,6 +1376,11 @@
       <div class="toggle" id="f-auto" onclick="pickSource('auto')">自動予約</div>
       <div class="toggle" id="f-manual" onclick="pickSource('manual')">手入力</div></div></div></div>
     <div class="fg"><label>メモ</label><textarea id="f-memo" placeholder="搬出経路・立会者など"></textarea></div>
+    <div class="oplog-modal">
+      <div class="oplog-modal-h"><i class="ti ti-clipboard-list"></i>操作ログ（配信・回収予約・法事予約）</div>
+      <div class="tbl-wrap"><table class="vs-table oplog-table"><thead><tr><th style="width:132px">日時</th><th style="width:80px">機能</th><th style="width:120px">操作者</th><th>内容</th></tr></thead>
+      <tbody id="k-oplog"></tbody></table></div>
+    </div>
     <div class="modal-actions"><button class="btn btn-danger" id="btnDelete" onclick="cancelCurrent()"><i class="ti ti-x"></i>予約をキャンセル</button>
       <div class="spacer"></div><button class="btn" onclick="closeModal()">キャンセル</button>
       <button class="btn btn-primary" onclick="saveModal()"><i class="ti ti-device-floppy"></i>保存して完了にする</button></div>
@@ -1310,6 +1440,11 @@
     <div class="frow"><div class="fg"><label>ご希望日</label><input type="date" id="h-date"></div>
       <div class="fg"><label>時間帯</label><select id="h-ampm"><option>午前</option><option>午後</option></select></div></div>
     <div class="fg"><label>メモ</label><textarea id="h-memo" placeholder="お寺名・ご住所・ご要望など"></textarea></div>
+    <div class="oplog-modal">
+      <div class="oplog-modal-h"><i class="ti ti-clipboard-list"></i>操作ログ（配信・回収予約・法事予約）</div>
+      <div class="tbl-wrap"><table class="vs-table oplog-table"><thead><tr><th style="width:132px">日時</th><th style="width:80px">機能</th><th style="width:120px">操作者</th><th>内容</th></tr></thead>
+      <tbody id="h-oplog"></tbody></table></div>
+    </div>
     <div class="modal-actions"><button class="btn btn-danger" id="hDelete" onclick="hCancelBooking()"><i class="ti ti-x"></i>キャンセルにする</button>
       <div class="spacer"></div><button class="btn" onclick="hClose()">閉じる</button>
       <button class="btn btn-primary" id="hConfirmBtn" onclick="hConfirm()"><i class="ti ti-phone-check"></i>電話で確定して保存</button></div>
@@ -1503,6 +1638,41 @@ function isReserved(f){return !!(f.reservation&&!f.reservation.cancel);}
 function isNoNeed(f){return !!f.noCollection;}
 function isResolved(f){return isReserved(f)||isNoNeed(f);} // 予約完了 または 回収不要 ＝ 完了（キャンセルは含めない）
 function isChanged(f){return !!(f.reservation&&f.reservation.change);}
+/* ---- 遺族（予約リンク）による変更・キャンセルの検知・通知 ---- */
+var FAM_ACK={};
+function isFamChange(f){return isChanged(f)&&f.reservation.change.by==='ユーザー';}
+function isFamCancel(f){return isCancelled(f)&&f.reservation.cancel.by==='ユーザー';}
+function isFamAction(f){return isFamChange(f)||isFamCancel(f);}
+function famActionType(f){return isFamCancel(f)?'cancel':(isFamChange(f)?'change':'');}
+function famActionAt(f){return isFamCancel(f)?f.reservation.cancel.date:(isFamChange(f)?f.reservation.change.date:'');}
+function famActions(){ return data.filter(isFamAction).sort(function(a,b){return famActionAt(a)<famActionAt(b)?1:-1;}); }
+function famUnack(){ return famActions().filter(function(f){return !FAM_ACK[f.id];}); }
+function ackFam(id){ FAM_ACK[id]=true; renderFamPanel(); if(currentView==='status')renderStatus(); }
+function ackAllFam(){ famActions().forEach(function(f){FAM_ACK[f.id]=true;}); renderFamPanel(); if(currentView==='status')renderStatus(); }
+function toggleFamLog(forceOpen){ var p=document.getElementById('famLogPanel'); if(!p)return; if(forceOpen){p.classList.remove('collapsed'); p.scrollIntoView({behavior:'smooth',block:'nearest'});} else p.classList.toggle('collapsed'); }
+function renderFamPanel(){
+  var acts=famActions(), unack=famUnack();
+  var nCh=acts.filter(function(f){return famActionType(f)==='change';}).length;
+  var nCa=acts.filter(function(f){return famActionType(f)==='cancel';}).length;
+  var alert=document.getElementById('famAlert'), at=document.getElementById('famAlertTxt');
+  var uCh=unack.filter(function(f){return famActionType(f)==='change';}).length;
+  var uCa=unack.filter(function(f){return famActionType(f)==='cancel';}).length;
+  if(alert){ if(unack.length){ alert.style.display=''; at.innerHTML='遺族による<b>変更 '+uCh+'件</b>・<b>キャンセル '+uCa+'件</b>が未確認です'; } else alert.style.display='none'; }
+  var sub=document.getElementById('famLogSub'); if(sub) sub.textContent='変更 '+nCh+'件・キャンセル '+nCa+'件'+(unack.length?'（未確認 '+unack.length+'）':'（すべて確認済み）');
+  var tb=document.getElementById('famLogRows'); if(!tb)return; tb.innerHTML='';
+  acts.forEach(function(f){
+    var t=famActionType(f), r=f.reservation, un=!FAM_ACK[f.id];
+    var content, badge;
+    if(t==='cancel'){ badge='<span class="badge b-cancel"><i class="ti ti-x"></i>キャンセル</span>'; content='元予約 '+fmtMD(r.visitDate)+' '+r.visitTime+' を取消'; }
+    else { badge='<span class="badge b-change"><i class="ti ti-refresh"></i>変更</span>'; content='回収日時 '+(r.change.fromDate?fmtMD(r.change.fromDate)+' '+(r.change.fromTime||''):'—')+' → '+fmtMD(r.visitDate)+' '+r.visitTime; }
+    tb.innerHTML+='<tr'+(un?' class="fam-unread"':'')+'><td>'+(un?'<span class="unread-dot"></span>':'')+fmtMD(famActionAt(f))+'</td>'+
+      '<td class="fam"><a class="vs-link" onclick="goFollowFamily('+f.id+')">'+(f.deceased||f.family)+'</a><div class="rsub">'+f.family+'</div></td>'+
+      '<td class="f-hint">'+venueShort(f.venue)+'〔'+funeralRegion(f)+'〕</td>'+
+      '<td>'+badge+' <span class="f-hint">'+content+'</span></td>'+
+      '<td style="text-align:right"><button class="op" onclick="openEdit('+f.id+')"><i class="ti ti-eye"></i>詳細</button>'+(un?' <button class="op op-ack" onclick="ackFam('+f.id+')"><i class="ti ti-check"></i>確認</button>':'<span class="f-hint">確認済み</span>')+'</td></tr>';
+  });
+  if(!acts.length) tb.innerHTML='<tr><td colspan="5" class="empty">遺族による変更・キャンセルはありません。</td></tr>';
+}
 function autoRemind(f){ if(isResolved(f)||isCancelled(f))return null; const dt=isoAdd(f.deathDate,42); return {date:dt,sent:diffDays(dt,TODAY)>=0}; } // 没日+42日 正午（未解決のみ送信）
 function manualNotified(f){return f.notify.sms||f.notify.line;}
 function anyNotified(f){const a=autoRemind(f);return manualNotified(f)||(a&&a.sent);}
@@ -1618,13 +1788,15 @@ function renderStatus(){
       let doneCell,dateCell,ops;
       if(cancelled){
         const cx=f.reservation.cancel,r=f.reservation;
-        doneCell='<span class="badge b-cancel"><i class="ti ti-x"></i>キャンセル</span>';
-        dateCell='<div class="rdate">'+fmtMD(cx.date)+' キャンセル</div><div class="rsub">'+cx.by+'による取消／元予約 '+fmtMD(r.visitDate)+' '+r.visitTime+'</div>';
+        const famC=isFamCancel(f), un=famC&&!FAM_ACK[f.id];
+        doneCell='<span class="badge b-cancel"><i class="ti ti-x"></i>キャンセル</span>'+(famC?' <span class="badge b-fam'+(un?' unread':'')+'"><i class="ti ti-user"></i>遺族'+(un?'<span class="unread-dot"></span>':'')+'</span>':'');
+        dateCell='<div class="rdate">'+fmtMD(cx.date)+' キャンセル</div><div class="rsub">'+(famC?'<b style="color:var(--danger,#c0392b)">遺族がリンクから取消</b>':cx.by+'による取消')+'／元予約 '+fmtMD(r.visitDate)+' '+r.visitTime+'</div>';
         ops='<button class="op" onclick="openEdit('+f.id+')"><i class="ti ti-eye"></i>詳細</button>';
       }else if(isReserved(f)){
         const r=f.reservation,changed=isChanged(f);
-        doneCell='<span class="badge b-done"><i class="ti ti-check"></i>予約完了</span>'+(changed?' <span class="badge b-change"><i class="ti ti-refresh"></i>変更 '+fmtMD(r.change.date)+'</span>':'');
-        dateCell='<div class="rdate">'+fmtMD(r.reservedDate)+' 予約</div><div class="rsub">回収 '+fmtMD(r.visitDate)+' '+r.visitTime+'／'+(r.channel==='web'?'web':'荷電')+(changed?'　<span style="color:var(--edit)">変更：'+r.change.by+'</span>':'')+'</div>';
+        const famC=isFamChange(f), un=famC&&!FAM_ACK[f.id];
+        doneCell='<span class="badge b-done"><i class="ti ti-check"></i>予約完了</span>'+(changed?' <span class="badge b-change'+(un?' unread':'')+'"><i class="ti ti-refresh"></i>'+(famC?'遺族変更':'変更 '+fmtMD(r.change.date))+(un?'<span class="unread-dot"></span>':'')+'</span>':'');
+        dateCell='<div class="rdate">'+fmtMD(r.reservedDate)+' 予約</div><div class="rsub">回収 '+fmtMD(r.visitDate)+' '+r.visitTime+'／'+(r.channel==='web'?'web':'荷電')+(changed?'　<span style="color:var(--edit)">'+(famC?'遺族がリンクから変更':'変更：'+r.change.by)+'</span>':'')+'</div>';
         ops='<button class="op" onclick="openEdit('+f.id+')"><i class="ti ti-edit"></i>詳細</button>';
       }else if(isNoNeed(f)){
         const nc=f.noCollection;
@@ -1652,6 +1824,7 @@ function renderStatus(){
       body.appendChild(tr);
     });
   });
+  renderFamPanel();
 }
 
 /* ====== エリア別 予約枠シート ====== */
@@ -1768,6 +1941,7 @@ function doSend(){const f=data.find(x=>x.id===notifyCtx.id);const kind=notifyCtx
   var fh=FOLLOW_HH.find(function(x){return x.id===f.id;});
   if(fh){ if(kind==='sms')fh.smsSent+=cnt; else fh.lineSent+=cnt; fh.hist.push({date:TODAY,kind:kind,recipients:names.join('、'),seg:1,units:cnt,clicks:(kind==='sms'?Math.round(cnt*0.42):Math.round(cnt*0.5)),link:'予約'}); }
   AUTO_LOG.unshift({date:TODAY,id:f.id,deceased:f.deceased,family:f.family,event:'回収予約 ご案内',src:'回収予約',chan:kind,count:cnt});
+  logOp(f.id,'配信',OP_ME,(kind==='sms'?'SMS':'LINE')+'で案内を送信（'+names.length+'名）');
   renderNotifyHistory(f); render();
   toast((kind==='sms'?'SMS':'LINE')+'を'+names.length+'名に送信しました（'+f.family+'）※配信実績に計上');}
 function closeNotify(){document.getElementById('notifyBackdrop').classList.remove('open');}
@@ -1896,19 +2070,19 @@ function saveModal(){readDraft();if(!draft.family){alert('葬家名をご入力�
     const nf={id:++seq,deathDate:isoAdd(draft.fdate,-2),funeralDate:draft.fdate,family:draft.family,venue:draft.venue,tel:draft.tel||'',
       reservation:{reservedDate:TODAY,visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,status:draft.status,memo:draft.memo,editedFields:[]},
       noCollection:null,notify:{sms:null,line:null}};
-    data.push(nf);closeModal();render();toast('新規の葬家「'+nf.family+'」の予約を作成しました');return;
+    data.push(nf);logOp(nf.id,'回収予約',OP_ME,'回収予約を確定（回収 '+fmtMD(draft.date)+' '+draft.time+'／荷電）');closeModal();render();toast('新規の葬家「'+nf.family+'」の予約を作成しました');return;
   }
   const f=data.find(x=>x.id===editingId);if(!f)return;
   f.tel=draft.tel||'';
-  if(!f.reservation){f.reservation={reservedDate:TODAY,visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,status:draft.status,memo:draft.memo,editedFields:[]};f.family=draft.family;f.venue=draft.venue;f.funeralDate=draft.fdate;toast(f.family+' の回収予約を登録しました（完了）');}
+  if(!f.reservation){f.reservation={reservedDate:TODAY,visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,status:draft.status,memo:draft.memo,editedFields:[]};f.family=draft.family;f.venue=draft.venue;f.funeralDate=draft.fdate;logOp(f.id,'回収予約',OP_ME,'回収予約を確定（回収 '+fmtMD(draft.date)+' '+draft.time+'／荷電）');toast(f.family+' の回収予約を登録しました（完了）');}
   else{const r=f.reservation,ch=new Set(r.editedFields),oldDate=r.visitDate,oldTime=r.visitTime;let moved=false;if(r.visitDate!==draft.date){ch.add('visitDate');moved=true;}if(r.visitTime!==draft.time){ch.add('visitTime');moved=true;}if(r.area!==draft.area){ch.add('area');moved=true;}if(JSON.stringify(r.contents.slice().sort())!==JSON.stringify(draft.contents.slice().sort()))ch.add('contents');if(r.memo!==draft.memo)ch.add('memo');
     Object.assign(r,{visitDate:draft.date,visitTime:draft.time,area:draft.area,addr:draft.addr,reserver:draft.reserver||'',contacts:(draft.contacts||[]),contents:draft.contents.slice(),channel:draft.channel,source:draft.source,memo:draft.memo,status:draft.status,editedFields:[...ch]});
-    if(moved) r.change={date:TODAY,by:'管理画面',fromDate:oldDate,fromTime:oldTime};
+    if(moved){ r.change={date:TODAY,by:'管理画面',fromDate:oldDate,fromTime:oldTime}; logOp(f.id,'回収予約',OP_ME,'回収日時を変更（'+fmtMD(oldDate)+' '+oldTime+' → '+fmtMD(draft.date)+' '+draft.time+'）'); }
     f.family=draft.family;f.venue=draft.venue;f.funeralDate=draft.fdate;toast(f.family+' の予約を更新しました');}
   closeModal();render();}
-function cancelCurrent(){const f=data.find(x=>x.id===editingId);if(!f||!f.reservation)return;if(confirm(f.family+' の回収予約をキャンセルします。キャンセルとして記録されます。よろしいですか？')){f.reservation.cancel={date:TODAY,by:'管理画面'};closeModal();render();toast(f.family+' の予約をキャンセルしました（管理画面）');}}
+function cancelCurrent(){const f=data.find(x=>x.id===editingId);if(!f||!f.reservation)return;if(confirm(f.family+' の回収予約をキャンセルします。キャンセルとして記録されます。よろしいですか？')){f.reservation.cancel={date:TODAY,by:'管理画面'};logOp(f.id,'回収予約',OP_ME,'回収予約をキャンセル');closeModal();render();toast(f.family+' の予約をキャンセルしました（管理画面）');}}
 function uncancelCurrent(){const f=data.find(x=>x.id===editingId);if(!f||!f.reservation)return;f.reservation.cancel=null;closeModal();render();toast(f.family+' のキャンセルを取り消しました');}
-function openModal(){document.getElementById('backdrop').classList.add('open');}
+function openModal(){document.getElementById('backdrop').classList.add('open'); if(typeof renderOpLogInto==='function' && editingId && editingId!=='new') renderOpLogInto('k-oplog',editingId);}
 function closeModal(){document.getElementById('backdrop').classList.remove('open');}
 document.getElementById('backdrop').addEventListener('click',e=>{if(e.target.id==='backdrop')closeModal();});
 document.getElementById('notifyBackdrop').addEventListener('click',e=>{if(e.target.id==='notifyBackdrop')closeNotify();});
@@ -1938,21 +2112,111 @@ function showPage(p){if(typeof isMobileNav==='function'&&isMobileNav())closeSide
   document.getElementById('page-houyou').style.display=p==='houyou'?'block':'none';
   document.getElementById('page-follow').style.display=p==='follow'?'block':'none';
   var pco=document.getElementById('page-company'); if(pco) pco.style.display=p==='company'?'block':'none';
+  var pus=document.getElementById('page-user'); if(pus) pus.style.display=p==='user'?'block':'none';
   document.getElementById('nav-kaishu').classList.toggle('active',p==='kaishu');
   document.getElementById('nav-houyou').classList.toggle('active',p==='houyou');
   document.getElementById('nav-follow').classList.toggle('active',p==='follow');
   document.getElementById('nav-venue').classList.toggle('sub-active',p==='venue');
   var nco=document.getElementById('nav-company'); if(nco) nco.classList.toggle('sub-active',p==='company');
+  var nus=document.getElementById('nav-user'); if(nus) nus.classList.toggle('sub-active',p==='user');
   if(p==='venue') renderVenueList();
   if(p==='kaishu') catRender('kaishu');
   if(p==='houyou'){ renderHouyou(); catRender('houyou'); }
   if(p==='follow') renderFollow();
-  if(p==='company') renderHallLocs();
+  if(p==='company') renderCompany();
+  if(p==='user'){ userBack(); renderUsers(); }
   window.scrollTo(0,0);
 }
 function toggleSettings(){const s=document.getElementById('settingsSub');s.style.display=(s.style.display==='none')?'block':'none';}
 /* ====== 葬儀会場設定 ====== */
 let vEditingId=null;
+/* ====== ユーザー管理（権限） ====== */
+var USER_SEQ=4;
+var USERS=[
+  {id:1,name:'坂元 充',email:'m-sakamoto@itowa71.com',tel:'090-1784-5550',empId:'0001',isAdmin:true, isStaff:false,delivery:true, kaishu:true, houyou:true, orderMail:true},
+  {id:2,name:'髙橋',    email:'takahashi@yawaragi.example.jp',tel:'011-000-0002',empId:'0002',isAdmin:false,isStaff:true, delivery:true, kaishu:true, houyou:true, orderMail:true},
+  {id:3,name:'近藤',    email:'kondo@yawaragi.example.jp',    tel:'011-000-0003',empId:'0003',isAdmin:false,isStaff:true, delivery:true, kaishu:false,houyou:false,orderMail:false},
+  {id:4,name:'河石',    email:'kawaishi@yawaragi.example.jp', tel:'011-000-0004',empId:'0004',isAdmin:false,isStaff:true, delivery:false,kaishu:true, houyou:true, orderMail:false},
+];
+var uEditId=null;
+function featChips(u){
+  if(u.isAdmin) return '<span class="uf-chip uf-all">全機能</span>';
+  var c=[]; if(u.delivery)c.push('配信'); if(u.kaishu)c.push('回収'); if(u.houyou)c.push('法事');
+  return c.length?c.map(function(x){return '<span class="uf-chip">'+x+'</span>';}).join(''):'<span class="f-hint">—</span>';
+}
+function renderUsers(){
+  var tb=document.getElementById('user-rows'); if(!tb)return; tb.innerHTML='';
+  USERS.forEach(function(u){
+    var role=(u.isAdmin?'<span class="u-role-badge u-adm">管理者</span>':'')+(u.isStaff?'<span class="u-role-badge u-stf">担当者</span>':'');
+    tb.innerHTML+='<tr>'+
+      '<td><b>'+u.name+'</b><div class="rsub">'+u.email+'</div></td>'+
+      '<td>'+(role||'<span class="f-hint">—</span>')+'</td>'+
+      '<td>'+featChips(u)+'</td>'+
+      '<td>'+(u.orderMail?'<i class="ti ti-mail-check" style="color:#1f7a56"></i> 受取':'<span class="f-hint">—</span>')+'</td>'+
+      '<td><button class="op" onclick="userOpen('+u.id+')"><i class="ti ti-edit"></i>編集</button> <button class="op" onclick="userRemove('+u.id+')"><i class="ti ti-trash"></i></button></td>'+
+    '</tr>';
+  });
+  if(!USERS.length) tb.innerHTML='<tr><td colspan="5" class="empty">ユーザーがいません。</td></tr>';
+}
+function ufOnAdmin(on){
+  // 管理者は全機能利用可のため、機能チェックをオン・固定
+  ['uf-delivery','uf-kaishu','uf-houyou'].forEach(function(id){var el=document.getElementById(id); if(el){ if(on){el.checked=true;} el.disabled=on; }});
+}
+function userOpen(id){
+  uEditId=id;
+  var u=id?USERS.find(function(x){return x.id===id;}):{name:'',email:'',tel:'',empId:'',isAdmin:false,isStaff:true,delivery:false,kaishu:false,houyou:false,orderMail:false};
+  document.getElementById('uf-title').textContent=id?'葬儀社ユーザ編集':'葬儀社ユーザ新規作成';
+  document.getElementById('uf-save').innerHTML=id?'<i class="ti ti-check"></i> 更新':'<i class="ti ti-check"></i> 作成';
+  document.getElementById('uf-email').value=u.email||'';
+  document.getElementById('uf-name').value=u.name||'';
+  document.getElementById('uf-tel').value=u.tel||'';
+  document.getElementById('uf-empid').value=u.empId||'';
+  document.getElementById('uf-admin').checked=!!u.isAdmin;
+  document.getElementById('uf-staff').checked=!!u.isStaff;
+  document.getElementById('uf-delivery').checked=!!u.delivery;
+  document.getElementById('uf-kaishu').checked=!!u.kaishu;
+  document.getElementById('uf-houyou').checked=!!u.houyou;
+  document.getElementById('uf-ordermail').checked=!!u.orderMail;
+  ufOnAdmin(!!u.isAdmin);
+  document.getElementById('user-list').style.display='none';
+  document.getElementById('user-form').style.display='';
+  window.scrollTo(0,0);
+}
+function userBack(){ document.getElementById('user-form').style.display='none'; document.getElementById('user-list').style.display=''; }
+function userSave(){
+  var email=(document.getElementById('uf-email').value||'').trim();
+  var name=(document.getElementById('uf-name').value||'').trim();
+  if(!email||email.indexOf('@')<0){toast('メールアドレスを入力してください');return;}
+  if(!name){toast('ユーザ名を入力してください');return;}
+  var admin=document.getElementById('uf-admin').checked;
+  var rec={email:email,name:name,tel:(document.getElementById('uf-tel').value||'').trim(),empId:(document.getElementById('uf-empid').value||'').trim(),
+    isAdmin:admin,isStaff:document.getElementById('uf-staff').checked,
+    delivery:admin||document.getElementById('uf-delivery').checked,
+    kaishu:admin||document.getElementById('uf-kaishu').checked,
+    houyou:admin||document.getElementById('uf-houyou').checked,
+    orderMail:document.getElementById('uf-ordermail').checked};
+  if(uEditId){ Object.assign(USERS.find(function(x){return x.id===uEditId;}),rec); toast('ユーザーを更新しました'); }
+  else { rec.id=++USER_SEQ; USERS.push(rec); toast('ユーザー「'+name+'」を作成しました'); }
+  userBack(); renderUsers();
+}
+function userRemove(id){
+  var u=USERS.find(function(x){return x.id===id;}); if(!u)return;
+  if(u.isAdmin&&USERS.filter(function(x){return x.isAdmin;}).length<=1){toast('管理者は最低1名必要です');return;}
+  if(!confirm(u.name+' を削除します。よろしいですか？'))return;
+  USERS.splice(USERS.indexOf(u),1); renderUsers();
+}
+/* ====== 葬儀社設定：受注メール ====== */
+var COMPANY={orderMail:'order@yawaragi.example.jp',orderCc:''};
+function saveCompanyMail(){
+  COMPANY.orderMail=(document.getElementById('co-ordermail').value||'').trim();
+  COMPANY.orderCc=(document.getElementById('co-ordercc').value||'').trim();
+  toast('受注メールアドレスを保存しました');
+}
+function renderCompany(){
+  var m=document.getElementById('co-ordermail'); if(m)m.value=COMPANY.orderMail||'';
+  var c=document.getElementById('co-ordercc'); if(c)c.value=COMPANY.orderCc||'';
+  renderHallLocs();
+}
 /* ---- FAX送信拠点マスタ（地域＝道央/道北） ---- */
 function renderHallLocs(){
   var tb=document.getElementById('hl-rows'); if(!tb) return; tb.innerHTML='';
@@ -2225,6 +2489,7 @@ function openHouyou(id){const f=data.find(x=>x.id===id);if(!f)return;hEditId=id;
   document.getElementById('hConfirmBtn').innerHTML = hIsFixed(f)?'<i class="ti ti-device-floppy"></i>保存する':'<i class="ti ti-phone-check"></i>電話で確定して保存';
   document.getElementById('hDelete').style.display=hIsCancel(f)?'none':'inline-flex';
   document.getElementById('hBackdrop').classList.add('open');
+  if(typeof renderOpLogInto==='function' && hEditId && hEditId!=='new') renderOpLogInto('h-oplog',hEditId);
 }
 let TEMPLE_SEL=null, templeTarget=null;
 function openTemplePicker(target){templeTarget=target;TEMPLE_SEL=null;
@@ -2284,6 +2549,7 @@ function hConfirm(){
     hReadModal(nf);
     const nh=memRec(nf);nh.status='確定';nh.confirmedDate=TODAY;nh.confirmedBy='電話';nh.appliedDate=TODAY;nh.channel='phone';nh.cancel=null;
     data.push(nf);
+    logOp(nf.id,'法事予約',OP_ME,'法要予約を新規作成・確定');
     const mon=mondayOfDate(new Date(hachiOf(nf)+'T00:00'));hWeekOffset=Math.round((mon-AREA_BASE)/(7*86400000));
     hClose();hFilter='all';document.querySelectorAll('#h-filters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f==='all'));renderHouyou();toast(memLabel()+'の予約を新規作成しました（'+fam+'）');return;
   }
@@ -2291,9 +2557,10 @@ function hConfirm(){
   if(h.status!=='確定'){h.status='確定';h.confirmedDate=TODAY;h.confirmedBy='電話';}
   else if(!h.confirmedDate){h.confirmedDate=TODAY;h.confirmedBy='電話';}
   if(h.cancel)h.cancel=null;
+  logOp(f.id,'法事予約',OP_ME,(wasFixed?'法要予約を更新':'法要予約を電話で確定')+'（'+(h.dateLabel||'')+' '+(h.ampm||'')+'）');
   hClose();renderHouyou();toast(f.family+' の法要を'+(wasFixed?'更新':'確定')+'しました');}
 function hCancelBooking(){const f=data.find(x=>x.id===hEditId);if(!f)return;if(!confirm(f.family+' の法要ご希望をキャンセルにします。よろしいですか？'))return;
-  const h=hReadModal(f);h.status='キャンセル';h.cancel={date:TODAY,by:'管理画面'};hClose();renderHouyou();toast(f.family+' の法要をキャンセルにしました');}
+  const h=hReadModal(f);h.status='キャンセル';h.cancel={date:TODAY,by:'管理画面'};logOp(f.id,'法事予約',OP_ME,'法要予約をキャンセル');hClose();renderHouyou();toast(f.family+' の法要をキャンセルにしました');}
 function hClose(){document.getElementById('hBackdrop').classList.remove('open');}
 document.getElementById('hBackdrop').addEventListener('click',e=>{if(e.target.id==='hBackdrop')hClose();});
 function hCSV(){const list=hWeekFunerals();
@@ -2438,12 +2705,59 @@ function fOpen(id){
   document.getElementById('f-list').style.display='none';
   document.getElementById('f-detail').style.display='block';
   document.getElementById('f-d-name').textContent=fCurrent.deceased+' 様（'+fCurrent.family+'）';
-  fRenderMeta(); fRenderAuto(); fRenderHist(); fRenderRecipients();
+  fRenderMeta(); fRenderAuto(); fRenderHist(); fRenderRecipients(); fRenderOpLog();
   document.getElementById('f-body').value='＜葬儀社名＞\n'; document.getElementById('f-url').value='';
   document.getElementById('f-url-out').style.display='none';
   fPdfAttached=false; var ps=document.getElementById('f-pdf-status'); if(ps){ps.textContent='未添付';ps.style.color='';}
   fUpdateCounter(); window.scrollTo(0,0);
 }
+/* ====== 葬家ごとの操作ログ（配信・回収予約・法事予約） ====== */
+var OP_LOG=[]; // {id, feat:'配信'|'回収予約'|'法事予約', at:'YYYY-MM-DD HH:MM', staff, content}
+var OP_STAFF=['髙橋','近藤','河石','坂元'];
+var OP_ME='髙橋（システム）'; /* ログイン中のシステム利用者。本番はログインユーザー名 */
+function opStaffPick(seed){ return OP_STAFF[Math.abs(seed)%OP_STAFF.length]; }
+function nowStamp(){ var d=new Date(); function z(n){return (n<10?'0':'')+n;} return TODAY+' '+z(d.getHours())+':'+z(d.getMinutes()); }
+function logOp(id,feat,staff,content){ OP_LOG.push({id:id,feat:feat,at:nowStamp(),staff:staff||'管理画面',content:content}); }
+function buildOpLog(){
+  OP_LOG=[];
+  data.forEach(function(f){
+    var s=f.id;
+    // 配信（案内SMS/LINE）
+    (f.notifyHistory||[]).forEach(function(h){
+      OP_LOG.push({id:f.id,feat:'配信',at:h.date+' '+(9+(s%8))+':'+((s*7)%6)+'0',staff:opStaffPick(s+ (h.kind==='sms'?1:2)),content:(h.kind==='sms'?'SMS':'LINE')+'で回収予約案内を送信（'+((h.recipients&&h.recipients.length)||1)+'名）'});
+    });
+    // 回収予約
+    var r=f.reservation;
+    if(r){
+      var web=r.channel==='web';
+      OP_LOG.push({id:f.id,feat:'回収予約',at:r.reservedDate+' '+(10+(s%6))+':15',staff:web?'遺族（フォーム）':opStaffPick(s),content:'回収予約を登録（回収 '+fmtMD(r.visitDate)+' '+r.visitTime+'／'+(web?'web申込':'荷電')+'）'});
+      if(r.change){ OP_LOG.push({id:f.id,feat:'回収予約',at:r.change.date+' '+(11+(s%5))+':30',staff:(r.change.by==='ユーザー'?'遺族（フォーム）':opStaffPick(s+3)),content:'回収日時を変更（'+(r.change.fromDate?fmtMD(r.change.fromDate)+' '+(r.change.fromTime||''):'—')+' → '+fmtMD(r.visitDate)+' '+r.visitTime+'）'}); }
+      if(r.cancel){ OP_LOG.push({id:f.id,feat:'回収予約',at:r.cancel.date+' '+(13+(s%4))+':05',staff:(r.cancel.by==='ユーザー'?'遺族（フォーム）':opStaffPick(s+5)),content:'回収予約をキャンセル'}); }
+    }
+    if(f.noCollection){ OP_LOG.push({id:f.id,feat:'回収予約',at:f.noCollection.date+' 10:00',staff:(f.noCollection.source==='form'?'遺族（フォーム）':opStaffPick(s)),content:'回収不要として登録（'+f.noCollection.reason+'）'}); }
+    // 法事予約（四十九日案内の送信済のみ簡易計上）
+    var d49=isoAdd(f.funeralDate,5);
+    if(diffDays(d49,TODAY)>=0){ OP_LOG.push({id:f.id,feat:'法事予約',at:d49+' 10:00',staff:'自動送信',content:'四十九日 法要のご案内を自動送信'}); }
+  });
+}
+buildOpLog();
+function featBadge(feat){ var c=feat==='配信'?'al-src-follow':(feat==='回収予約'?'al-src-kaishu':'al-src-houyou'); return '<span class="al-src '+c+'">'+feat+'</span>'; }
+/* 操作者の種別：エンドユーザー（遺族）／システム（葬儀社スタッフ）／自動 */
+function opActorCell(o){
+  if(/自動/.test(o.staff)) return '<span class="op-actor op-auto"><i class="ti ti-robot"></i>自動送信</span>';
+  if(/遺族/.test(o.staff)) return '<span class="op-actor op-end"><i class="ti ti-user-heart"></i>エンドユーザー</span><div class="rsub">ご家族（フォーム）</div>';
+  return '<span class="op-actor op-sys"><i class="ti ti-user-shield"></i>'+o.staff.replace('（システム）','')+'</span><div class="rsub">システム利用者</div>';
+}
+function renderOpLogInto(tbodyId,fid){
+  var tb=document.getElementById(tbodyId); if(!tb)return;
+  var rows=OP_LOG.filter(function(o){return o.id===fid;}).sort(function(a,b){return a.at<b.at?1:(a.at>b.at?-1:0);});
+  tb.innerHTML='';
+  rows.forEach(function(o){
+    tb.innerHTML+='<tr><td class="mono">'+o.at+'</td><td>'+featBadge(o.feat)+'</td><td>'+opActorCell(o)+'</td><td>'+o.content+'</td></tr>';
+  });
+  if(!rows.length) tb.innerHTML='<tr><td colspan="4" class="empty">操作ログはありません。</td></tr>';
+}
+function fRenderOpLog(){ if(fCurrent) renderOpLogInto('f-d-oplog',fCurrent.id); }
 function fRenderAuto(){
   var tb=document.getElementById('f-d-auto'); tb.innerHTML='';
   var act=NOTIF_MASTER.filter(function(n){return n.active;});
