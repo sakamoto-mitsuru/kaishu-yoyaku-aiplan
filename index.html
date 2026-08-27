@@ -138,6 +138,14 @@
   .op-reg{color:#fff;background:var(--green);border-color:var(--green);font-weight:600}.op-reg:hover{background:var(--green-dark)}
   .empty{padding:40px;text-align:center;color:var(--text-muted)}
 
+  .holiday-card{border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px;background:var(--surface)}
+  .holiday-card .hc-head{display:flex;align-items:center;gap:8px;font-size:14px;margin-bottom:10px;flex-wrap:wrap}
+  .holiday-card .hc-head i{color:#b0752f}
+  .holiday-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .hol-chip{display:inline-flex;align-items:center;gap:6px;background:#faeeda;color:#854f0b;border-radius:6px;padding:4px 10px;font-size:13px;font-weight:500}
+  .hol-chip button{border:none;background:none;color:#854f0b;cursor:pointer;font-size:14px;line-height:1;padding:0}
+  .holiday-add{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .holiday-add input{height:34px;border:1px solid var(--border);border-radius:6px;padding:2px 10px;font-size:13px;width:120px}
   /* ===== エリア別 予約枠シート ===== */
   .area-wrap{padding:16px}
   .area-regions{display:flex;gap:8px;margin-bottom:10px}
@@ -522,6 +530,8 @@
   .u-role-badge.u-stf{background:#eef1f4;color:#495057}
   .uf-chip{display:inline-block;font-size:11px;font-weight:600;background:#eef6f1;color:#1f7a56;border-radius:5px;padding:2px 8px;margin-right:4px}
   .uf-chip.uf-all{background:#e8f0fb;color:#1a5fa5}
+  .perm-legend{margin:8px 0 4px;padding-left:18px;font-size:12px;color:var(--text-secondary);line-height:1.9}
+  .perm-legend b{color:var(--text-primary);font-weight:500}
   /* 作成/編集フォーム（スクショ準拠） */
   #user-form .uf-field{margin-bottom:18px;max-width:760px}
   #user-form .uf-field label{display:block;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:7px}
@@ -747,13 +757,24 @@
           </div>
           <div class="list-cap" id="listCap"></div>
           <div class="tbl-wrap"><table>
-            <thead><tr><th>葬儀日</th><th>故人名 / 葬家名</th><th>会場名</th><th>状態</th><th>予約日 / 通知</th><th style="text-align:right">操作</th></tr></thead>
+            <thead><tr><th>葬儀日</th><th>故人名 / 葬家名</th><th>会場名</th><th>状態</th><th>予約日 / 通知</th><th>添付</th><th>担当者</th><th style="text-align:right">操作</th></tr></thead>
             <tbody id="statusBody"></tbody>
           </table></div>
           <div class="empty" id="statusEmpty" style="display:none">この条件に該当する葬家はありません。</div>
         </div>
 
         <div id="areaView" style="display:none">
+          <div class="holiday-card">
+            <div class="hc-head"><i class="ti ti-calendar-off"></i><b>特別休日（予約不可）</b><span class="f-hint">この期間は予約フォームで選択できません（全社共通・毎年）。</span></div>
+            <div id="holidayList" class="holiday-list"></div>
+            <div class="holiday-add">
+              <input type="text" id="hol-from" placeholder="MM-DD 例)12-29">
+              <span>〜</span>
+              <input type="text" id="hol-to" placeholder="MM-DD 例)01-04">
+              <input type="text" id="hol-label" placeholder="名称（任意）">
+              <button class="btn btn-sm" onclick="addHoliday()"><i class="ti ti-plus"></i>追加</button>
+            </div>
+          </div>
           <div class="area-wrap">
             <div class="area-regions" id="areaRegions"></div>
             <div class="area-tabs" id="areaTabs"></div>
@@ -912,6 +933,15 @@
           <div class="card card-added">
             <div class="card-header"><h3 class="card-title">葬儀社ユーザ</h3><button class="btn btn-success card-hd-btn" onclick="userOpen(null)"><i class="ti ti-user-plus"></i> 新規作成</button></div>
             <div class="card-body">
+              <p class="form-text text-muted" style="margin-top:0">各フラグは<b>独立</b>しており、<b>それぞれが「使える範囲」を個別に解放</b>します（上位・下位の階層はありません）。管理者であっても、担当者が無ければ葬家作成はできず、配信機能が無ければ配信は使えません。</p>
+              <ul class="perm-legend">
+                <li><b>管理者</b>：各種設定・ユーザー管理</li>
+                <li><b>担当者</b>：葬家の作成・対応</li>
+                <li><b>配信機能</b>：SMS/LINEの配信</li>
+                <li><b>回収予約</b>：回収予約の利用</li>
+                <li><b>法事予約</b>：法事予約の利用</li>
+                <li><b>受注メールを受け取る</b>：予約の受注メール受信</li>
+              </ul>
               <table class="table user-table2">
                 <thead><tr><th>ユーザ名 / メール</th><th>権限</th><th>使える機能</th><th>受注メール</th><th style="width:110px">操作</th></tr></thead>
                 <tbody id="user-rows"></tbody>
@@ -928,7 +958,7 @@
             <div class="uf-field"><label>電話番号</label><input type="tel" class="form-control" id="uf-tel" placeholder="03-1234-5678"></div>
             <div class="uf-field"><label>社員ID</label><input type="text" class="form-control" id="uf-empid" placeholder=""></div>
             <div class="uf-checks">
-              <label class="uf-check"><input type="checkbox" id="uf-admin" onchange="ufOnAdmin(this.checked)"><span>管理者</span></label>
+              <label class="uf-check"><input type="checkbox" id="uf-admin"><span>管理者</span></label>
               <label class="uf-check"><input type="checkbox" id="uf-staff"><span>担当者</span></label>
               <div class="uf-check-div">使える機能</div>
               <label class="uf-check"><input type="checkbox" id="uf-delivery"><span>配信機能</span></label>
@@ -967,14 +997,15 @@
         <div class="card card-added">
           <div class="card-header"><h3 class="card-title">FAX送信拠点マスタ</h3></div>
           <div class="card-body">
+            <p class="form-text text-muted hl-region-note" style="margin-top:0">回収予約・法事予約をご利用の場合、拠点ごとに<b>地域（道央／道北）</b>を設定できます（予約フォームの出し分け・予約状況の分類に使用）。</p>
             <p class="form-text text-muted" style="margin-top:0">回収の担当拠点です。各拠点に<b>地域（道央／道北）</b>を設定します。会場設定で拠点を選ぶと、その会場（＝葬家）の地域が決まり、回収予約の道央／道北の出し分けに使われます。</p>
             <table class="table" style="margin-bottom:14px">
-              <thead><tr><th>拠点名</th><th>地域</th><th>FAX番号</th><th style="width:80px">操作</th></tr></thead>
+              <thead><tr><th>拠点名</th><th class="hl-region-col">地域</th><th>FAX番号</th><th style="width:80px">操作</th></tr></thead>
               <tbody id="hl-rows"></tbody>
             </table>
             <div class="form-row" style="align-items:flex-end">
               <div class="form-group col-md-4"><label class="control-label">拠点名</label><input type="text" class="form-control" id="hl-name" placeholder="例）旭川支店"></div>
-              <div class="form-group col-md-3"><label class="control-label">地域</label><select class="form-control" id="hl-region"><option>道央</option><option>道北</option></select></div>
+              <div class="form-group col-md-3 hl-region-col"><label class="control-label">地域</label><select class="form-control" id="hl-region"><option>道央</option><option>道北</option></select></div>
               <div class="form-group col-md-3"><label class="control-label">FAX番号</label><input type="tel" class="form-control" id="hl-fax" placeholder="0166-00-0000"></div>
               <div class="form-group col-md-2"><button class="btn btn-success" style="width:100%" onclick="hlAdd()"><i class="ti ti-plus"></i> 追加</button></div>
             </div>
@@ -995,6 +1026,10 @@
           <button class="htab" data-k="isshuki" onclick="hSetType('isshuki')">一周忌</button>
           <button class="htab" data-k="sankaiki" onclick="hSetType('sankaiki')">三回忌</button>
           <button class="htab" data-k="nanakaiki" onclick="hSetType('nanakaiki')">七回忌</button>
+        </div>
+        <div class="area-regions status-regions" id="hStatusRegions">
+          <button class="rtab on" data-r="道央" onclick="hSetRegion('道央')">道央</button>
+          <button class="rtab" data-r="道北" onclick="hSetRegion('道北')">道北</button>
         </div>
         <div class="kpi" id="h-kpi"></div>
         <div class="panel">
@@ -1543,6 +1578,12 @@ const CONTENT_LABEL={祭壇:'後飾り祭壇',枕机:'枕机',返礼品:'香典�
 const SURNAMES=['佐藤','鈴木','高橋','田中','伊藤','渡辺','山本','中村','小林','加藤','吉田','山田','佐々木','山口','松本','井上','木村','清水','山崎','森','池田','橋本','阿部','石川','前田','藤田','後藤','近藤','坂本','遠藤','青木','福田','西村','太田','岡田','中島','原田','小野','竹内','金子','和田','中山','石田','上田','森田','原','柴田','酒井','工藤','宮本'];
 const GIVEN=['太郎','花子','一郎','京子','健一','美咲','大輔','幸子','和夫','洋子','茂','千代','正雄','久美子','博','敏子','清','節子','勇','文子','昭','悦子','稔','光子','豊','静子','進','和子','孝','裕子','義男','ハル','武','トメ','三郎','よし子'];
 const TODAY='2026-07-13';
+/* 特別休日（予約不可・全社共通・毎年）。フォームのカレンダーで選択不可になる */
+var SPECIAL_HOLIDAYS=[{from:'12-29',to:'01-04',label:'年末年始'}];
+function isSpecialHoliday(d){for(var i=0;i<SPECIAL_HOLIDAYS.length;i++){var h=SPECIAL_HOLIDAYS[i];var md=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');if(h.from<=h.to){if(md>=h.from&&md<=h.to)return true;}else{if(md>=h.from||md<=h.to)return true;}}return false;}
+function renderHolidays(){var el=document.getElementById('holidayList');if(!el)return;el.innerHTML=SPECIAL_HOLIDAYS.length?SPECIAL_HOLIDAYS.map(function(h,i){return '<span class="hol-chip">'+(h.label?h.label+'：':'')+h.from+'〜'+h.to+' <button onclick="removeHoliday('+i+')" title="削除">×</button></span>';}).join(''):'<span class="f-hint">設定なし</span>';}
+function addHoliday(){var f=(document.getElementById('hol-from').value||'').trim(),t=(document.getElementById('hol-to').value||'').trim(),l=(document.getElementById('hol-label').value||'').trim();if(!/^\d{2}-\d{2}$/.test(f)||!/^\d{2}-\d{2}$/.test(t)){toast('MM-DD 形式でご入力ください（例 12-29）');return;}SPECIAL_HOLIDAYS.push({from:f,to:t,label:l});document.getElementById('hol-from').value='';document.getElementById('hol-to').value='';document.getElementById('hol-label').value='';renderHolidays();toast('特別休日を追加しました');}
+function removeHoliday(i){SPECIAL_HOLIDAYS.splice(i,1);renderHolidays();}
 /* エリア別 予約枠設定（予約可能な曜日・開始時刻・各枠の受付数）※フォームと同一 */
 const AREA_CONFIG={
   '札幌':{region:'道央',days:'all',starts:[10,11,12,13,14,15,16,17],cap:2,note:'花川南・花川北はこちら',span:'毎日 10:00–18:00（1時間枠）'},
@@ -1688,6 +1729,7 @@ function setView(v){currentView=v;weekOffset=0;
   document.getElementById('areaView').style.display=v==='area'?'block':'none';
   document.getElementById('statusFilters').style.visibility=v==='status'?'visible':'hidden';
   document.getElementById('statusRegions').style.display=v==='status'?'':'none';
+  if(v==='area') renderHolidays();
   render();}
 function setFilter(f){filter=f;document.querySelectorAll('#statusFilters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderStatus();}
 function shiftWeek(n){weekOffset=n===0?0:weekOffset+n;render();}
@@ -1779,7 +1821,7 @@ function renderStatus(){
     if(!rows.length)return;
     const dn=rows.filter(isResolved).length;
     const gh=document.createElement('tr');gh.className='daygroup';
-    gh.innerHTML='<td colspan="6">'+fmtFull(day)+'<span class="cnt">'+rows.length+'件</span><span class="mini">完了 <b>'+dn+'</b> / '+rows.length+'</span></td>';
+    gh.innerHTML='<td colspan="8">'+fmtFull(day)+'<span class="cnt">'+rows.length+'件</span><span class="mini">完了 <b>'+dn+'</b> / '+rows.length+'</span></td>';
     body.appendChild(gh);
     rows.forEach(f=>{
       const resolved=isResolved(f),cancelled=isCancelled(f),elapsed=diffDays(f.funeralDate,TODAY);
@@ -1820,7 +1862,7 @@ function renderStatus(){
       tr.innerHTML='<td class="c-day"><span class="d">'+fmtMD(f.funeralDate)+'（'+wd+'）</span><div class="sub'+(overdue?' od':'')+'">葬儀から'+elapsed+'日</div></td>'+
         '<td class="fam"><a class="vs-link" onclick="goFollowFamily('+f.id+')">'+(f.deceased||f.family)+'</a><div class="rsub">'+f.family+'</div></td>'+
         '<td class="venue"><span class="vshort">'+venueShort(f.venue)+'</span><span class="vcode">'+venueCode(f.venue)+'</span><div class="vfull">'+f.venue+'</div></td>'+
-        '<td>'+doneCell+'</td><td>'+dateCell+'</td><td><div class="ops">'+ops+'</div></td>';
+        '<td>'+doneCell+'</td><td>'+dateCell+'</td>'+(typeof attCellsHtml==='function'?attCellsHtml(f.id):'<td></td><td></td>')+'<td><div class="ops">'+ops+(typeof attFileBtn==='function'?attFileBtn(f.id):'')+'</div></td>';
       body.appendChild(tr);
     });
   });
@@ -2140,7 +2182,6 @@ var USERS=[
 ];
 var uEditId=null;
 function featChips(u){
-  if(u.isAdmin) return '<span class="uf-chip uf-all">全機能</span>';
   var c=[]; if(u.delivery)c.push('配信'); if(u.kaishu)c.push('回収'); if(u.houyou)c.push('法事');
   return c.length?c.map(function(x){return '<span class="uf-chip">'+x+'</span>';}).join(''):'<span class="f-hint">—</span>';
 }
@@ -2158,10 +2199,7 @@ function renderUsers(){
   });
   if(!USERS.length) tb.innerHTML='<tr><td colspan="5" class="empty">ユーザーがいません。</td></tr>';
 }
-function ufOnAdmin(on){
-  // 管理者は全機能利用可のため、機能チェックをオン・固定
-  ['uf-delivery','uf-kaishu','uf-houyou'].forEach(function(id){var el=document.getElementById(id); if(el){ if(on){el.checked=true;} el.disabled=on; }});
-}
+function ufOnAdmin(on){ /* 権限は階層を持たず各チェックは独立。ここでは何もしない */ }
 function userOpen(id){
   uEditId=id;
   var u=id?USERS.find(function(x){return x.id===id;}):{name:'',email:'',tel:'',empId:'',isAdmin:false,isStaff:true,delivery:false,kaishu:false,houyou:false,orderMail:false};
@@ -2177,7 +2215,6 @@ function userOpen(id){
   document.getElementById('uf-kaishu').checked=!!u.kaishu;
   document.getElementById('uf-houyou').checked=!!u.houyou;
   document.getElementById('uf-ordermail').checked=!!u.orderMail;
-  ufOnAdmin(!!u.isAdmin);
   document.getElementById('user-list').style.display='none';
   document.getElementById('user-form').style.display='';
   window.scrollTo(0,0);
@@ -2191,9 +2228,9 @@ function userSave(){
   var admin=document.getElementById('uf-admin').checked;
   var rec={email:email,name:name,tel:(document.getElementById('uf-tel').value||'').trim(),empId:(document.getElementById('uf-empid').value||'').trim(),
     isAdmin:admin,isStaff:document.getElementById('uf-staff').checked,
-    delivery:admin||document.getElementById('uf-delivery').checked,
-    kaishu:admin||document.getElementById('uf-kaishu').checked,
-    houyou:admin||document.getElementById('uf-houyou').checked,
+    delivery:document.getElementById('uf-delivery').checked,
+    kaishu:document.getElementById('uf-kaishu').checked,
+    houyou:document.getElementById('uf-houyou').checked,
     orderMail:document.getElementById('uf-ordermail').checked};
   if(uEditId){ Object.assign(USERS.find(function(x){return x.id===uEditId;}),rec); toast('ユーザーを更新しました'); }
   else { rec.id=++USER_SEQ; USERS.push(rec); toast('ユーザー「'+name+'」を作成しました'); }
@@ -2218,19 +2255,27 @@ function renderCompany(){
   renderHallLocs();
 }
 /* ---- FAX送信拠点マスタ（地域＝道央/道北） ---- */
+function regionFeatureOn(){ return !!(COMPANY_FLAGS.EnableCollectionReservation || COMPANY_FLAGS.EnableMemorialReservation); }
 function renderHallLocs(){
   var tb=document.getElementById('hl-rows'); if(!tb) return; tb.innerHTML='';
+  var on=regionFeatureOn();
+  // 地域列・地域入力欄・説明の表示切替（回収/法事いずれか有効時のみ）
+  document.querySelectorAll('.hl-region-col').forEach(function(el){ el.style.display = on?'':'none'; });
+  var note=document.querySelector('.hl-region-note'); if(note) note.style.display=on?'':'none';
   HALL_LOCATIONS.filter(function(x){return x.id;}).forEach(function(x){
     var rcls=x.region==='道北'?'al-src-houyou':'al-src-kaishu';
     var venCount=VENUE_MASTER.filter(function(v){return v.hallLocationId===x.id;}).length;
+    var regionCell = on
+      ? '<td class="hl-region-col"><select class="form-control" style="height:34px;padding:2px 8px;width:auto;display:inline-block" onchange="hlSetRegion(\''+x.id+'\',this.value)">'+
+          ['道央','道北'].map(function(r){return '<option'+(x.region===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select> '+
+          '<span class="al-src '+rcls+'">'+(x.region||'—')+'</span></td>'
+      : '';
     tb.innerHTML+='<tr><td><b>'+x.name+'</b> <span class="f-hint">（会場 '+venCount+'）</span></td>'+
-      '<td><select class="form-control" style="height:34px;padding:2px 8px;width:auto;display:inline-block" onchange="hlSetRegion(\''+x.id+'\',this.value)">'+
-        ['道央','道北'].map(function(r){return '<option'+(x.region===r?' selected':'')+'>'+r+'</option>';}).join('')+'</select> '+
-        '<span class="al-src '+rcls+'">'+(x.region||'—')+'</span></td>'+
+      regionCell+
       '<td>'+(x.fax||'—')+'</td>'+
       '<td><button class="btn btn-default btn-sm" onclick="hlRemove(\''+x.id+'\')"><i class="ti ti-trash"></i></button></td></tr>';
   });
-  if(HALL_LOCATIONS.filter(function(x){return x.id;}).length===0) tb.innerHTML='<tr><td colspan="4" class="empty">拠点がありません。</td></tr>';
+  if(HALL_LOCATIONS.filter(function(x){return x.id;}).length===0) tb.innerHTML='<tr><td colspan="'+(on?4:3)+'" class="empty">拠点がありません。</td></tr>';
 }
 function hlSetRegion(id,region){var x=hallLocById(id); if(x){x.region=region; renderHallLocs(); if(typeof render==='function')render(); toast(x.name+'を'+region+'に設定しました');}}
 function hlAdd(){
@@ -2319,7 +2364,7 @@ function saveVenue(){
 function csvEsc(s){s=String(s==null?'':s);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
 function downloadCSV(){
   const list=weekFunerals().filter(f=>isResolved(f)||isCancelled(f)).sort((a,b)=>(a.funeralDate+a.family).localeCompare(b.funeralDate+b.family));
-  const head=['葬儀日','故人名','予約者名','会場短縮名','会場コード','状態','予約日/登録日','変更/取消','予約方法','実施者','回収日','回収時間','回収内容','エリア','住所（回収場所）','電話番号','追加電話番号','SMS送信数','LINE送信数','メモ'];
+  const head=['葬儀日','故人名','予約者名','会場短縮名','会場コード','状態','予約日/登録日','変更/取消','予約方法','実施者','回収日','回収時間','回収内容','エリア','住所（回収場所）','電話番号','追加電話番号','SMS送信数','LINE送信数','メモ','添付件数','担当者(代表)'];
   const lines=[head.join(',')];
   const chLabel=cs=>(cs||[]).map(c=>CONTENT_LABEL[c]||c).join('・');
   const ctLabel=cs=>(cs||[]).map(c=>c.name+'('+c.tel+')').join(' / ');
@@ -2330,7 +2375,7 @@ function downloadCSV(){
     if(isCancelled(f)){const r=f.reservation;st='キャンセル';regd=r.reservedDate;chg=fmtMD(r.cancel.date);by=r.cancel.by;mtd=method(r.channel);vday=r.visitDate;vtime=r.visitTime;cont=chLabel(r.contents);ar=r.area;addr=r.addr?('北海道'+(r.addr.city||'')+(r.addr.rest||'')):'';memo=r.memo||'';resv=r.reserver||'';cts=ctLabel(r.contacts);}
     else if(isReserved(f)){const r=f.reservation;st='予約完了';regd=r.reservedDate;if(r.change){chg=fmtMD(r.change.date);by=r.change.by;}mtd=method(r.channel);vday=r.visitDate;vtime=r.visitTime;cont=chLabel(r.contents);ar=r.area;addr=r.addr?('北海道'+(r.addr.city||'')+(r.addr.rest||'')):'';memo=r.memo||'';resv=r.reserver||'';cts=ctLabel(r.contacts);}
     else{const nc=f.noCollection;st='回収不要';regd=nc.date;mtd=nc.source==='form'?'web':'電話';cont='（回収不要）'+(nc.reason||'');}
-    lines.push([f.funeralDate,f.deceased||'',resv,venueShort(f.venue),venueCode(f.venue),st,regd,chg,mtd,by,vday,vtime,cont,ar,addr,f.tel||'',cts,sms,line,memo].map(csvEsc).join(','));
+    lines.push([f.funeralDate,f.deceased||'',resv,venueShort(f.venue),venueCode(f.venue),st,regd,chg,mtd,by,vday,vtime,cont,ar,addr,f.tel||'',cts,sms,line,memo,(typeof attCount==='function'?attCount(f.id):''),(typeof attAssigneeText==='function'?attAssigneeText(f.id):'')].map(csvEsc).join(','));
   });
   const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8;'});
   const url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -2361,7 +2406,7 @@ const TEMPLES=[
  {shuha:'浄土真宗本願寺派',name:'覚王寺',kana:'カクオウジ',addr:'小樽市若松1丁目5-8',tel:'0134-22-0508'},
  {shuha:'曹洞宗',name:'龍徳寺',kana:'リュウトクジ',addr:'小樽市真栄1丁目3-8',tel:'0134-23-0308'},
 ];
-let hWeekOffset=0, hFilter='tmp', hEditId=null;
+let hWeekOffset=0, hFilter='tmp', hEditId=null, hRegion='道央';
 const MEM_TYPES=[
  {key:'shijuku',label:'四十九日',calc:d=>isoAdd(d,48)},
  {key:'isshuki',label:'一周忌',calc:d=>addYearsISO(d,1)},
@@ -2413,9 +2458,10 @@ function hVenueLabel(h){
 function hStatusWeek(){const mon=addDaysDate(AREA_BASE,hWeekOffset*7);const days=[...Array(7)].map((_,i)=>iso(addDaysDate(mon,i)));return {mon,days,set:new Set(days)};}
 function hWeekFunerals(){const {set}=hStatusWeek();return data.filter(f=>set.has(hachiOf(f)));}
 function hSetFilter(f){hFilter=f;document.querySelectorAll('#h-filters .fbtn').forEach(b=>b.classList.toggle('on',b.dataset.f===f));renderHouyou();}
+function hSetRegion(r){hRegion=r;document.querySelectorAll('#hStatusRegions .rtab').forEach(b=>b.classList.toggle('on',b.dataset.r===r));renderHouyou();}
 function hShiftWeek(n){hWeekOffset=(n===0)?0:hWeekOffset+n;renderHouyou();}
 function renderHouyou(){
-  const list=hWeekFunerals(), {mon,days}=hStatusWeek();
+  const list=hWeekFunerals().filter(f=>{const rg=funeralRegion(f);return !rg||rg===hRegion;}), {mon,days}=hStatusWeek();
   const monD=new Date(mon), sun=addDaysDate(mon,6);
   document.getElementById('h-weekLabel').textContent=(monD.getMonth()+1)+'/'+monD.getDate()+'〜'+(sun.getMonth()+1)+'/'+sun.getDate();
   document.getElementById('h-weekSub').textContent=memLabel()+'ベース'+(hWeekOffset===0?'（今週）':'');
@@ -2431,11 +2477,12 @@ function renderHouyou(){
   if(hFilter==='tmp')filtered=filtered.filter(hIsTmp);
   if(hFilter==='none')filtered=filtered.filter(hIsNone);
   if(hFilter==='fixed')filtered=filtered.filter(f=>hIsFixed(f)||hIsCancel(f));
-  document.getElementById('h-cap').innerHTML = hFilter==='tmp'
+  document.getElementById('h-cap').innerHTML = (hFilter==='tmp'
     ? '<i class="ti ti-alert-triangle"></i>web申込の仮予約です。お電話でご希望を確認し「確定」してください。'
     : (hFilter==='none'
       ? '<i class="ti ti-mail"></i>ご案内は送信済みですが、まだお申込みのない葬家です。全葬儀が対象です。'
-      : '<i class="ti ti-list-check"></i>この週に'+memLabel()+'を迎える全葬家の法要ご希望状況です（未申込も表示）。');
+      : '<i class="ti ti-list-check"></i>この週に'+memLabel()+'を迎える全葬家の法要ご希望状況です（未申込も表示）。'))
+    + ' <b>'+hRegion+'</b>エリア（会場の拠点＝'+hRegion+'に属する葬家）。';
   const body=document.getElementById('h-body');body.innerHTML='';
   document.getElementById('h-empty').style.display=filtered.length?'none':'block';
   days.forEach(day=>{
@@ -3133,5 +3180,268 @@ function gcRenderHistory(){
 }
 
 </script>
+
+<!-- ================= 葬家別ファイル添付・担当者登録（v1.1 追記 / 社内管理用） ================= -->
+<style>
+  .att-clip{background:none;border:none;cursor:pointer;font-size:13px;color:var(--text);padding:2px 6px;border-radius:6px}
+  .att-clip:hover{background:var(--accent-bg)}
+  .att-clip b{margin-left:3px}
+  .c-att,.c-assignee{white-space:nowrap}
+  .att-emp{color:var(--text-muted);font-size:12px}
+  .att-more{background:#eef1f5;border-radius:999px;padding:1px 8px;font-size:11px;margin-left:6px;color:var(--text-secondary)}
+  .att-none{color:#c8ccce}
+  .att-note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:12px}
+  .att-note b{color:#b45309}
+  .att-fi{border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:8px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .att-fi .nm{font-weight:600;font-size:13px;margin-bottom:3px}
+  .att-fi .meta{font-size:12px;color:var(--text-secondary)}
+  .att-fi .meta b{color:var(--text)}
+  .att-field{margin-bottom:14px}
+  .att-label{font-size:12px;font-weight:600;margin-bottom:5px;display:block}
+  .att-opt{color:var(--text-muted);font-weight:400;font-size:11px;margin-left:4px}
+  .att-drop{border:1.5px dashed var(--border);border-radius:9px;padding:16px;text-align:center;color:var(--text-muted);font-size:12.5px;cursor:pointer}
+  .att-drop:hover{border-color:var(--accent);color:var(--accent)}
+  .att-picked{background:var(--accent-bg);border-radius:8px;padding:9px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .att-results{border:1px solid var(--border);border-radius:8px;max-height:170px;overflow:auto;margin-top:6px}
+  .att-r{padding:8px 11px;cursor:pointer;border-bottom:1px solid var(--border);font-size:13px}
+  .att-r:last-child{border-bottom:none}
+  .att-r:hover{background:var(--accent-bg)}
+  .att-r .emp{color:var(--text-muted);font-size:12px}
+  .att-chosen{background:var(--accent-bg);border:1px solid #cfe0f2;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:13px}
+  .att-ro{background:#f3f4f6;border-radius:7px;padding:8px 11px;font-size:13px;color:var(--text-secondary)}
+  .att-err{color:#c0392b;font-size:12px;margin-top:6px;display:none}
+  .att-err.on{display:block}
+</style>
+
+<!-- 添付一覧モーダル -->
+<div class="backdrop" id="attFilesBackdrop"><div class="modal">
+  <div class="modal-header"><h3><i class="ti ti-paperclip"></i>添付ファイル</h3><button class="modal-close" onclick="closeAtt('attFilesBackdrop')"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div class="att-note"><b>社内管理用</b>のファイルです。遺族・エンドユーザーの画面には表示されません。</div>
+    <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px" id="attFlTarget"></div>
+    <div id="attFlBody"></div>
+  </div>
+  <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeAtt('attFilesBackdrop')">閉じる</button><button class="btn btn-primary" onclick="attAddFromList()"><i class="ti ti-plus"></i>ファイルを追加</button></div>
+</div></div>
+
+<!-- アップロードモーダル -->
+<div class="backdrop" id="attUpBackdrop"><div class="modal">
+  <div class="modal-header"><h3><i class="ti ti-upload"></i>ファイルをアップロード</h3><button class="modal-close" onclick="closeAtt('attUpBackdrop')"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px" id="attUpTarget"></div>
+    <div class="att-field">
+      <span class="att-label">ファイル<span class="att-opt">必須</span></span>
+      <div class="att-drop" id="attDrop" onclick="attPickFile()">クリックしてファイルを選択<br><span style="font-size:11px">PDF / JPEG / PNG / Excel / Word ・ 1ファイル10MBまで ・ 1葬家10件まで</span></div>
+      <div id="attPicked" class="att-picked" style="display:none"><span id="attPickedNm"></span><button class="btn btn-sm" onclick="attClearFile()">取消</button></div>
+      <div class="att-err" id="attErrFile"></div>
+    </div>
+    <div class="att-field">
+      <span class="att-label">取扱担当者<span class="att-opt">任意</span></span>
+      <input type="text" class="form-control" id="attQ" placeholder="ユーザー名 または 社員ID で検索（例：髙橋 / 0002）" autocomplete="off" oninput="attSearch()">
+      <div id="attResults" class="att-results" style="display:none"></div>
+      <div id="attChosen" class="att-chosen" style="display:none">
+        <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:3px">この担当者で登録します（確認）</div>
+        <div><b id="attChNm"></b> ／ 社員ID <b id="attChEmp"></b></div>
+        <div style="margin-top:6px"><button class="btn btn-sm" onclick="attClearAssignee()">選び直す</button></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:5px">未指定でも登録できます（担当者は後から付け直せます）。社員ID未登録のユーザーは候補に出ません。</div>
+    </div>
+    <div class="att-field">
+      <span class="att-label">登録者</span>
+      <div class="att-ro" id="attMe"></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:5px">ログイン情報から自動で記録されます（編集不可）。</div>
+    </div>
+  </div>
+  <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeAtt('attUpBackdrop')">キャンセル</button><button class="btn btn-primary" id="attUpOk" onclick="attRegister()" disabled><i class="ti ti-check"></i>登録する</button></div>
+</div></div>
+
+<!-- 削除確認モーダル -->
+<div class="backdrop" id="attDelBackdrop"><div class="modal modal-sm">
+  <div class="modal-header"><h3><i class="ti ti-trash"></i>このファイルを削除しますか？</h3><button class="modal-close" onclick="closeAtt('attDelBackdrop')"><i class="ti ti-x"></i></button></div>
+  <div class="modal-body">
+    <div style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px">削除すると一覧・詳細から表示されなくなります（論理削除）。操作ログには削除者と日時が記録されます。</div>
+    <div style="background:#fef2f2;border:1px solid #f3d0d0;border-radius:8px;padding:11px 13px">
+      <div><b id="attDelNm"></b></div>
+      <div style="font-size:12px;color:var(--text-secondary);margin-top:3px">担当者：<span id="attDelAs"></span></div>
+    </div>
+  </div>
+  <div class="modal-actions"><div class="spacer"></div><button class="btn" onclick="closeAtt('attDelBackdrop')">キャンセル</button><button class="btn btn-primary" style="background:#c0392b;border-color:#c0392b" onclick="attDoDelete()">削除する</button></div>
+</div></div>
+
+<script>
+/* ===== 葬家別ファイル添付・担当者登録（モック v1.1 / 挙動の正） =====
+   仕様: 仕様書_葬家別ファイル添付_担当者登録_v1.1.md
+   - 取扱担当者は任意 / 社員ID(EmployeeId)空のユーザーは候補外 / 代表担当者=担当者付き最新
+   - 1葬家10件 / PDF・JPEG・PNG・Excel・Word / 社内限定DL（遺族には出さない）
+   本モックはブラウザ内のみ。保存されません。 */
+var ATT_ME = { userId:'u-901', name:'鈴木花子' };                 // 登録者＝ログイン中ユーザー（既存ログイン名フロー相当）
+var ATTACH = [];                                                  // 添付（active のみ扱う）
+var ATT_MAX = 10, ATT_SEQ = 100;
+var ATT_OK_EXT = ['pdf','jpg','jpeg','png','xlsx','xls','docx','doc'];
+var ATT_SAMPLES = [
+  { name:'回収リスト_2026-09.pdf', size:'820KB', ok:true },
+  { name:'現場写真.jpg',           size:'2.4MB', ok:true },
+  { name:'見積.xlsx',              size:'120KB', ok:true },
+  { name:'説明動画.mp4',           size:'5.1MB', ok:false, why:'対応していない形式です（PDF/JPEG/PNG/Excel/Word）' },
+  { name:'大容量スキャン.pdf',      size:'14.2MB', ok:false, why:'10MB を超えています' },
+];
+
+/* 担当者候補＝自社ユーザーのうち社員ID(empId)が非空のみ（v1.1・§3.2） */
+function attCandidates(){ return (typeof USERS!=='undefined'?USERS:[]).filter(function(u){ return u.empId && String(u.empId).trim()!==''; }); }
+
+/* ---- 集計（仕様 §2.3・担当者=任意対応） ---- */
+function attOf(fid){ return ATTACH.filter(function(a){ return a.fid===fid && a.status!=='deleted'; }); }
+function attCount(fid){ return attOf(fid).length; }
+function attSummary(fid){
+  var list=attOf(fid);
+  var withAs=list.filter(function(a){ return a.asId; });          // 担当者付きのみ
+  if(!withAs.length) return { count:list.length, rep:null, more:0 };
+  var rep=withAs.slice().sort(function(x,y){ return x.at<y.at?1:-1; })[0];  // 担当者付きの最新
+  var uniq={}; withAs.forEach(function(a){ uniq[a.asId]=1; });
+  return { count:list.length, rep:rep, more:Object.keys(uniq).length-1 };
+}
+function attAssigneeText(fid){
+  var s=attSummary(fid); if(!s.rep) return '';
+  return s.rep.asName+'（'+s.rep.asEmp+'）'+(s.more>0?' 他'+s.more+'名':'');
+}
+function attAssigneeHtml(fid){
+  var s=attSummary(fid); if(!s.rep) return '<span class="att-none">—</span>';
+  var more=s.more>0?'<span class="att-more">他'+s.more+'名</span>':'';
+  return '<span>'+s.rep.asName+'<span class="att-emp">（'+s.rep.asEmp+'）</span>'+more+'</span>';
+}
+/* renderStatus から呼ぶセル（添付列＋担当者列） */
+function attCellsHtml(fid){
+  var c=attCount(fid);
+  var clip=c? '<button class="att-clip" onclick="openAttFiles('+fid+')" title="添付を見る">📎<b>'+c+'</b></button>' : '<span class="att-none">—</span>';
+  return '<td class="c-att">'+clip+'</td><td class="c-assignee">'+attAssigneeHtml(fid)+'</td>';
+}
+function attFileBtn(fid){ return '<button class="op" onclick="openAttFiles('+fid+')"><i class="ti ti-paperclip"></i>ファイル</button>'; }
+
+/* ---- 共通 ---- */
+function closeAtt(id){ document.getElementById(id).classList.remove('open'); }
+function attRefresh(){ if(typeof renderStatus==='function') renderStatus(); if(document.getElementById('attFilesBackdrop').classList.contains('open') && attFlFid!=null) openAttFiles(attFlFid); }
+function attFamName(fid){ var f=(typeof data!=='undefined')?data.find(function(x){return x.id===fid;}):null; return f? ((f.deceased||f.family)+' ／ '+f.family) : ('葬家 '+fid); }
+
+/* ---- 添付一覧モーダル ---- */
+var attFlFid=null;
+function attFileRow(a){
+  var as = a.asId ? (a.asName+'（'+a.asEmp+'）') : '担当者未設定';
+  return '<div class="att-fi"><div>'
+    +'<div class="nm">'+a.name+' <span style="color:var(--text-muted);font-weight:400;font-size:12px">'+a.size+'</span></div>'
+    +'<div class="meta">担当者：<b>'+as+'</b>　／　登録者：<b>'+a.byName+'</b>　／　'+a.at+'</div>'
+    +'</div><div style="display:flex;gap:6px;white-space:nowrap">'
+    +'<button class="btn btn-sm" onclick="attDownload(\''+a.id+'\')"><i class="ti ti-download"></i>DL</button>'
+    +'<button class="btn btn-sm" style="color:#c0392b;border-color:#f0c9c9" onclick="attAskDelete(\''+a.id+'\')"><i class="ti ti-trash"></i>削除</button>'
+    +'</div></div>';
+}
+function openAttFiles(fid){
+  attFlFid=fid;
+  document.getElementById('attFlTarget').textContent=attFamName(fid);
+  var list=attOf(fid);
+  document.getElementById('attFlBody').innerHTML = list.length
+    ? list.slice().sort(function(x,y){return x.at<y.at?1:-1;}).map(attFileRow).join('')
+    : '<div class="empty" style="padding:22px">添付はありません。</div>';
+  document.getElementById('attFilesBackdrop').classList.add('open');
+}
+function attAddFromList(){ closeAtt('attFilesBackdrop'); openAttUpload(attFlFid); }
+function attDownload(id){ if(typeof toast==='function') toast('社内限定の期限つきURLでダウンロードします（遺族には配布されません）'); }
+
+/* ---- 削除（論理削除） ---- */
+var attDelId=null;
+function attAskDelete(id){
+  var a=ATTACH.find(function(x){return x.id===id;}); if(!a) return; attDelId=id;
+  document.getElementById('attDelNm').textContent=a.name;
+  document.getElementById('attDelAs').textContent= a.asId ? (a.asName+'（'+a.asEmp+'）') : '担当者未設定';
+  document.getElementById('attDelBackdrop').classList.add('open');
+}
+function attDoDelete(){
+  var a=ATTACH.find(function(x){return x.id===attDelId;});
+  if(a){ a.status='deleted'; }                                   // 論理削除（記録は残す）
+  closeAtt('attDelBackdrop');
+  if(typeof toast==='function') toast('ファイルを削除しました（論理削除）');
+  console.log('[操作ログ] 削除 by '+ATT_ME.name+' / '+(a?a.name:'')+' / '+new Date().toLocaleString('ja-JP'));
+  attRefresh();
+}
+
+/* ---- アップロードモーダル ---- */
+var attUpFid=null, attPickedFile=null, attChosenUser=null;
+function openAttUpload(fid){
+  attUpFid=fid; attPickedFile=null; attChosenUser=null;
+  document.getElementById('attUpTarget').textContent=attFamName(fid)+'（このファイルは葬家に紐づきます）';
+  document.getElementById('attMe').textContent=ATT_ME.name;
+  document.getElementById('attPicked').style.display='none';
+  document.getElementById('attDrop').style.display='block';
+  document.getElementById('attChosen').style.display='none';
+  document.getElementById('attResults').style.display='none';
+  var q=document.getElementById('attQ'); q.value=''; q.style.display='block';
+  document.getElementById('attErrFile').classList.remove('on');
+  attSync();
+  document.getElementById('attUpBackdrop').classList.add('open');
+}
+function attPickFile(){
+  var msg='モック：番号でファイルを選んでください\n'+ATT_SAMPLES.map(function(s,n){return (n+1)+'. '+s.name+'（'+s.size+'）'+(s.ok?'':' ← 弾かれます');}).join('\n');
+  var i=prompt(msg,'1'); if(i===null) return;
+  var s=ATT_SAMPLES[Number(i)-1]; if(!s) return;
+  var err=document.getElementById('attErrFile');
+  if(!s.ok){ err.textContent=s.why; err.classList.add('on'); return; }
+  if(attCount(attUpFid)>=ATT_MAX){ err.textContent='1葬家あたり '+ATT_MAX+' 件までです。'; err.classList.add('on'); return; }
+  err.classList.remove('on'); attPickedFile=s;
+  document.getElementById('attPickedNm').textContent=s.name+'（'+s.size+'）';
+  document.getElementById('attPicked').style.display='flex';
+  document.getElementById('attDrop').style.display='none';
+  attSync();
+}
+function attClearFile(){ attPickedFile=null; document.getElementById('attPicked').style.display='none'; document.getElementById('attDrop').style.display='block'; attSync(); }
+function attSearch(){
+  var v=document.getElementById('attQ').value.trim(), res=document.getElementById('attResults');
+  if(!v){ res.style.display='none'; return; }
+  var hit=attCandidates().filter(function(u){ return u.name.indexOf(v)>-1 || String(u.empId).indexOf(v)>-1; });
+  res.style.display='block';
+  res.innerHTML = hit.length
+    ? hit.map(function(u){ return '<div class="att-r" onclick="attPickUser(\''+u.id+'\')">'+u.name+'<span class="emp">（'+u.empId+'）</span></div>'; }).join('')
+    : '<div class="empty" style="padding:12px;font-size:12.5px">該当するユーザーがいません。<br><span style="font-size:11px">※自社かつ社員ID登録済みのユーザーのみが対象です</span></div>';
+}
+function attPickUser(id){
+  attChosenUser=attCandidates().find(function(u){return String(u.id)===String(id);});
+  if(!attChosenUser) return;
+  document.getElementById('attChNm').textContent=attChosenUser.name;
+  document.getElementById('attChEmp').textContent=attChosenUser.empId;
+  document.getElementById('attChosen').style.display='block';
+  document.getElementById('attResults').style.display='none';
+  document.getElementById('attQ').style.display='none';
+  attSync();
+}
+function attClearAssignee(){ attChosenUser=null; document.getElementById('attChosen').style.display='none'; var q=document.getElementById('attQ'); q.style.display='block'; q.value=''; q.focus(); attSync(); }
+function attSync(){ document.getElementById('attUpOk').disabled = !attPickedFile; }  // 担当者は任意
+function attRegister(){
+  if(!attPickedFile) return;
+  var now=new Date();
+  var at=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  ATTACH.push({ id:'a-'+(++ATT_SEQ), fid:attUpFid, name:attPickedFile.name, size:attPickedFile.size,
+    asId: attChosenUser?attChosenUser.id:null, asName: attChosenUser?attChosenUser.name:null, asEmp: attChosenUser?attChosenUser.empId:null,
+    byName:ATT_ME.name, at:at, status:'active' });
+  closeAtt('attUpBackdrop');
+  if(typeof toast==='function') toast('ファイルを登録しました');
+  console.log('[操作ログ] 登録 by '+ATT_ME.name+' / 担当 '+(attChosenUser?attChosenUser.name+'('+attChosenUser.empId+')':'未設定')+' / '+attPickedFile.name);
+  attRefresh();
+}
+
+/* ---- 初期シード＆背景クリックで閉じる ---- */
+function attSeed(){
+  if(typeof data==='undefined' || !data.length) return;
+  var cand=attCandidates(), a=cand[0]||null, b=cand[1]||null;
+  var f0=data[0], f1=data[Math.min(2,data.length-1)];
+  ATTACH.push({ id:'a-1', fid:f0.id, name:'回収書類.pdf', size:'1.2MB', asId:a?a.id:null, asName:a?a.name:null, asEmp:a?a.empId:null, byName:ATT_ME.name, at:'2026-08-08 10:22', status:'active' });
+  ATTACH.push({ id:'a-2', fid:f0.id, name:'引取確認書.xlsx', size:'84KB', asId:b?b.id:null, asName:b?b.name:null, asEmp:b?b.empId:null, byName:ATT_ME.name, at:'2026-08-08 14:05', status:'active' });
+  ATTACH.push({ id:'a-3', fid:f1.id, name:'預り証.pdf', size:'640KB', asId:null, asName:null, asEmp:null, byName:ATT_ME.name, at:'2026-08-09 09:41', status:'active' }); // 担当者未設定の例
+}
+['attFilesBackdrop','attUpBackdrop','attDelBackdrop'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('click', function(e){ if(e.target.id===id) closeAtt(id); });
+});
+attSeed();
+if(typeof renderStatus==='function') renderStatus();   // 添付列・担当者列を反映して再描画
+</script>
+
 </body>
 </html>
