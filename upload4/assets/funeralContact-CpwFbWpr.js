@@ -1,0 +1,1 @@
+import{s as n,v as a}from"./index-B_dv5xxJ.js";const i="sendBeacon",d=()=>Object.fromEntries(Object.entries({appStage:void 0,appBuildSha:void 0,appBuildRunId:void 0}).filter(([,e])=>e!==void 0&&e!=="")),r=e=>{const t=n({route:window.location.pathname,...d(),...e});try{a.capture("funeral_phone_link_clicked",t,{send_instantly:!0,transport:i})}catch{}};export{r as t};

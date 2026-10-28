@@ -1,0 +1,1 @@
+import{j as r}from"./index-B_dv5xxJ.js";const d=({className:t,name:s,formik:e,children:c,...l})=>{const a=e&&e.errors[s];return r.jsxs(r.Fragment,{children:[r.jsx("select",{name:s,className:t+(a?" is-invalid":""),...l,...e.getFieldProps(s),children:c}),r.jsx("div",{className:"invalid-feedback",children:e.errors[s]})]})};export{d as S};

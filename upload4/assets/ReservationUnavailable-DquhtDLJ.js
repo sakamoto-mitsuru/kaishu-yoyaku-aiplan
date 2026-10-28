@@ -1,0 +1,1 @@
+import{R as o}from"./ReservationInfoScreen-4IXH9OqT.js";import{j as t}from"./index-B_dv5xxJ.js";import"./ReservationIcons-BvW7bxOZ.js";import"./vendor-DeuZR1BC.js";const n=()=>t.jsx(o,{icon:"neutral",title:"このページはご利用いただけません",lead:"回収予約の受付期間が終了しているか、URLが正しくない可能性があります。ご不明な点はやわらぎ斎場までお問い合わせください。"});export{n as ReservationUnavailable};

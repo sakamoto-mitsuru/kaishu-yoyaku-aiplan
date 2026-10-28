@@ -1,0 +1,1 @@
+const u=s=>{const o=new Map;for(const t of s){const r=o.get(t.product.id);if(r){r.items.push(t),r.quantity+=1;continue}o.set(t.product.id,{product:t.product,items:[t],quantity:1})}return Array.from(o.values())};export{u as g};
