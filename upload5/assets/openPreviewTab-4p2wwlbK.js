@@ -1,0 +1,1 @@
+const r={openBlank:()=>window.open("","_blank"),navigateSelf:n=>window.location.assign(n)},i=async(n,o=r)=>{const e=o.openBlank();let a;try{a=await n()}catch(t){throw t}if(e){e.location.href=a;return}o.navigateSelf(a)};export{i as o};

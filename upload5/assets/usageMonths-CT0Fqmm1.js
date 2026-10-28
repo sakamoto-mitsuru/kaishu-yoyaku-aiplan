@@ -1,0 +1,1 @@
+const c=(e,t=18)=>{const n=new Date(e.getTime()+324e5),a=n.getUTCFullYear(),o=n.getUTCMonth();return Array.from({length:t},(U,s)=>{const r=new Date(Date.UTC(a,o-s,1));return`${r.getUTCFullYear()}-${String(r.getUTCMonth()+1).padStart(2,"0")}`})},g=e=>{const t=/^(\d{4})-(\d{2})$/.exec(e);return t?`${t[1]}年${Number(t[2])}月`:e};export{c as b,g as f};

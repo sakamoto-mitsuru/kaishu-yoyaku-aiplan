@@ -1,0 +1,1 @@
+const n=new Set(["page","family","posts","funeral","koden","legal"]),r=e=>({noteAdminCategory:e}),a=(e,o=null)=>{if(!e||typeof e!="object")return o;const t=e.noteAdminCategory;return t&&n.has(t)?t:o};export{a as g,r as n};

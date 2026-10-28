@@ -1,0 +1,1 @@
+import{P as s}from"./index-B_dv5xxJ.js";const i=e=>{if(e){const t=String(e),r=s.filter(n=>n.key===t);return r.length>0?r[0].value:""}return""},l=e=>{if(e){const t=String(e),r=s.filter(n=>n.key===t);return r.length>0?r[0].kana:""}return""},u=e=>{if(e){const t=String(e),r=s.filter(n=>n.value===t);return r.length>0?String(r[0].key):""}return""};export{l as a,i as b,u as p};

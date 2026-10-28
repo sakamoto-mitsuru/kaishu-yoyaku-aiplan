@@ -1,0 +1,1 @@
+const i=["flower","things"],o=t=>i.includes(t.product.category),s=(t,r)=>r?t.filter(n=>{if(!o(n))return!1;const e=r[n.product.id];return!!e&&(e.category1.length>0||e.category2.length>0)}):[];export{s as f,o as i};

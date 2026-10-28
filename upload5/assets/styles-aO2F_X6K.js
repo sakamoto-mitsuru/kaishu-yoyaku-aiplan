@@ -1,0 +1,1 @@
+const e="m-0 text-[24px] font-bold leading-[32px] text-text-primary",t="m-0 whitespace-pre-line text-[16px] font-bold leading-[24px] text-text-primary",i="flex size-10 shrink-0 items-center justify-center rounded-pill bg-surface text-text-primary no-underline shadow-card-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand";export{e as N,i as a,t as b};

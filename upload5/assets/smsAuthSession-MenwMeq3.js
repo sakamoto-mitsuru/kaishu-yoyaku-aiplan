@@ -1,0 +1,1 @@
+const n=e=>`memorial:sms-verified-phone:${e}`,r=e=>{if(typeof window>"u")return null;try{return window.sessionStorage.getItem(n(e))}catch{return null}},o=(e,t)=>{if(typeof window>"u")return!1;try{return window.sessionStorage.setItem(n(e),t),!0}catch{return!1}},i=e=>{if(!(typeof window>"u"))try{window.sessionStorage.removeItem(n(e))}catch{}};export{i as c,r as g,o as s};

@@ -1,0 +1,1 @@
+const a={individual:{src:"./images/np-post-payment-guide.png",alt:"NP後払いの流れ",maxWidth:700},corporation:{src:"./images/np-post-payment-guide-corporate-468x200.png",alt:"NP後払い（サービス利用後、請求書で後払い）",maxWidth:700}},t="法人のお客様は、NP後払い（請求書払い）がご利用いただけます。お支払い期限はご注文月の翌月末です。";export{t as N,a};

@@ -1,0 +1,1 @@
+import{u as n,m as s,bq as o,br as a}from"./GlobalToast-zbs3-dSv.js";import"./lazyImport-MaBEaidp.js";const m=()=>{const e=n();return s({mutationFn:({funeralId:t,params:r})=>o.complete(t,r),meta:{errorToast:!1},onSuccess:()=>e.invalidateQueries({queryKey:a.me()})})};export{m as u};

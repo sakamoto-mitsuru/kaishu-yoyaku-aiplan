@@ -1,0 +1,2 @@
+const o="ご会葬随時受付",r="執り行っておりません",s=i=>typeof i=="string"&&i.trim()!=="",c=i=>{const n=s(i.vigilDateTime),e=i.isVigilAnyTime===!0;return{showDateTime:n,fallbackLabel:n||e?null:r,anyTimeLabel:e?o:null}},m=(i,n)=>{const e=c(i);return e.showDateTime?{primary:n||null,secondary:e.anyTimeLabel}:{primary:e.fallbackLabel??e.anyTimeLabel,secondary:null}},y=(i,n,e=`
+`)=>{const{primary:t,secondary:l}=m(i,n);return[t,l].filter(a=>a!==null).join(e)};export{y as f,m as s};
