@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="人の心の繋がりが限りなく続いていく | itowa"
+    />
+    <meta property="og:image" content="" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.jpg" />
+    <link rel="icon" type="image/png" href="./images/itowa_blacklogomain.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <!-- memorial UI の写真画像 CDN（stg / prd の両ドメインを列挙、未使用側は no-op）。
+         投稿写真の fetch をブラウザ初動と並列に始めるため preconnect する。
+         <img src> / new Image() は non-CORS リクエストなので crossorigin は付けない。
+         （付けると別接続プールに行き、実際の <img> リクエストで再接続が走る恐れがある。
+           fonts.googleapis.com=CSS=non-CORS は無し、fonts.gstatic.com=font=CORS は付き、
+           という下の対比と同じ理屈） -->
+    <link rel="preconnect" href="https://img.itowa71.com" />
+    <link rel="preconnect" href="https://img.stg.itowa71.com" />
+    <!-- memorial UI で利用する和文フォント（Noto Serif JP / Noto Sans JP）
+         Noto Serif JP の 600 は予約フォーム（pages/reservation/reservation.css）が
+         モック準拠で使うウェイト。 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@350;400;500;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- biz 予約画面（回収管理 / 法事希望管理 / 配信管理）のアイコン。
+         モック index.html と同じ Tabler Icons webfont を同じバージョンで読む。 -->
+    <link
+      href="./vendor/tabler/tabler-icons.min.css"
+      rel="stylesheet"
+    />
+    <title>業務管理機能 実画面モック</title>
+    <script>
+      (function () {
+        var maxEvents = 20;
+        var buffer = [];
+
+        function sanitizeUrl(value) {
+          if (!value) return "";
+          try {
+            var url = new URL(value, window.location.origin);
+            return url.origin + url.pathname;
+          } catch (e) {
+            return String(value).split("?")[0].split("#")[0];
+          }
+        }
+
+        function push(event) {
+          if (buffer.length >= maxEvents) buffer.shift();
+          buffer.push(event);
+        }
+
+        window.__BLOOM_EARLY_ERRORS__ = buffer;
+        window.addEventListener(
+          "error",
+          function (event) {
+            push({
+              kind: "error",
+              message: event.message || "window error before Sentry init",
+              filename: sanitizeUrl(event.filename),
+              lineno: event.lineno || null,
+              colno: event.colno || null,
+              errorName: event.error && event.error.name ? event.error.name : null,
+              path: sanitizeUrl(window.location.href),
+              timestamp: Date.now(),
+            });
+          },
+          true
+        );
+        window.addEventListener(
+          "unhandledrejection",
+          function (event) {
+            var reason = event.reason;
+            push({
+              kind: "unhandledrejection",
+              message:
+                reason && reason.message
+                  ? reason.message
+                  : typeof reason === "string"
+                    ? reason
+                    : "unhandled rejection before Sentry init",
+              errorName: reason && reason.name ? reason.name : null,
+              path: sanitizeUrl(window.location.href),
+              timestamp: Date.now(),
+            });
+          },
+          true
+        );
+      })();
+    </script>
+    <!-- Adobeのフォントのインポートでエラーを起こしているためコメントアウト、UIのリファクタリング時に対応 -->
+    <!-- <script>
+      (function (d) {
+        var config = {
+          kitId: 'spk2his',
+          scriptTimeout: 3000,
+          async: true
+        },
+          h = d.documentElement, t = setTimeout(function () { h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive"; }, config.scriptTimeout), tk = d.createElement("script"), f = false, s = d.getElementsByTagName("script")[0], a; h.className += " wf-loading"; tk.src = 'https://use.typekit.net/' + config.kitId + '.js'; tk.async = true; tk.onload = tk.onreadystatechange = function () { a = this.readyState; if (f || a && a != "complete" && a != "loaded") return; f = true; clearTimeout(t); try { Typekit.load(config) } catch (e) { } }; s.parentNode.insertBefore(tk, s)
+      })(document);
+    </script> -->
+    <script>
+      var vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      window.addEventListener('resize', () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+      });
+    </script>
+    <script type="module" crossorigin src="./assets/index-B_dv5xxJ.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-DeuZR1BC.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-OyXf122F.css">
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

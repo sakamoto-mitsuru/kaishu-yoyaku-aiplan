@@ -1,0 +1,24 @@
+{
+  "short_name": "itowa",
+  "name": "itowa",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "bloon_post_logo180.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x150"
+    },
+    {
+      "src": "bloon_post_logo192.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x160"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

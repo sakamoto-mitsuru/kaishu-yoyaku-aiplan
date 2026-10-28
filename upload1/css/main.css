@@ -1,0 +1,12 @@
+body {
+  background: #f8f5ee url('../images/bg.jpg') center top / cover no-repeat fixed;
+}
+
+#auth-main, #content-main, #attendee-content-main {
+  background: transparent;
+}
+
+/* memorial 配下では既存の和紙テクスチャを無効化 */
+body:has(.memorial-root) {
+  background: none;
+}
