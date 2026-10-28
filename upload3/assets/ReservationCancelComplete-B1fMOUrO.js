@@ -1,0 +1,1 @@
+import{c as o}from"./ReservationFormParts-zI50hR9E.js";import{R as t}from"./ReservationInfoScreen-4IXH9OqT.js";import{j as e}from"./index-B_dv5xxJ.js";import"./ReservationIcons-BvW7bxOZ.js";import"./vendor-DeuZR1BC.js";const a=()=>e.jsx(t,{icon:"cancel",title:"予約をキャンセルしました",lead:e.jsx(o,{lines:["キャンセル完了メールをお送りしました。","またのご利用をお待ちしております。"]})});export{a as ReservationCancelComplete};
