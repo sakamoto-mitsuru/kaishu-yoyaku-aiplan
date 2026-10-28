@@ -1,0 +1,1 @@
+import{j as e}from"./index-B_dv5xxJ.js";const t=({className:o})=>e.jsx("svg",{viewBox:"0 0 24 24",fill:"none",stroke:"currentColor",strokeWidth:1.6,strokeLinecap:"round",strokeLinejoin:"round",className:o??"size-4 shrink-0 text-text-secondary","aria-hidden":!0,children:e.jsx("path",{d:"m9 6 6 6-6 6"})});export{t as C};
